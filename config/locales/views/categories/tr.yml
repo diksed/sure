@@ -1,4 +1,3 @@
----
 tr:
   categories:
     bootstrap:
@@ -14,11 +13,20 @@ tr:
       edit: Kategoriyi düzenle
     form:
       placeholder: Kategori adı
+      name_label: İsim
+      unassigned: "(atanmamış)"
+      parent_category_label: "Üst kategori (isteğe bağlı)"
+      color: Renk
+      icon: Simge
+      poor_contrast: "Düşük kontrast, daha koyu renk seçin veya"
+    destroy_all:
+      success: Tüm kategoriler silindi
     index:
       bootstrap: Varsayılanları kullan (önerilir)
       categories: Kategoriler
       categories_expenses: Gider kategorileri
       categories_incomes: Gelir kategorileri
+      delete_all: Tümünü sil
       empty: Hiç kategori bulunamadı
       new: Yeni kategori
     menu:
@@ -27,8 +35,16 @@ tr:
       new_category: Yeni kategori
     update:
       success: Kategori başarıyla güncellendi
+    virtual:
+      transfer: Transfer
+      payment: Ödeme
+      trade: Alım Satım
   category:
     dropdowns:
       show:
         bootstrap: Varsayılan kategorileri oluştur
         empty: Hiç kategori bulunamadı
+        match_transfer: "Transfer/ödemeyle eşleştir"
+        one_time: "Tek seferlik %{type}"
+        income: "gelir"
+        expense: "gider"
