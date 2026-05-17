@@ -1,0 +1,84 @@
+tr:
+  budgets:
+    budget_donut:
+      spent: "Harcanan"
+      new_budget: "Yeni bütçe"
+      of_budget: "%{amount} bütçenin"
+      unused: "Kullanılmayan"
+    budget_header:
+      today: "Bugün"
+    over_allocation_warning:
+      over_allocated_message: "Bütçenizi aşan bir tahsisat yaptınız. Lütfen tahsisatlarınızı düzeltin."
+      fix_allocations: "Tahsisatları düzelt"
+    actuals_summary:
+      income: "Gelir"
+      expenses: "Giderler"
+    budgeted_summary:
+      expected_income: "Beklenen gelir"
+      budgeted: "Bütçelenen"
+      earned: "%{amount} kazanıldı"
+      over: "%{amount} aşım"
+      left: "%{amount} kaldı"
+      spent: "%{amount} harcandı"
+    edit:
+      setup_title: "Bütçenizi kurun"
+      setup_description: "Bütçenizi kurmak için aylık kazancınızı ve planlanan harcamalarınızı aşağıya girin."
+      budgeted_spending: "Bütçelenen harcama"
+      expected_income: "Beklenen gelir"
+      autosuggest_title: "Gelir ve harcama bütçesini otomatik öner"
+      autosuggest_description: "Bu işlem geçmiş işlem verilerine dayanacak. Yapay zeka hata yapabilir, devam etmeden önce kontrol edin."
+      continue: "Devam et"
+    name:
+      custom_range: "%{start} - %{end_date}"
+      month_year: "%{month}"
+    show:
+      categories:
+        amount: Tutar
+        edit: Düzenle
+        title: Kategoriler
+      on_track_categories:
+        short_title: Yolunda
+        title: Yolunda
+      over_budget_categories:
+        short_title: Bütçe Aşıldı
+        title: Bütçe Aşıldı
+      filter:
+        all: Tümü
+        on_track: Yolunda
+        over_budget: Bütçe Aşıldı
+      tabs:
+        actual: Gerçek
+        budgeted: Bütçelenen
+    copy_previous_prompt:
+      title: "Bütçenizi kurun"
+      description: "%{source_name} tarihinden bütçenizi kopyalayabilir veya sıfırdan başlayabilirsiniz."
+      copy_button: "%{source_name} tarihinden kopyala"
+      fresh_button: "Sıfırdan başla"
+    copy_previous:
+      success: "Bütçe %{source_name} tarihinden kopyalandı"
+      no_source: "Kopyalanacak önceki bütçe bulunamadı"
+      already_initialized: "Bu bütçe zaten kurulmuş"
+  budget_categories:
+    confirm_button:
+      confirm: "Onayla"
+    no_categories:
+      oops: "Hay aksi!"
+      no_categories_message: "Henüz herhangi bir gider kategorisi oluşturmadınız veya işlemlerinize atamadınız."
+      use_defaults: "Varsayılanları kullan (önerilir)"
+      new_category: "Yeni kategori"
+    index:
+      title: "Kategori bütçelerinizi düzenleyin"
+      description: "Harcama limitleri belirlemek için kategori bütçelerini ayarlayın. Tahsis edilmemiş fonlar otomatik olarak kategorisiz olarak atanır."
+    show:
+      category: "Kategori"
+      overview: "Genel Bakış"
+      spending: "%{date} harcaması"
+      status: "Durum"
+      overspent: "aşıldı"
+      left: "kaldı"
+      budgeted: "Bütçelenen"
+      monthly_average_spending: "Aylık ortalama harcama"
+      monthly_median_spending: "Aylık medyan harcama"
+      recent_transactions: "Son İşlemler"
+      view_all_transactions: "Tüm kategori işlemlerini görüntüle"
+      no_transactions: "Bu bütçe dönemi için işlem bulunamadı."
