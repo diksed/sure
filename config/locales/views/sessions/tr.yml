@@ -1,19 +1,34 @@
----
 tr:
   sessions:
     create:
       invalid_credentials: Geçersiz e-posta veya şifre.
+      local_login_disabled: Yerel şifre girişi devre dışı. Lütfen tek oturum açma (SSO) kullanın.
     destroy:
       logout_successful: Başarıyla çıkış yaptınız.
+    post_logout:
+      logout_successful: Başarıyla çıkış yaptınız.
     openid_connect:
+      account_linked: "Hesap başarıyla %{provider} ile bağlandı"
       failed: OpenID Connect ile kimlik doğrulaması yapılamadı.
+    failure:
+      failed: Kimlik doğrulaması başarısız.
+      sso_provider_unavailable: "SSO sağlayıcısı şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin veya bir yönetici ile iletişime geçin."
+      sso_invalid_response: "SSO sağlayıcısından geçersiz bir yanıt alındı. Lütfen tekrar deneyin."
+      sso_failed: "Tek oturum açma (SSO) kimlik doğrulaması başarısız. Lütfen tekrar deneyin."
+    mobile_sso_start:
+      redirecting_html: "Giriş sayfasına yönlendiriliyor... Yönlendirilmezseniz <a href=\"%{url}\">buraya tıklayın</a>."
     new:
       email: E-posta adresi
       email_placeholder: ornek@eposta.com
       forgot_password: Şifrenizi mi unuttunuz?
       password: Şifre
       submit: Giriş yap
-      title: Hesabınıza giriş yapın
+      title: Sure
       password_placeholder: Şifrenizi girin
       openid_connect: OpenID Connect ile giriş yap
       oidc: OpenID Connect ile giriş yap
+      google_auth_connect: Google ile giriş yap
+      local_login_admin_only: Yerel giriş yalnızca yöneticilerle sınırlıdır.
+      no_auth_methods_enabled: Şu anda etkin kimlik doğrulama yöntemi yok. Lütfen bir yönetici ile iletişime geçin.
+      demo_banner_title: "Demo Modu Aktif"
+      demo_banner_message: "Bu bir demo ortamıdır. Giriş bilgileri kolaylık olsun diye önceden doldurulmuştur. Lütfen gerçek veya hassas bilgi girmeyin."
