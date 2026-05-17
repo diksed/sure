@@ -1,17 +1,24 @@
----
 tr:
   transfers:
     create:
-      success: Transfer başarıyla oluşturuldu
+      success: Transfer oluşturuldu
     destroy:
       success: Transfer kaldırıldı
     form:
       amount: Tutar
+      calculate_rate_tab: Döviz kurunu hesapla
+      convert_tab: Döviz kuruyla dönüştür
       date: Tarih
+      destination_amount: Hedef tutar
+      destination_amount_display: "Hedef tutar: %{amount}"
+      exchange_rate: Döviz kuru
+      exchange_rate_display: "Döviz kuru: %{rate}"
+      exchange_rate_help: Transfer tutarını nasıl gireceğinizi seçin.
       expense: Gider
       from: Kimden
       income: Gelir
       select_account: Hesap seçin
+      source_amount: Kaynak tutar
       submit: Transfer oluştur
       to: Kime
       transfer: Transfer
@@ -22,9 +29,18 @@ tr:
       delete_subtitle: Bu işlem transferi kaldırır. Altta yatan işlemler silinmeyecektir.
       delete_title: Transfer kaldırılsın mı?
       details: Detaylar
+      mark_recurring: Tekrarlayan olarak işaretle
+      mark_recurring_subtitle: Bu transferi yaklaşan akışta ve tekrarlayan sayfasında tekrarlayan bir kalıp olarak takip edin.
+      mark_recurring_title: Transferi tekrarlayan olarak işaretle
       note_label: Notlar
       note_placeholder: Bu transfere bir not ekleyin
       overview: Genel Bakış
       settings: Ayarlar
+      from: Kimden
+      to: Kime
+      date: Tarih
+      amount: Tutar
+      category: Kategori
+      uncategorized: Kategorisiz
     update:
       success: Transfer güncellendi
