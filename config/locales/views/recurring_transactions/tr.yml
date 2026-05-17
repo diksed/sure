@@ -1,0 +1,55 @@
+tr:
+  recurring_transactions:
+    title: Tekrarlayan İşlemler
+    upcoming: Yaklaşan Tekrarlayan İşlemler
+    projected: Tahmini
+    recurring: Tekrarlayan
+    expected_today: "Bugün bekleniyor"
+    expected_in:
+      one: "%{count} gün içinde bekleniyor"
+      other: "%{count} gün içinde bekleniyor"
+    day_of_month: Ayın %{day}. günü
+    identify_patterns: Kalıpları Tespit Et
+    cleanup_stale: Eskimiş Olanları Temizle
+    settings:
+      enable_label: Tekrarlayan İşlemleri Etkinleştir
+      enable_description: Tekrarlayan işlem kalıplarını otomatik olarak tespit edin ve yaklaşan tahmini işlemleri gösterin.
+    settings_updated: Tekrarlayan işlem ayarları güncellendi
+    info:
+      title: Otomatik Kalıp Tespiti
+      manual_description: Yukarıdaki düğmeleri kullanarak kalıpları manuel olarak tespit edebilir veya eskimiş tekrarlayan işlemleri temizleyebilirsiniz.
+      automatic_description: "Otomatik tespit aşağıdaki durumlarda da çalışır:"
+      triggers:
+        - CSV içe aktarmaları tamamlandığında (işlemler, alım satımlar, hesaplar vb.)
+        - Herhangi bir sağlayıcı senkronizasyonu tamamlandığında (Plaid, SimpleFIN vb.)
+    identified: "%{count} tekrarlayan işlem kalıbı tespit edildi"
+    cleaned_up: "%{count} eskimiş tekrarlayan işlem temizlendi"
+    marked_inactive: Tekrarlayan işlem pasif olarak işaretlendi
+    marked_active: Tekrarlayan işlem aktif olarak işaretlendi
+    deleted: Tekrarlayan işlem silindi
+    confirm_delete: Bu tekrarlayan işlemi silmek istediğinizden emin misiniz?
+    marked_as_recurring: İşlem tekrarlayan olarak işaretlendi
+    already_exists: Bu kalıp için zaten manuel bir tekrarlayan işlem mevcut
+    creation_failed: Tekrarlayan işlem oluşturulamadı. Lütfen işlem ayrıntılarını kontrol edin ve tekrar deneyin.
+    unexpected_error: Tekrarlayan işlem oluşturulurken beklenmedik bir hata oluştu
+    amount_range: "Aralık: %{min} - %{max}"
+    empty:
+      title: Tekrarlayan işlem bulunamadı
+      description: İşlem geçmişinizden tekrarlayan işlemleri otomatik olarak tespit etmek için "Kalıpları Tespit Et" düğmesine tıklayın.
+    table:
+      merchant: İsim
+      amount: Tutar
+      expected_day: Beklenen Gün
+      next_date: Sonraki Tarih
+      last_occurrence: Son Gerçekleşme
+      status: Durum
+      actions: İşlemler
+    status:
+      active: Aktif
+      inactive: Pasif
+    badges:
+      manual: Manuel
+    transfer_marked_as_recurring: Transfer tekrarlayan olarak işaretlendi
+    transfer_already_exists: Bu hesap çifti için zaten tekrarlayan bir transfer mevcut
+    transfer_creation_failed: Tekrarlayan transfer oluşturulamadı. Lütfen transfer ayrıntılarını kontrol edin ve tekrar deneyin.
+    transfer_feature_disabled: Bu aile için tekrarlayan işlemler devre dışı
