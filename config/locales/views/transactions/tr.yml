@@ -1,26 +1,49 @@
----
 tr:
   transactions:
+    bulk_updates:
+      new:
+        name_label: İsim
+        name_placeholder: Seçili işlemlere uygulanacak bir isim girin
+    unknown_name: Bilinmeyen işlem
+    selection_bar:
+      duplicate: Kopyala
+      edit: Düzenle
     form:
+      details: Detaylar
       account: Hesap
       account_prompt: Bir Hesap Seçin
       amount: Tutar
       category: Kategori
+      category_label: Kategori
       category_prompt: Bir Kategori Seçin
       date: Tarih
       description: Açıklama
       description_placeholder: İşlemi açıklayın
       expense: Gider
       income: Gelir
+      merchant_label: Satıcı
       none: (yok)
       note_label: Notlar
       note_placeholder: Not girin
       submit: İşlem ekle
       tags_label: Etiketler
       transfer: Transfer
+    create:
+      created: İşlem oluşturuldu
+    update:
+      updated: İşlem güncellendi
     new:
       new_transaction: Yeni işlem
     show:
+      keep_both: Hayır, ikisini de koru
+      loan_payment: Kredi Ödemesi
+      mark_recurring: Tekrarlayan Olarak İşaretle
+      mark_recurring_subtitle: Bunu tekrarlayan bir işlem olarak takip edin. Tutar varyansı, benzer işlemlerin son 6 ayına göre otomatik hesaplanır.
+      mark_recurring_title: Tekrarlayan İşlem
+      merge_duplicate: Evet, birleştir
+      potential_duplicate_description: Bu bekleyen işlem aşağıdaki işlenmiş işlemle aynı olabilir. Öyleyse, çift sayımı önlemek için birleştirin.
+      potential_duplicate_title: Olası tekrar tespit edildi
+      transfer: Transfer
       account_label: Hesap
       amount: Tutar
       category_label: Kategori
@@ -29,6 +52,20 @@ tr:
       delete_subtitle: Bu işlem kalıcı olarak silinir, geçmiş bakiyelerinizi etkiler ve geri alınamaz.
       delete_title: İşlemi sil
       details: Detaylar
+      attachments: Ekler
+      exclude: Hariç Tut
+      exclude_description: Hariç tutulan işlemler bütçe hesaplamalarından ve raporlardan çıkarılır.
+      activity_type: Aktivite Türü
+      activity_type_description: Yatırım aktivitesi türü (Al, Sat, Temettü vb.). Otomatik tespit edilir veya manuel olarak ayarlanır.
+      one_time_title: Tek seferlik %{type}
+      one_time_description: Tek seferlik işlemler, gerçekten önemli olanı görmek için belirli bütçe hesaplamalarından ve raporlardan hariç tutulur.
+      convert_to_trade_title: Menkul Kıymet İşlemine Dönüştür
+      convert_to_trade_description: Bu işlemi portföy takibi için menkul kıymet ayrıntılarıyla Al veya Sat işlemine dönüştürün.
+      convert_to_trade_button: İşleme Dönüştür
+      transfer_matcher_description: Bu işlemi başka bir hesaptaki karşılığına bağlayın.
+      pending_duplicate_merger_title: İşlenmiş İşlemin Tekrarı mı?
+      pending_duplicate_merger_description: Bu bekleyen işlemi işlenmiş sürümüyle manuel olarak birleştirin.
+      pending_duplicate_merger_button: Birleştiriciyi Aç
       merchant_label: Satıcı
       name_label: İsim
       nature: Tür
@@ -38,20 +75,188 @@ tr:
       overview: Genel Bakış
       settings: Ayarlar
       tags_label: Etiketler
+      tab_transactions: İşlemler
+      tab_upcoming: Yaklaşan
       uncategorized: "(kategorilendirilmemiş)"
+      additional_details: "Ek detaylar"
+      payee: "Alacaklı"
+      description: "Açıklama"
+      memo: "Not"
+      provider_extras: "Sağlayıcı ekstraları"
+      transfer_or_debt_payment: "Transfer veya Borç Ödemesi mi?"
+      open_matcher: "Eşleştiriciyi Aç"
+      convert: "Dönüştür"
+    activity_labels:
+      buy: Al
+      sell: Sat
+      sweep_in: Para Girişi
+      sweep_out: Para Çıkışı
+      dividend: Temettü
+      reinvestment: Yeniden Yatırım
+      interest: Faiz
+      fee: Ücret
+      transfer: Transfer
+      contribution: Katkı
+      withdrawal: Para Çekme
+      exchange: Döviz
+      other: Diğer
+    mark_recurring: Tekrarlayan Olarak İşaretle
+    mark_recurring_subtitle: Bunu tekrarlayan bir işlem olarak takip edin. Tutar varyansı, benzer işlemlerin son 6 ayına göre otomatik hesaplanır.
+    mark_recurring_title: Tekrarlayan İşlem
+    potential_duplicate_title: Olası tekrar tespit edildi
+    potential_duplicate_description: Bu bekleyen işlem aşağıdaki işlenmiş işlemle aynı olabilir. Öyleyse, çift sayımı önlemek için birleştirin.
+    merge_duplicate: Evet, birleştir
+    keep_both: Hayır, ikisini de koru
+    split_parent_row:
+      split_label: "Bölünmüş"
+    transaction:
+      pending: Beklemede
+      pending_tooltip: Bekleyen işlem — işlendiğinde değişebilir
+      linked_with_provider: "%{provider} ile bağlantılı"
+      activity_type_tooltip: Yatırım aktivite türü
+      possible_duplicate: Tekrar mı?
+      potential_duplicate_tooltip: Bu başka bir işlemin tekrarı olabilir
+      review_recommended: İncele
+      review_recommended_tooltip: Büyük tutar farkı — bunun tekrar olup olmadığını incelemeniz önerilir
+      split: Bölünmüş
+      split_tooltip: Bu işlem birden fazla girişe bölünmüştür
+      split_child_tooltip: Bölünmüş bir işlemin parçası
+    merge_duplicate:
+      success: İşlemler başarıyla birleştirildi
+      failure: İşlemler birleştirilemedi
+    dismiss_duplicate:
+      success: Ayrı işlemler olarak tutuldu
+      failure: Tekrar önerisi reddedilemedi
+    pending_duplicate_merge:
+      possible_duplicate: Tekrar mı?
+      possible_duplicate_short: Tek?
+      review_recommended: İncele
+      review_recommended_short: İnc
+      confirm_title: "İşlenmiş işlemle birleştir (%{posted_amount})"
+      reject_title: Ayrı işlemler olarak tut
+    summary:
+      total_transactions: Toplam işlemler
+      income: Gelir
+      expenses: Giderler
+      inflow: Giriş
+      outflow: Çıkış
     header:
       edit_categories: Kategorileri düzenle
       edit_imports: İçe aktarımları düzenle
       edit_merchants: Satıcıları düzenle
       edit_tags: Etiketleri düzenle
       import: İçe aktar
-    transaction:
-      linked_with_provider: "%{provider} ile bağlantılı"
     index:
+      title: "İşlemler"
       transaction: işlem
       transactions: işlemler
+      import: İçe aktar
+      new_rule: "Yeni kural"
+      edit_rules: "Kuralları düzenle"
+      edit_categories: "Kategorileri düzenle"
+      edit_tags: "Etiketleri düzenle"
+      edit_merchants: "Satıcıları düzenle"
+      edit_imports: "İçe aktarımları düzenle"
+      new_transaction: "Yeni işlem"
+      categorize_button:
+        one: "Kategorilendir (1)"
+        other: "Kategorilendir (%{count})"
+    categorizes:
+      show:
+        exit: "Çık"
+        skip: "Atla"
+        remaining:
+          one: "1 kategorisiz işlem kaldı"
+          other: "%{count} kategorisiz işlem kaldı"
+        transaction_count:
+          one: "1 işlem"
+          other: "%{count} işlem"
+        transactions_hint: "Bir işlemi hariç tutmak için işareti kaldırın veya satırda doğrudan farklı bir kategori atayın."
+        assign_category: "Kategori ata"
+        assign_category_prompt: "→ ata"
+        filter_placeholder: "Kategorilerde ara..."
+        col_transaction: "İşlem"
+        col_date: "Tarih"
+        col_amount: "Tutar"
+        col_category: "Kategori"
+        type_income: "Gelir"
+        type_expense: "Gider"
+        create_rule_label: "Kategori Kuralı Oluştur"
+        rule_description_prefix: "Gelecekteki %{type} işlemlerin adı"
+        rule_description_suffix: "içeriyorsa bu kategori otomatik atansın."
+        no_categories: "Eşleşen kategori yok"
+        all_done: "Tüm işlemler kategorilendi"
+      create:
+        categorized:
+          one: "1 işlem kategorilendi"
+          other: "%{count} işlem kategorilendi"
+        rule_creation_failed: "İşlemler kategorilendi, ancak kural oluşturulamadı (zaten mevcut olabilir)."
+      entry_row:
+        include_checkbox: "%{name} dahil et"
+        assign_category_select: "%{name} için kategori ata"
+    list:
+      drag_drop_title: CSV içe aktarmak için bırakın
+      drag_drop_subtitle: İşlemleri doğrudan yükleyin
+      transaction: işlem
+      transactions: işlemler
+    toggle_recurring_section: Yaklaşan tekrarlayan işlemleri göster/gizle
+    search:
+      filters:
+        account: Hesap
+        date: Tarih
+        type: Tür
+        status: Durum
+        amount: Tutar
+        category: Kategori
+        tag: Etiket
+        merchant: Satıcı
+    convert_to_trade:
+      title: Menkul Kıymet İşlemine Dönüştür
+      description: Bu işlemi menkul kıymet ayrıntılarıyla bir işleme dönüştürün
+      date_label: "Tarih:"
+      account_label: "Hesap:"
+      amount_label: "Tutar:"
+      security_label: Menkul Kıymet
+      security_prompt: Bir menkul kıymet seçin...
+      security_custom: "+ Özel hisse senedi kodu girin"
+      security_not_listed_hint: Menkul kıymetinizi göremiyorsanız listenin altında "Özel hisse senedi kodu girin" seçeneğini kullanın.
+      ticker_placeholder: AAPL
+      ticker_hint: Hisse senedi/ETF kodunu girin (örn. AAPL, MSFT)
+      ticker_search_placeholder: Kod ara...
+      ticker_search_hint: Hisse senedi kodu veya şirket adıyla arayın ya da özel bir kod yazın
+      price_mismatch_title: Fiyat eşleşmeyebilir
+      price_mismatch_message: "Girdiğiniz fiyat (%{entered_price}/hisse), %{ticker}'ın güncel piyasa fiyatından (%{market_price}) önemli ölçüde farklı. Yanlış görünüyorsa yanlış menkul kıymet seçmiş olabilirsiniz — \"Özel hisse senedi kodu girin\" seçeneğiyle doğrusunu belirtin."
+      quantity_label: Miktar (Hisse)
+      quantity_placeholder: örn. 20
+      quantity_hint: İşlem yapılan hisse sayısı
+      price_label: Hisse Başına Fiyat
+      price_placeholder: örn. 52.15
+      price_hint: Hisse başına fiyat (%{currency})
+      qty_or_price_hint: En az miktar VEYA fiyat girin. Diğeri işlem tutarından (%{amount}) hesaplanır.
+      trade_type_label: İşlem Türü
+      trade_type_hint: Bir menkul kıymetin hisselerini al veya sat
+      exchange_label: Borsa (İsteğe Bağlı)
+      exchange_placeholder: XNAS
+      exchange_hint: Otomatik tespit için boş bırakın
+      cancel: İptal
+      submit: İşleme Dönüştür
+      success: İşlem başarıyla menkul kıymet işlemine dönüştürüldü
+      conversion_note: "İşlemden dönüştürüldü: %{original_name} (%{original_date})"
+      errors:
+        not_investment_account: Yalnızca yatırım hesaplarındaki işlemler menkul kıymet işlemine dönüştürülebilir
+        already_converted: Bu işlem zaten dönüştürülmüş veya hariç tutulmuş
+        enter_ticker: Lütfen bir hisse senedi kodu girin
+        security_not_found: Seçilen menkul kıymet artık mevcut değil. Lütfen başka birini seçin.
+        select_security: Lütfen bir menkul kıymet seçin veya girin
+        enter_qty_or_price: Lütfen miktar veya hisse başına fiyat girin. Diğeri işlem tutarından hesaplanır.
+        invalid_qty_or_price: Geçersiz miktar veya fiyat. Lütfen geçerli pozitif değerler girin.
+        conversion_failed: "İşlem dönüştürülemedi: %{error}"
+        unexpected_error: "Dönüştürme sırasında beklenmedik hata: %{error}"
     searches:
       filters:
+        date_filter:
+          start_date: "Başlangıç tarihi"
+          end_date: "Bitiş tarihi"
         amount_filter:
           equal_to: Eşit
           greater_than: Daha büyük
@@ -63,10 +268,15 @@ tr:
           on_or_after: "%{date} veya sonrasında"
           on_or_before: "%{date} veya öncesinde"
           transfer: Transfer
+          confirmed: Onaylandı
+          pending: Beklemede
         type_filter:
           expense: Gider
           income: Gelir
           transfer: Transfer
+        status_filter:
+          confirmed: Onaylandı
+          pending: Beklemede
       menu:
         account_filter: Hesap
         amount_filter: Tutar
@@ -76,6 +286,7 @@ tr:
         clear_filters: Filtreleri temizle
         date_filter: Tarih
         merchant_filter: Satıcı
+        status_filter: Durum
         tag_filter: Etiket
         type_filter: Tür
       search:
@@ -84,3 +295,23 @@ tr:
         less_than: daha küçük
       form:
         toggle_selection_checkboxes: Tüm onay kutularını değiştir
+        search_placeholder: "İşlemlerde ara..."
+        filter: "Filtrele"
+    attachments:
+      cannot_exceed: "İşlem başına %{count} ekten fazla olamaz"
+      uploaded_one: "Ek başarıyla yüklendi"
+      uploaded_many: "%{count} ek başarıyla yüklendi"
+      failed_upload: "Ek yüklenemedi: %{error}"
+      no_files_selected: "Yüklemek için dosya seçilmedi"
+      attachment_deleted: "Ek başarıyla silindi"
+      failed_delete: "Ek silinemedi: %{error}"
+      upload_failed: "Ek yüklenemedi. Lütfen tekrar deneyin veya destek ile iletişime geçin."
+      delete_failed: "Ek silinemedi. Lütfen tekrar deneyin veya destek ile iletişime geçin."
+      upload: "Yükle"
+      no_attachments: "Henüz ek yok"
+      select_up_to: "En fazla %{count} dosya seçin (resim veya PDF, her biri max %{size}MB) • %{used}/%{count} kullanıldı"
+      files:
+        one: "Dosya (1)"
+        other: "Dosya (%{count})"
+      browse_to_add: "Dosya eklemek için göz atın"
+      max_reached: "Maksimum dosya sınırına ulaşıldı (%{count}/%{max}). Başka dosya yüklemek için mevcut bir dosyayı silin."
