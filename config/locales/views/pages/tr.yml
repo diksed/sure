@@ -1,9 +1,44 @@
----
 tr:
   pages:
+    feedback:
+      title: Geri Bildirim
+      heading: Geri bildirim bırakın
+      description: Belirli bir geri bildiriminiz varsa bize bildirin. Video veya ekran görüntüsü bağlantıları eklemekten çekinmeyin.
+      feature_request: Özellik isteği yazın
+      bug_report: Hata bildirin
+      discuss: "%{product} hakkında diğerleriyle tartışın"
+    intro:
+      not_authorized: "Giriş yalnızca misafir kullanıcılar için kullanılabilir."
+      welcome: "Hoş geldiniz!"
+      coming_soon: Giriş deneyimi yakında geliyor
+      description: "Hedefleriniz, önemli anlarınız ve günlük ihtiyaçlarınız hakkında bilgi edinmek için daha zengin bir başlangıç deneyimi oluşturuyoruz. Şimdilik, Sure ile bir konuşma başlatmak için sohbet kenar çubuğuna gidin."
+      start_chatting: Sohbete başla
+    redis_configuration_error:
+      page_title: Redis Yapılandırması Gerekli - Sure
+      heading: Redis Yapılandırması Gerekli
+      subheading: Kendi sunucunuzda barındırdığınız Sure kurulumu için Redis'in düzgün yapılandırılması gerekiyor.
+      why_required_title: Redis neden gerekli?
+      why_required_body: Sure, hesap verilerini senkronize etme, içe aktarmaları işleme ve finansal verilerinizi güncel tutan diğer arka plan işlemleri için Sidekiq arka plan işlerini çalıştırmak üzere Redis kullanır.
+      view_setup_guide: Kurulum Kılavuzunu Görüntüle
+      setup_guide_hint: Redis'i yapılandırmak için eksiksiz Docker kurulum kılavuzumuzu izleyin
+      refresh_hint: "Redis'i yapılandırdıktan sonra devam etmek için bu sayfayı yenileyin."
+      refresh_page: Sayfayı Yenile
     changelog:
       title: Yenilikler
+    privacy:
+      title: Gizlilik Politikası
+      heading: Gizlilik Politikası
+      placeholder: Gizlilik politikası içeriği burada görüntülenecektir.
+    terms:
+      title: Hizmet Şartları
+      heading: Hizmet Şartları
+      placeholder: Hizmet şartları içeriği burada görüntülenecektir.
     dashboard:
+      welcome: "Tekrar hoş geldiniz, %{name}"
+      subtitle: "Finanslarınızda neler oluyor"
+      new: "Yeni"
+      drag_to_reorder: "Bölümü yeniden sıralamak için sürükleyin"
+      toggle_section: "Bölüm görünürlüğünü değiştir"
       net_worth_chart:
         data_not_available: Seçilen dönem için veri mevcut değil
         title: Net Değer
@@ -11,3 +46,38 @@ tr:
         new_account: Yeni hesap
         no_account_subtitle: Henüz hiç hesap eklenmediği için gösterilecek veri yok. İlk hesaplarınızı ekleyerek gösterge paneli verilerini görmeye başlayın.
         no_account_title: Henüz hesap yok
+      balance_sheet:
+        title: "Bilanço"
+        no_items: "Henüz %{name} yok"
+        add_accounts: "Tam dökümü görmek için %{name} hesaplarınızı ekleyin"
+        name: "İsim"
+        weight: "Ağırlık"
+        value: "Değer"
+      cashflow_sankey:
+        title: "Nakit Akışı"
+        no_data_title: "Bu dönem için nakit akışı verisi yok"
+        no_data_description: "Nakit akışı verilerini göstermek için işlem ekleyin veya zaman dilimini genişletin"
+        add_transaction: "İşlem ekle"
+      no_accounts:
+        title: "Henüz hesap yok"
+        description: "Net değer verilerini göstermek için hesap ekleyin"
+        add_account: "Hesap ekle"
+      outflows_donut:
+        title: "Giderler"
+        total_outflows: "Toplam Giderler"
+        categories: "Kategoriler"
+        value: "Değer"
+        weight: "Ağırlık"
+      investment_summary:
+        title: "Yatırımlar"
+        total_return: "Toplam Getiri"
+        holding: "Varlık"
+        weight: "Ağırlık"
+        value: "Değer"
+        return: "Getiri"
+        period_activity: "%{period} Aktivitesi"
+        contributions: "Katkılar"
+        withdrawals: "Para Çekimler"
+        trades: "İşlemler"
+        no_investments: "Yatırım hesabı yok"
+        add_investment: "Portföyünüzü takip etmek için bir yatırım hesabı ekleyin"
