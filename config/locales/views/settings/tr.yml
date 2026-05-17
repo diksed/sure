@@ -1,15 +1,83 @@
----
 tr:
   views:
     settings:
       payments:
         renewal: "Katkınız %{date} tarihinde devam edecek."
+        cancellation: "Katkınız %{date} tarihinde sona eriyor."
   settings:
+    llm_usages:
+      show:
+        page_title: "LLM Kullanımı ve Maliyetler"
+        subtitle: "Yapay zeka kullanımınızı ve tahmini maliyetleri takip edin"
+        start_date: "Başlangıç Tarihi"
+        end_date: "Bitiş Tarihi"
+        filter: "Filtrele"
+        total_requests: "Toplam İstek"
+        total_tokens: "Toplam Token"
+        prompt: "istem"
+        completion: "tamamlama"
+        total_cost: "Toplam Maliyet"
+        avg_cost_per_request: "Ortalama Maliyet/İstek"
+        based_on_requests: "%{total} isteğin %{with_cost} tanesinin maliyet verisi baz alındı"
+        cost_by_operation: "İşleme Göre Maliyet"
+        cost_by_model: "Modele Göre Maliyet"
+        recent_usage: "Son Kullanım"
+        col_date: "Tarih"
+        col_operation: "İşlem"
+        col_model: "Model"
+        col_tokens: "Token"
+        col_cost: "Maliyet"
+        failed: "Başarısız"
+        no_usage_data: "Seçilen dönem için kullanım verisi bulunamadı"
+        cost_estimates_title: "Maliyet Tahminleri Hakkında"
+        cost_estimates_description: "Maliyetler, 2025 itibarıyla OpenAI fiyatlandırmasına göre tahmin edilmektedir. Gerçek maliyetler farklılık gösterebilir. Fiyatlandırma 1 milyon token başına olup modele göre değişir. Özel veya kendi sunucusunda barındırılan modeller \"N/A\" gösterir ve maliyet toplamlarına dahil edilmez."
+    ai_prompts:
+      show:
+        page_title: Yapay Zeka İstemleri
+        openai_label: OpenAI
+        disable_ai: Yapay Zeka Asistanını Devre Dışı Bırak
+        prompt_instructions: İstem Talimatları
+        main_system_prompt:
+          title: Ana Sistem İstemi
+          subtitle: Yapay zeka asistanının tüm sohbet konuşmalarındaki davranışını tanımlayan temel talimatlar
+        transaction_categorizer:
+          title: İşlem Kategorilendirici
+          subtitle: Yapay zeka, tanımladığınız kategorilere göre işlemlerinizi otomatik olarak kategoriler
+        merchant_detector:
+          title: Satıcı Algılayıcı
+          subtitle: Yapay zeka, işlem verilerini satıcı bilgisiyle tanımlar ve zenginleştirir
     payments:
       show:
         page_title: Ödeme
-        subscription_subtitle: Abonelik ve ödeme bilgilerinizi güncelleyin
-        subscription_title: Aboneliği yönet
+        subscription_subtitle: Kredi kartı bilgilerinizi güncelleyin
+        subscription_title: Katkıları yönet
+        currently_on_plan: "Şu anda"
+        trialing: "%{product_name} açık demosunu kullanıyorsunuz"
+        trial_days_left:
+          one: "Veriler %{count} gün içinde silinecek"
+          other: "Veriler %{count} gün içinde silinecek"
+        not_contributing_prefix: "Şu anda"
+        not_contributing_emphasis: "katkıda bulunmuyorsunuz"
+        contributions_note: "%{product_name}'e katkılar burada görünecek."
+        manage: "Yönet"
+        choose_level: "Seviye seçin"
+        payment_via_stripe: "Stripe ile ödeme"
+    appearances:
+      show:
+        page_title: Görünüm
+        theme_title: Tema
+        theme_subtitle: Uygulama için tercih edilen temayı seçin
+        theme_dark: Koyu
+        theme_light: Açık
+        theme_system: Sistem
+        transactions_title: İşlemler
+        transactions_subtitle: İşlemlerin nasıl görüntüleneceğini özelleştirin
+        dashboard_title: Kontrol Paneli
+        dashboard_subtitle: Kontrol panelinin nasıl görüntüleneceğini özelleştirin
+        dashboard_two_column_title: İki sütunlu düzen
+        dashboard_two_column_description: Büyük ekranlarda kontrol paneli widget'larını iki sütunda gösterin. Kapalıyken widget'lar tek sütunda yığılır.
+        split_grouped_title: Bölünmüş işlemleri grupla
+        split_grouped_description: İşlem listesinde bölünmüş işlemleri üst öğeleri altında gruplandırın. Kapalıyken bölünmüş alt işlemler ayrı satırlar olarak görünür.
     preferences:
       show:
         country: Ülke
@@ -18,15 +86,36 @@ tr:
         general_subtitle: Tercihlerinizi yapılandırın
         general_title: Genel
         default_period: Varsayılan Dönem
+        default_account_order: Varsayılan Hesap Sırası
         language: Dil
         language_auto: Tarayıcı dili
         page_title: Tercihler
-        theme_dark: Koyu
-        theme_light: Açık
-        theme_subtitle: Uygulama için tercih edilen temayı seçin
-        theme_system: Sistem
-        theme_title: Tema
         timezone: Zaman dilimi
+        month_start_day: Bütçe ayı başlangıç günü
+        month_start_day_hint: Bütçe ayınızın ne zaman başlayacağını ayarlayın (örn. maaş günü)
+        month_start_day_warning: Bütçeleriniz ve MTD hesaplamalarınız her ayın 1. günü yerine bu özel başlangıç gününü kullanır.
+        currencies_title: "%{moniker} Para Birimleri"
+        currencies_subtitle: "%{moniker} için para alanlarında hangi para birimlerinin görüneceğini seçin"
+        base_currency_label: Temel para birimi
+        base_currency_badge: Temel para birimi
+        additional_currencies_label: Ek para birimleri
+        no_additional_currencies: Hiçbiri seçilmedi
+        currencies_more: "+%{count} daha"
+        manage_currencies: Para birimlerini yönet
+        manage_currencies_subtitle: Hiç kullanmadığınız para birimlerini kaldırın veya listeyi birkaçıyla sınırlayın.
+        select_all_currencies: Tümünü seç
+        select_base_only: Yalnızca temel para birimi
+        currency_search_placeholder: Para birimi ara
+        no_matching_currencies: Para birimi bulunamadı
+        selected_currencies_count:
+          one: "%{count} seçildi"
+          other: "%{count} seçildi"
+        save_currencies: Para birimlerini kaydet
+        sharing_title: "%{moniker} Paylaşımı"
+        sharing_subtitle: "%{moniker} içindeki hesapların nasıl paylaşılacağını kontrol edin"
+        sharing_default_label: Yeni hesaplar için varsayılan paylaşım
+        sharing_shared: Tüm üyelerle paylaş
+        sharing_private: Varsayılan olarak gizli tut
     profiles:
       destroy:
         cannot_remove_self: Kendinizi hesaptan çıkaramazsınız.
@@ -41,8 +130,8 @@ tr:
           body: Hesabınızı sıfırlamak istediğinizden emin misiniz? Bu işlem tüm hesaplarınızı, kategorilerinizi, satıcılarınızı, etiketlerinizi ve diğer verilerinizi silecektir. Bu işlem geri alınamaz.
           title: Hesap sıfırlansın mı?
         confirm_reset_with_sample_data:
-          body: Are you sure you want to reset your account and load sample data? This will delete your existing data and replace it with demo data so you can explore Sure safely.
-          title: Reset account and load sample data?
+          body: Hesabınızı sıfırlamak ve örnek veri yüklemek istediğinizden emin misiniz? Bu, mevcut verilerinizi silecek ve Sure'u güvenli şekilde keşfedebilmeniz için demo verileriyle değiştirecektir.
+          title: Hesabı sıfırla ve örnek veri yükle?
         confirm_remove_invitation:
           body: "%{email} için daveti kaldırmak istediğinizden emin misiniz?"
           title: "Daveti Kaldır"
@@ -54,47 +143,79 @@ tr:
         delete_account_warning: Hesabınızı silmek tüm verilerinizi kalıcı olarak kaldırır ve geri alınamaz.
         reset_account: Hesabı sıfırla
         reset_account_warning: Hesabınızı sıfırlamak tüm hesaplarınızı, kategorilerinizi, satıcılarınızı, etiketlerinizi ve diğer verilerinizi silecek, ancak kullanıcı hesabınızı koruyacaktır.
-        reset_account_with_sample_data: Reset account and load sample data
-        reset_account_with_sample_data_warning: Resetting your account will delete all your existing data and then load fresh sample data so you can explore Sure with a pre-filled environment.
+        reset_account_with_sample_data: Sıfırla ve ön yükle
+        reset_account_with_sample_data_warning: Mevcut tüm verilerinizi silin ve ardından önceden doldurulmuş bir ortamda Sure'u keşfedebilmeniz için taze örnek veriler yükleyin.
         email: E-posta
         first_name: Ad
+        group_form_input_placeholder: Grup adı girin
+        group_form_label: Grup adı
+        group_title: Grup Üyeleri
         household_form_input_placeholder: Hane adı girin
         household_form_label: Hane adı
-        household_subtitle: Aile üyelerini, partnerleri ve diğer kişileri davet edin. Davetliler hanenize giriş yapabilir ve paylaşılan hesaplarınıza erişebilir.
+        household_subtitle: Davetliler %{moniker} hesabınıza giriş yapabilir ve paylaşılan kaynaklara erişebilir.
         household_title: Hane
         invitation_link: Davet bağlantısı
         invite_member: Üye ekle
         last_name: Soyad
-        page_title: Hesap
+        page_title: Profil Bilgileri
         pending: Beklemede
         profile_subtitle: "%{product_name}'de nasıl göründüğünüzü özelleştirin"
-        profile_title: Profil
+        profile_title: Kişisel
         remove_invitation: Daveti Kaldır
         remove_member: Üyeyi Kaldır
         save: Kaydet
     securities:
       show:
-        page_title: Menkul Kıymet
+        page_title: Güvenlik
+        mfa_title: İki Faktörlü Doğrulama
+        mfa_description: Giriş yaparken kimlik doğrulama uygulamanızdan bir kod isteyerek hesabınıza ekstra bir güvenlik katmanı ekleyin
+        enable_mfa: 2FA'yı Etkinleştir
+        disable_mfa: 2FA'yı Devre Dışı Bırak
+        disable_mfa_confirm: İki faktörlü doğrulamayı devre dışı bırakmak istediğinizden emin misiniz?
+        sso_title: Bağlı Hesaplar
+        sso_subtitle: Tek oturum açma (SSO) hesap bağlantılarınızı yönetin
+        sso_disconnect: Bağlantıyı Kes
+        sso_last_used: Son kullanım
+        sso_never: Hiç
+        sso_no_email: E-posta yok
+        sso_no_identities: Bağlı SSO hesabı yok
+        sso_connect_hint: Hesap bağlamak için çıkış yapın ve bir SSO sağlayıcısıyla giriş yapın.
+        sso_confirm_title: Hesabın Bağlantısı Kesilsin mi?
+        sso_confirm_body: "%{provider} hesabınızın bağlantısını kesmek istediğinizden emin misiniz? O sağlayıcıyla tekrar giriş yaparak yeniden bağlayabilirsiniz."
+        sso_confirm_button: Bağlantıyı Kes
+        sso_warning_message: Bu tek giriş yönteminiz. Bağlantıyı kesmeden önce güvenlik ayarlarınızda bir şifre belirlemeniz önerilir, aksi takdirde hesabınıza erişimi kaybedebilirsiniz.
     settings_nav:
       accounts_label: Hesaplar
-      api_key_label: API Anahtarı
       advanced_section_title: Gelişmiş
+      ai_prompts_label: Yapay Zeka İstemleri
+      api_key_label: API Anahtarı
+      api_keys_label: API Anahtarı
       payment_label: Ödeme
       categories_label: Kategoriler
       feedback_label: Geri Bildirim
       general_section_title: Genel
       imports_label: İçe Aktarımlar
+      exports_label: Dışa Aktarımlar
+      llm_usage_label: LLM Kullanımı
       logout: Çıkış Yap
       merchants_label: Satıcılar
+      providers_label: Sağlayıcılar
+      guides_label: Rehberler
       other_section_title: Diğer
       preferences_label: Tercihler
-      profile_label: Hesap
+      profile_label: Profil Bilgileri
+      recurring_transactions_label: Tekrarlayan
       rules_label: Kurallar
       security_label: Güvenlik
       self_hosting_label: Kendi Sunucunda Barındırma
+      sso_providers_label: SSO Sağlayıcıları
+      statement_vault_label: Ekstre Kasası
       tags_label: Etiketler
       transactions_section_title: İşlemler
+      users_label: Kullanıcılar
       whats_new_label: Yenilikler
+      appearance_label: Görünüm
+      bank_sync_label: Banka senkronizasyonu
     settings_nav_link_large:
       next: Sonraki
       previous: Geri
@@ -103,3 +224,79 @@ tr:
       choose: Fotoğraf yükle
       choose_label: (isteğe bağlı)
       change: Fotoğrafı değiştir
+    providers:
+      update:
+        updated_successfully: Sağlayıcı ayarları başarıyla güncellendi
+        no_changes: Değişiklik yapılmadı
+      not_authorized: Yetkisiz erişim
+      bank_sync:
+        page_title: Banka senkronizasyonu
+        lede: İşlemlerinizin, bakiyelerinizin ve varlıklarınızın Sure'a otomatik akması için harici hesapları bağlayın.
+      status:
+        ok: Bağlandı
+        warn: İşlem gerekli
+        err: Hata
+        off: Yapılandırılmadı
+      maturity:
+        beta: Beta
+        alpha: Alfa
+      drawer_trust_statement: "Salt okunur erişim. Sure asla para transferi yapamaz ve kimlik bilgileriniz şifreli olarak saklanır."
+      setup_steps:
+        eyebrow: Kurulum
+        need_help: "Yardıma mı ihtiyacınız var?"
+      connect: Bağlan
+      groups:
+        your_connections: Bağlantılarınız
+        available: Mevcut
+        empty_available: Mevcut tüm sağlayıcılar bağlı.
+      health_strip:
+        connected: bağlı
+        needs_attention: dikkat gerekli
+        accounts_syncing: hesap senkronize ediliyor
+        last_synced: Son senkronizasyon %{time} önce
+      meta:
+        sync_error: Senkronizasyon hatası
+        no_recent_sync: Senkronizasyon gecikmiş
+        registration_needed: Kayıt gerekli
+        reconsent_required: Yeniden onay gerekli
+        reconsent_needed:
+          one: 1 gün içinde yeniden onay gerekli
+          other: "%{count} gün içinde yeniden onay gerekli"
+        last_synced: "%{time} önce senkronize edildi"
+      sync_all: Tümünü senkronize et
+      sync_all_in_progress: Tüm bağlı sağlayıcılar senkronize ediliyor…
+      sync_all_recently: Senkronizasyon zaten devam ediyor. Bir an sonra tekrar deneyin.
+      sync_provider: Şimdi senkronize et
+      sync_provider_in_progress: Senkronizasyon başlatıldı.
+      recently_synced: Yakın zamanda senkronize edildi. Bir an sonra tekrar deneyin.
+      taglines:
+        simplefin: Açık SimpleFIN protokolü aracılığıyla ABD banka hesaplarını bağlayın.
+        lunchflow: 40'tan fazla ülkeden 20.000'den fazla bankayı bağlayın (İngiltere, AB, ABD ve daha fazlası!)
+        enable_banking: PSD2 açık bankacılığı aracılığıyla Avrupa banka hesaplarını senkronize edin.
+        coinstats: Cüzdanlar ve borsalar genelinde tüm kripto portföyünüzü takip edin.
+        mercury: Mercury iş bankacılığı hesaplarınızı otomatik olarak senkronize edin.
+        brex: Salt okunur erişimle Brex nakit ve kurumsal kart işlemlerini senkronize edin.
+        coinbase: Coinbase kripto varlıklarınızı içe aktarın ve performansı takip edin.
+        binance: Salt okunur API anahtarı kullanarak Binance spot bakiyelerinizi senkronize edin.
+        kraken: Salt okunur API anahtarı kullanarak Kraken bakiyelerini ve spot işlemleri senkronize edin.
+        snaptrade: SnapTrade toplama ağı aracılığıyla aracılık hesaplarını bağlayın.
+        ibkr: Flex Query içe aktarmaları aracılığıyla Interactive Brokers yatırım hesaplarını senkronize edin.
+        indexa_capital: Indexa Capital otomatik yatırım portföyünüzü takip edin.
+        sophtron: ABD ve Kanada bankalarını ve yardımcı programları bağlayın.
+        plaid: Plaid aracılığıyla binlerce ABD finansal kuruluşunu bağlayın.
+        plaid_eu: Plaid aracılığıyla Avrupa finansal kuruluşlarını bağlayın (PSD2 / Açık Bankacılık).
+      search_filters:
+        aria_label: Sağlayıcılarda ara
+        placeholder: Sağlayıcılarda ara
+        chips:
+          all: Tümü
+          bank: Bankalar
+          crypto: Kripto
+          investment: Yatırımlar
+      empty_filter: Filtrenize uyan sağlayıcı yok.
+      clear_filter: Filtreleri temizle
+      encryption_error:
+        title: Şifreleme anahtarları eksik
+        message: "Banka senkronizasyonu için Active Record şifreleme yapılandırması gerekli. Rails kimlik bilgilerinde veya ortam değişkenlerinde primary_key, deterministic_key ve key_derivation_salt ayarlayın."
+      not_found: Sağlayıcı bulunamadı.
+      sync_provider_no_items: Senkronize edilecek bağlantı yok.
