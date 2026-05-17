@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+# Prepare database on startup (idempotent - safe to run every time)
+./bin/rails db:prepare
+
+# Forward SIGTERM/SIGINT to all child processes so both Puma and Sidekiq
+# shut down gracefully when Railway stops the container.
+trap 'kill 0' SIGTERM SIGINT EXIT
+
+bundle exec sidekiq &
+./bin/rails server -p "${PORT:-3000}" -b 0.0.0.0 &
+
+# Block until either process exits, then the trap kills both.
+wait
