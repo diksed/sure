@@ -1,5 +1,7 @@
----
 tr:
+  concerns:
+    self_hostable:
+      redis_configured: "Redis artık düzgün yapılandırıldı! Sure uygulamanızı şimdi kurabilirsiniz."
   shared:
     confirm_modal:
       accept: Onayla
@@ -13,8 +15,21 @@ tr:
       convert_tab: Döviz Kuru ile Dönüştür
       destination_amount: Hedef Tutar
       exchange_rate: Döviz Kuru
-      exchange_rate_help: Tutar girişiniz için yöntemi seçin.
+      exchange_rate_help: Tutarı nasıl gireceğinizi seçin.
     syncing_notice:
       syncing: Hesap verileri senkronize ediliyor...
+    require_admin: "Bu işlemi yalnızca yöneticiler gerçekleştirebilir"
+    custom_confirm:
+      default_title: "Emin misiniz?"
+      default_body: "Bu işlem geri alınamaz."
+      default_btn_text: "Onayla"
+    family_moniker:
+      singular: Aile
+      plural: Aileler
     trend_change:
       no_change: "değişiklik yok"
+    cancel: İptal
+    transaction_tabs:
+      expense: Gider
+      income: Gelir
+      transfer: Transfer
