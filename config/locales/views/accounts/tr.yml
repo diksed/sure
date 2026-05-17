@@ -1,61 +1,180 @@
----
 tr:
+  account:
+    entries:
+      destroy:
+        success: "Giriş başarıyla silindi."
   accounts:
+    not_authorized: "Bu hesabı yönetme izniniz yok"
     account:
+      complete_setup: Kurulumu tamamla
+      edit: Düzenle
+      link_lunchflow: Lunch Flow ile bağla
+      link_provider: Sağlayıcı ile bağla
+      unlink_provider: Sağlayıcıdan bağlantıyı kes
+      change_simplefin_account: SimpleFIN hesabını değiştir
       troubleshoot: Sorun Gider
+      enable: Hesabı etkinleştir
+      disable: Hesabı devre dışı bırak
+      set_default: Varsayılan olarak ayarla
+      remove_default: Varsayılanı kaldır
+      default_label: Varsayılan
+      delete: Hesabı sil
+      sharing: Paylaşım
     chart:
       data_not_available: Seçilen dönem için veri mevcut değil
     create:
       success: "%{type} hesabı oluşturuldu"
+    set_default:
+      depository_only: "Yalnızca nakit ve kredi kartı hesapları varsayılan olarak ayarlanabilir."
     destroy:
       success: "%{type} hesabı silinmek üzere planlandı"
+      cannot_delete_linked: "Bağlı bir hesap silinemiyor. Lütfen önce bağlantıyı kesin."
+      failed: "Kaynak silme başarısız. Daha sonra tekrar deneyin."
     empty:
       empty_message: Bir hesabı bağlantı, içe aktarma veya manuel olarak ekleyin.
       new_account: Yeni hesap
       no_accounts: Henüz hesap yok
     form:
-      balance: Güncel bakiye
+      balance: "Tarihteki bakiye:"
+      opening_balance_date_label: Açılış bakiyesi tarihi
       name_label: Hesap adı
       name_placeholder: Örnek hesap adı
+      additional_details: Ek detaylar
+      institution_name_label: Kurum adı
+      institution_name_placeholder: örn. Ziraat Bankası
+      institution_domain_label: Kurum alan adı
+      institution_domain_placeholder: örn. ziraat.com.tr
+      notes_label: Notlar
+      notes_placeholder: Hesap numaraları, IBAN, yönlendirme numaraları gibi ek bilgileri saklayın.
     index:
       accounts: Hesaplar
       manual_accounts:
         other_accounts: Diğer hesaplar
       new_account: Yeni hesap
       sync: Tümünü senkronize et
+    sync_all:
+      syncing: "Hesaplar senkronize ediliyor..."
     new:
       import_accounts: Hesapları içe aktar
+      container:
+        select: Seç
+        navigate: Gezin
+        close: Kapat
       method_selector:
         connected_entry: Hesabı bağla
         connected_entry_eu: AB hesabı bağla
         link_with_provider: "%{provider} ile bağla"
+        lunchflow_entry: Lunch Flow hesabı bağla
         manual_entry: Hesap bakiyesi gir
         title: Nasıl eklemek istersiniz?
       title: Ne eklemek istersiniz?
     show:
+      limited_fx_history_warning: "Döviz kuru geçmişi yalnızca %{date} tarihinden itibaren mevcuttur. Bu tarihten önceki işlemler yaklaşık döviz çevirimi kullanır — bu, döviz sağlayıcısının sınırlı geçmiş verileri sunmasından kaynaklanabilir."
+      tabs:
+        activity: Aktivite
+        holdings: Varlıklar
+        overview: Genel Bakış
+        statements: Ekstreler
       activity:
         amount: Tutar
         balance: Bakiye
+        confirmed: Onaylandı
         date: Tarih
         entries: girişler
         entry: giriş
+        filter: Filtrele
         new: Yeni
+        new_activity: Yeni aktivite
         new_balance: Yeni bakiye
+        new_trade: Yeni menkul kıymet işlemi
         new_transaction: Yeni işlem
+        new_transfer: Yeni transfer
         no_entries: Kayıt bulunamadı
+        pending: Beklemede
+        search:
+          placeholder: Girişleri ada göre ara
+        search_placeholder: Girişleri ada göre ara
+        status: Durum
         title: Aktivite
       chart:
         balance: Bakiye
         owed: Borç miktarı
+      header:
+        complete_setup: Kurulumu tamamla
       menu:
         confirm_accept: "%{name} hesabını sil"
         confirm_body_html: "<p>Bu hesabı silerek, değer geçmişini silmiş olacaksınız ve bu, genel hesabınızın çeşitli yönlerini etkileyecektir. Bu işlem, net değer hesaplamalarınızı ve hesap grafiklerinizi doğrudan etkileyecektir.</p><br /> <p>Silme işleminden sonra, hesabı yeni bir hesap olarak eklemeniz gerekeceğinden, hesap bilgilerini geri yüklemenin bir yolu olmayacaktır.</p>"
         confirm_title: Hesap silinsin mi?
+        delete_account: Hesabı sil
         edit: Düzenle
         import: İşlemleri içe aktar
+        import_trades: Menkul kıymet işlemlerini içe aktar
+        import_transactions: İşlemleri içe aktar
         manage: Hesapları yönet
+        sharing: Paylaşım
+        statements: Ekstreler
     update:
       success: "%{type} hesabı güncellendi"
+    sidebar:
+      missing_data: Eksik geçmiş veriler
+      missing_data_description: "%{product}, geçmiş döviz kurlarını, menkul kıymet fiyatlarını ve daha fazlasını almak için üçüncü taraf sağlayıcılar kullanır. Bu veriler, doğru geçmiş hesap bakiyelerini hesaplamak için gereklidir."
+      configure_providers: Sağlayıcılarınızı buradan yapılandırın.
+      tabs:
+        all: Tümü
+        assets: Varlıklar
+        debts: Borçlar
+      new_asset: Yeni varlık
+      new_debt: Yeni borç
+      new_account: Yeni hesap
+      new_account_group: "Yeni %{account_group}"
+    types:
+      depository: Nakit
+      investment: Yatırım
+      crypto: Kripto
+      property: Mülk
+      vehicle: Araç
+      other_asset: Diğer Varlık
+      credit_card: Kredi Kartı
+      loan: Kredi
+      other_liability: Diğer Borç
+    tax_treatments:
+      taxable: Vergiye Tabi
+      tax_deferred: Vergi Ertelenmiş
+      tax_exempt: Vergiden Muaf
+      tax_advantaged: Vergi Avantajlı
+    tax_treatment_descriptions:
+      taxable: Kazançlar gerçekleştiğinde vergilendirilir
+      tax_deferred: Katkılar indirilebilir, çekildiğinde vergilendirilir
+      tax_exempt: Katkılar vergi sonrası, kazançlar vergiden muaf
+      tax_advantaged: Koşullu özel vergi avantajları
+    subtype_regions:
+      us: Amerika Birleşik Devletleri
+      uk: Birleşik Krallık
+      ca: Kanada
+      au: Avustralya
+      eu: Avrupa
+      in: Hindistan
+      generic: Genel
+    confirm_unlink:
+      title: Hesabın sağlayıcıyla bağlantısı kesilsin mi?
+      description_html: "<strong>%{account_name}</strong> hesabının <strong>%{provider_name}</strong> ile bağlantısını kesmek üzeresiniz. Bu işlem hesabı manuel hesaba dönüştürecektir."
+      warning_title: Bu ne anlama gelir
+      warning_no_sync: Hesap artık sağlayıcınızla otomatik senkronize olmayacak
+      warning_manual_updates: İşlemleri manuel eklemeniz ve bakiyeleri güncellemeniz gerekecek
+      warning_transactions_kept: Mevcut tüm işlemler ve bakiyeler korunacak
+      warning_can_delete: Bağlantı kestikten sonra gerekirse hesabı silebilirsiniz
+      confirm_button: Onayla ve bağlantıyı kes
+    unlink:
+      success: "Hesabın bağlantısı başarıyla kesildi. Artık manuel bir hesaptır."
+      not_linked: "Hesap bir sağlayıcıya bağlı değil"
+      error: "Hesabın bağlantısı kesilemedi: %{error}"
+      generic_error: "Beklenmedik bir hata oluştu. Lütfen tekrar deneyin."
+    select_provider:
+      title: Bağlanacak sağlayıcı seçin
+      description: "%{account_name} hesabını bağlamak için hangi sağlayıcıyı kullanmak istediğinizi seçin"
+      already_linked: "Hesap zaten bir sağlayıcıya bağlı"
+      no_providers: "Şu anda yapılandırılmış sağlayıcı yok"
+
   email_confirmations:
     new:
       invalid_token: Geçersiz veya süresi dolmuş onay bağlantısı.
