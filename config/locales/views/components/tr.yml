@@ -1,0 +1,85 @@
+tr:
+  UI:
+    account:
+      activity_feed:
+        toggle_selection_checkboxes: Seçimi değiştir
+      chart:
+        no_data_available: "Veri mevcut değil"
+      activity_date:
+        balance_tooltip: "Tüm işlemler ve düzenlemelerden sonra günün sonu bakiyesi"
+        no_balance_data: "Bu tarih için bakiye verisi mevcut değil"
+  ds:
+    alert:
+      variants:
+        info: Bilgi
+        success: Başarılı
+        warning: Uyarı
+        error: Hata
+        destructive: Hata
+    dialog:
+      close: Kapat
+  provider_sync_summary:
+    title: Senkronizasyon özeti
+    last_sync: "Son senkronizasyon: %{time_ago} önce"
+    accounts:
+      title: Hesaplar
+      total: "Toplam: %{count}"
+      linked: "Bağlı: %{count}"
+      unlinked: "Bağlantısız: %{count}"
+      institutions: "Kurum: %{count}"
+    transactions:
+      title: İşlemler
+      seen: "Görülen: %{count}"
+      imported: "İçe aktarılan: %{count}"
+      updated: "Güncellenen: %{count}"
+      skipped: "Atlanan: %{count}"
+      fetching: "Aracı kurumdan alınıyor..."
+      protected:
+        one: "%{count} giriş korundu (üzerine yazılmadı)"
+        other: "%{count} giriş korundu (üzerine yazılmadı)"
+      view_protected: Korunan girişleri görüntüle
+    skip_reasons:
+      excluded: Hariç tutuldu
+      user_modified: Kullanıcı tarafından değiştirildi
+      import_locked: CSV içe aktarma
+      protected: Korunuyor
+    holdings:
+      title: Varlıklar
+      found: "Bulunan: %{count}"
+      processed: "İşlenen: %{count}"
+    trades:
+      title: Alım Satımlar
+      imported: "İçe aktarılan: %{count}"
+      skipped: "Atlanan: %{count}"
+      fetching: "Aracı kurumdan aktiviteler alınıyor..."
+    health:
+      title: Sağlık
+      view_error_details: Hata ayrıntılarını görüntüle
+      rate_limited: "%{time_ago} önce hız sınırına takıldı"
+      recently: kısa süre önce
+      errors: "Hata: %{count}"
+      pending_reconciled:
+        one: "%{count} yinelenen bekleyen işlem uzlaştırıldı"
+        other: "%{count} yinelenen bekleyen işlem uzlaştırıldı"
+      view_reconciled: Uzlaştırılan işlemleri görüntüle
+      duplicate_suggestions:
+        one: "%{count} olası yinelenen inceleme bekliyor"
+        other: "%{count} olası yinelenen inceleme bekliyor"
+      view_duplicate_suggestions: Önerilen yinelenenleri görüntüle
+      stale_pending:
+        one: "%{count} eskimiş bekleyen işlem (bütçelerden hariç tutuldu)"
+        other: "%{count} eskimiş bekleyen işlem (bütçelerden hariç tutuldu)"
+      view_stale_pending: Etkilenen hesapları görüntüle
+      stale_pending_count:
+        one: "%{count} işlem"
+        other: "%{count} işlem"
+      stale_unmatched:
+        one: "%{count} bekleyen işlem manuel inceleme gerektiriyor"
+        other: "%{count} bekleyen işlem manuel inceleme gerektiriyor"
+      view_stale_unmatched: İnceleme gerektiren işlemleri görüntüle
+      stale_unmatched_count:
+        one: "%{count} işlem"
+        other: "%{count} işlem"
+      data_warnings: "Veri uyarıları: %{count}"
+      notices: "Bildirimler: %{count}"
+      view_data_quality: Veri kalitesi ayrıntılarını görüntüle
