@@ -1,0 +1,46 @@
+tr:
+  splits:
+    new:
+      title: İşlemi Böl
+      description: Bu işlemi farklı kategoriler ve tutarlarla birden fazla girişe bölün.
+      submit: İşlemi Böl
+      cancel: İptal
+      add_row: Bölme ekle
+      remove_row: Kaldır
+      remaining: Kalan
+      amounts_must_match: Bölme tutarları orijinal işlem tutarına eşit olmalıdır.
+      name_label: İsim
+      name_placeholder: Bölme adı
+      amount_label: Tutar
+      category_label: Kategori
+      uncategorized: "(kategorisiz)"
+      original_name: "İsim:"
+      original_date: "Tarih:"
+      original_amount: "Tutar"
+      split_number: "Bölme #%{number}"
+    create:
+      success: İşlem başarıyla bölündü
+      not_splittable: Bu işlem bölünemez.
+    destroy:
+      success: İşlem bölümü başarıyla kaldırıldı
+    show:
+      title: Bölünmüş Girişler
+      description: Bu işlem aşağıdaki girişlere bölünmüştür.
+      button_title: İşlemi Böl
+      button_description: Bu işlemi farklı kategoriler ve tutarlarla birden fazla girişe bölün.
+      button: Böl
+      unsplit_title: Bölmeyi Geri Al
+      unsplit_button: Bölmeyi Geri Al
+      unsplit_confirm: Bu işlem tüm bölünmüş girişleri kaldıracak ve orijinal işlemi geri yükleyecektir.
+    edit:
+      title: Bölmeyi Düzenle
+      description: Bu işlemin bölünmüş girişlerini düzenleyin.
+      submit: Bölmeyi Güncelle
+      not_split: Bu işlem bölünmemiş.
+    update:
+      success: Bölme başarıyla güncellendi
+    child:
+      title: Bölünmüş İşlemin Parçası
+      description: Bu giriş bölünmüş bir işlemin parçasıdır.
+      edit_split: Bölmeyi Düzenle
+      unsplit: Bölmeyi Geri Al
