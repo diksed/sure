@@ -91,12 +91,12 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recent Transactions'),
+        title: const Text('Son İşlemler'),
         actions: [
           PopupMenuButton<int>(
             initialValue: _transactionLimit,
             icon: const Icon(Icons.filter_list),
-            tooltip: 'Display Limit',
+            tooltip: 'Görüntüleme Sınırı',
             onSelected: (int value) {
               setState(() {
                 _transactionLimit = value;
@@ -112,7 +112,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
                     else
                       const SizedBox(width: 20),
                     const SizedBox(width: 8),
-                    Text('Show $limit'),
+                    Text('$limit göster'),
                   ],
                 ),
               );
@@ -158,12 +158,12 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No Transactions',
+              'İşlem Yok',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              'Pull to refresh',
+              'Yenilemek için aşağı çekin',
               style: TextStyle(color: colorScheme.onSurfaceVariant),
             ),
           ],
@@ -174,7 +174,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
 
   Widget _buildTransactionItem(Transaction transaction, ColorScheme colorScheme) {
     final account = _getAccount(transaction.accountId);
-    final accountName = account?.name ?? 'Unknown Account';
+    final accountName = account?.name ?? 'Bilinmeyen Hesap';
 
     // Parse amount with proper sign handling (same logic as transactions_list_screen.dart)
     String trimmedAmount = transaction.amount.trim();

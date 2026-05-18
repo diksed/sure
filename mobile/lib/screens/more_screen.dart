@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'calendar_screen.dart';
 import 'recent_transactions_screen.dart';
 
@@ -8,6 +9,7 @@ class MoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: ListView(
@@ -15,8 +17,8 @@ class MoreScreen extends StatelessWidget {
           _buildMenuItem(
             context: context,
             icon: Icons.calendar_month,
-            title: 'Account Calendar',
-            subtitle: 'View monthly balance changes by account',
+            title: l10n.accountCalendar,
+            subtitle: l10n.viewMonthlyChanges,
             onTap: () {
               Navigator.push(
                 context,
@@ -30,8 +32,8 @@ class MoreScreen extends StatelessWidget {
           _buildMenuItem(
             context: context,
             icon: Icons.receipt_long,
-            title: 'Recent Transactions',
-            subtitle: 'View recent transactions across all accounts',
+            title: l10n.recentTransactions,
+            subtitle: l10n.viewRecentTransactions,
             onTap: () {
               Navigator.push(
                 context,

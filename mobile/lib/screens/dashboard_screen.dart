@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/account.dart';
 import '../providers/auth_provider.dart';
 import '../providers/accounts_provider.dart';
@@ -139,10 +140,10 @@ class DashboardScreenState extends State<DashboardScreen> {
     // Show syncing indicator
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
@@ -150,11 +151,11 @@ class DashboardScreenState extends State<DashboardScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
-              SizedBox(width: 12),
-              Text('Syncing data from server...'),
+              const SizedBox(width: 12),
+              Text(AppLocalizations.of(context)!.syncingData),
             ],
           ),
-          duration: Duration(seconds: 30),
+          duration: const Duration(seconds: 30),
         ),
       );
     }
@@ -175,7 +176,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   const Icon(Icons.error, color: Colors.white),
                   const SizedBox(width: 12),
-                  const Expanded(child: Text('Sync failed. Please try again.')),
+                  Expanded(child: Text(AppLocalizations.of(context)!.syncFailed)),
                 ],
               ),
               backgroundColor: Colors.red,
@@ -191,16 +192,16 @@ class DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.error, color: Colors.white),
-                SizedBox(width: 12),
-                Expanded(child: Text('Sync failed. Please try again.')),
+                const Icon(Icons.error, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(child: Text(AppLocalizations.of(context)!.syncFailed)),
               ],
             ),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -291,10 +292,10 @@ class DashboardScreenState extends State<DashboardScreen> {
     if (result == true && mounted) {
       // Show loading indicator
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
@@ -302,11 +303,11 @@ class DashboardScreenState extends State<DashboardScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
-              SizedBox(width: 12),
-              Text('Refreshing accounts...'),
+              const SizedBox(width: 12),
+              Text(AppLocalizations.of(context)!.refreshingAccounts),
             ],
           ),
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
 
@@ -320,16 +321,16 @@ class DashboardScreenState extends State<DashboardScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Accounts updated'),
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(AppLocalizations.of(context)!.accountsUpdated),
               ],
             ),
             backgroundColor: Colors.green,
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
           ),
         );
       }
@@ -353,6 +354,7 @@ class DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Column(
@@ -365,14 +367,14 @@ class DashboardScreenState extends State<DashboardScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 color: Colors.green.withValues(alpha: 0.1),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.cloud_done, color: Colors.green, size: 18),
-                    SizedBox(width: 8),
+                    const Icon(Icons.cloud_done, color: Colors.green, size: 18),
+                    const SizedBox(width: 8),
                     Text(
-                      'Synced',
-                      style: TextStyle(color: Colors.green, fontSize: 13),
+                      l10n.synced,
+                      style: const TextStyle(color: Colors.green, fontSize: 13),
                     ),
                   ],
                 ),
@@ -404,7 +406,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Failed to load accounts',
+                      l10n.failedToLoadAccounts,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
@@ -417,7 +419,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                     ElevatedButton.icon(
                       onPressed: _handleRefresh,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Try Again'),
+                      label: Text(l10n.tryAgain),
                     ),
                   ],
                 ),
@@ -440,12 +442,12 @@ class DashboardScreenState extends State<DashboardScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No accounts yet',
+                      l10n.noAccountsYet,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Add accounts in the web app to see them here.',
+                      l10n.addAccountsInWebApp,
                       style: TextStyle(color: colorScheme.onSurfaceVariant),
                       textAlign: TextAlign.center,
                     ),
@@ -453,7 +455,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                     ElevatedButton.icon(
                       onPressed: _handleRefresh,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Refresh'),
+                      label: Text(l10n.refresh),
                     ),
                   ],
                 ),
@@ -537,7 +539,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No accounts match the current filter',
+                    AppLocalizations.of(context)!.noAccountsMatchFilter,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),

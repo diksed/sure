@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/custom_proxy_header.dart';
 
@@ -72,7 +73,7 @@ class _CustomProxyHeadersEditorState extends State<CustomProxyHeadersEditor> {
         OutlinedButton.icon(
           onPressed: _addHeader,
           icon: const Icon(Icons.add),
-          label: const Text('Add header'),
+          label: Text(AppLocalizations.of(context)!.addHeader),
         ),
       ],
     );
@@ -101,7 +102,7 @@ class _HeaderRow extends StatelessWidget {
               TextFormField(
                 controller: draft.name,
                 decoration: const InputDecoration(
-                  labelText: 'Header name',
+                  labelText: AppLocalizations.of(context)!.headerName,
                   hintText: 'X-Auth-Token',
                 ),
                 validator: (value) => CustomProxyHeader.validateName(value ?? ''),
@@ -111,7 +112,7 @@ class _HeaderRow extends StatelessWidget {
               TextFormField(
                 controller: draft.value,
                 decoration: const InputDecoration(
-                  labelText: 'Header value',
+                  labelText: AppLocalizations.of(context)!.headerValue,
                 ),
                 obscureText: true,
                 validator: (value) => CustomProxyHeader.validateValue(value ?? ''),
@@ -121,7 +122,7 @@ class _HeaderRow extends StatelessWidget {
           ),
         ),
         IconButton(
-          tooltip: 'Remove header',
+          tooltip: AppLocalizations.of(context)!.removeHeader,
           icon: const Icon(Icons.delete_outline),
           onPressed: onRemove,
         ),

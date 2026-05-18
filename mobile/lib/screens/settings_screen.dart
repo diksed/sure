@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,12 +63,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       if (value) {
         final success = await BiometricService.instance.authenticate(
-          reason: 'Verify biometric to enable app lock',
+          reason: AppLocalizations.of(context)!.verifyBiometricToEnable,
         );
         if (!mounted) return;
         if (!success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Biometric authentication failed.')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.biometricAuthFailed)),
           );
           return;
         }
@@ -115,23 +116,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear Local Data'),
-        content: const Text(
-          'This will delete all locally cached transactions and accounts. '
-          'Your data on the server will not be affected. '
-          'Are you sure you want to continue?'
-        ),
+        title: Text(AppLocalizations.of(context)!.clearLocalData),
+        content: Text(AppLocalizations.of(context)!.clearLocalDataConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('Clear Data'),
+            child: Text(AppLocalizations.of(context)!.clearData),
           ),
         ],
       ),
@@ -151,10 +148,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Local data cleared successfully. Pull to refresh to sync from server.'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.localDataCleared),
               backgroundColor: Colors.green,
-              duration: Duration(seconds: 3),
+              duration: const Duration(seconds: 3),
             ),
           );
         }
@@ -165,7 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to clear local data: $e'),
+              content: Text(AppLocalizations.of(context)!.failedToClearData(e.toString())),
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 3),
             ),
@@ -180,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!launched && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Unable to open link')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.unableToOpenLink)),
       );
     }
   }
@@ -189,23 +186,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset Account'),
-        content: const Text(
-          'Resetting your account will delete all your accounts, categories, '
-          'merchants, tags, and other data, but keep your user account intact.\n\n'
-          'This action cannot be undone. Are you sure?',
-        ),
+        title: Text(AppLocalizations.of(context)!.resetAccount),
+        content: Text(AppLocalizations.of(context)!.resetAccountConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('Reset Account'),
+            child: Text(AppLocalizations.of(context)!.resetAccount),
           ),
         ],
       ),
@@ -235,8 +228,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (!context.mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account reset has been initiated. This may take a moment.'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.accountResetInitiated),
             backgroundColor: Colors.green,
           ),
         );
@@ -245,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['error'] ?? 'Failed to reset account'),
+            content: Text(result['error'] ?? AppLocalizations.of(context)!.failedToResetAccount),
             backgroundColor: Colors.red,
           ),
         );
@@ -259,23 +252,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Deleting your account will permanently remove all your data '
-          'and cannot be undone.\n\n'
-          'Are you sure you want to delete your account?',
-        ),
+        title: Text(AppLocalizations.of(context)!.deleteAccount),
+        content: Text(AppLocalizations.of(context)!.deleteAccountConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('Delete Account'),
+            child: Text(AppLocalizations.of(context)!.deleteAccount),
           ),
         ],
       ),
@@ -301,7 +290,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['error'] ?? 'Failed to delete account'),
+            content: Text(result['error'] ?? AppLocalizations.of(context)!.failedToDeleteAccount),
             backgroundColor: Colors.red,
           ),
         );
@@ -315,16 +304,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
+        title: Text(AppLocalizations.of(context)!.signOut),
+        content: Text(AppLocalizations.of(context)!.signOutConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Sign Out'),
+            child: Text(AppLocalizations.of(context)!.signOut),
           ),
         ],
       ),
@@ -348,7 +337,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Custom proxy headers'),
+          title: Text(AppLocalizations.of(context)!.customProxyHeaders),
           content: SingleChildScrollView(
             child: Form(
               key: formKey,
@@ -362,7 +351,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Headers are sent by the app with API requests. External browser SSO pages may not receive them.',
+                    AppLocalizations.of(context)!.proxyHeadersNote,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -374,14 +363,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState?.validate() != true) return;
                 Navigator.pop(context, true);
               },
-              child: const Text('Save'),
+              child: Text(AppLocalizations.of(context)!.save),
             ),
           ],
         );
@@ -396,13 +385,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (!mounted) return;
       setState(() => _customHeaders = draftHeaders);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Custom proxy headers saved')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.customProxyHeadersSaved)),
       );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to save custom proxy headers: $e'),
+          content: Text(AppLocalizations.of(context)!.failedToSaveHeaders(e.toString())),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -411,6 +400,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
     final authProvider = Provider.of<AuthProvider>(context);
 
@@ -446,7 +436,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                authProvider.user?.displayName ?? 'User',
+                                authProvider.user?.displayName ?? 'Kullanıcı',
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -472,7 +462,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // App version
           ListTile(
             leading: const Icon(Icons.info_outline),
-            title: Text('App Version: ${_appVersion ?? '…'}'),
+            title: Text(l10n.appVersionLabel(_appVersion ?? '…')),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -485,7 +475,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ListTile(
             leading: const Icon(Icons.chat_bubble_outline),
-            title: const Text('Contact us'),
+            title: Text(l10n.contactUs),
             subtitle: Text(
               'https://discord.com/invite/36ZGBsxYEK',
               style: TextStyle(
@@ -497,12 +487,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           Semantics(
-            label: 'Open debug logs',
+            label: 'Hata ayıklama günlüklerini aç',
             button: true,
             child: ListTile(
               leading: const Icon(Icons.bug_report),
-              title: const Text('Debug Logs'),
-              subtitle: const Text('View app diagnostic logs'),
+              title: Text(l10n.debugLogs),
+              subtitle: Text(l10n.viewDiagnosticLogs),
               onTap: () {
                 Navigator.push(
                   context,
@@ -515,11 +505,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
 
           // Display Settings Section
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              'Display',
-              style: TextStyle(
+              l10n.display,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,
@@ -529,8 +519,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           SwitchListTile(
             secondary: const Icon(Icons.view_list),
-            title: const Text('Group by Account Type'),
-            subtitle: const Text('Group accounts by type (Crypto, Bank, etc.)'),
+            title: Text(l10n.groupByAccountType),
+            subtitle: Text(l10n.groupByAccountTypeSubtitle),
             value: _groupByType,
             onChanged: (value) async {
               await PreferencesService.instance.setGroupByType(value);
@@ -544,23 +534,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             builder: (context, themeProvider, _) {
               return ListTile(
                 leading: const Icon(Icons.brightness_6_outlined),
-                title: const Text('Theme'),
+                title: Text(l10n.theme),
                 trailing: SegmentedButton<ThemeMode>(
                   segments: const [
                     ButtonSegment(
                       value: ThemeMode.light,
                       icon: Icon(Icons.light_mode, size: 18),
-                      tooltip: 'Light',
+                      tooltip: 'Açık',
                     ),
                     ButtonSegment(
                       value: ThemeMode.system,
                       icon: Icon(Icons.brightness_auto, size: 18),
-                      tooltip: 'System',
+                      tooltip: 'Sistem',
                     ),
                     ButtonSegment(
                       value: ThemeMode.dark,
                       icon: Icon(Icons.dark_mode, size: 18),
-                      tooltip: 'Dark',
+                      tooltip: 'Koyu',
                     ),
                   ],
                   selected: {themeProvider.themeMode},
@@ -573,11 +563,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const Divider(),
 
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              'Connection',
-              style: TextStyle(
+              l10n.connection,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,
@@ -587,11 +577,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ListTile(
             leading: const Icon(Icons.http_outlined),
-            title: const Text('Custom proxy headers'),
+            title: Text(l10n.customProxyHeaders),
             subtitle: Text(
               _customHeaders.isEmpty
-                  ? 'Optional headers for a reverse proxy or auth gateway'
-                  : '${_customHeaders.length} configured',
+                  ? l10n.customProxyHeadersSubtitle
+                  : l10n.countConfigured(_customHeaders.length),
             ),
             onTap: _showCustomHeadersDialog,
           ),
@@ -599,11 +589,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
 
           // Data Management Section
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              'Data Management',
-              style: TextStyle(
+              l10n.dataManagement,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,
@@ -614,19 +604,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Clear local data button
           ListTile(
             leading: const Icon(Icons.delete_outline),
-            title: const Text('Clear Local Data'),
-            subtitle: const Text('Remove all cached transactions and accounts'),
+            title: Text(l10n.clearLocalData),
+            subtitle: Text(l10n.removeAllCached),
             onTap: () => _handleClearLocalData(context),
           ),
 
           if (_biometricSupported) ...[
             const Divider(),
 
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text(
-                'Security',
-                style: TextStyle(
+                l10n.security,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
@@ -636,8 +626,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             SwitchListTile(
               secondary: const Icon(Icons.fingerprint),
-              title: const Text('Biometric Lock'),
-              subtitle: const Text('Require biometric authentication when resuming the app'),
+              title: Text(l10n.biometricLock),
+              subtitle: Text(l10n.biometricLockSubtitle),
               value: _biometricEnabled,
               onChanged: _isTogglingBiometric ? null : _toggleBiometric,
             ),
@@ -646,11 +636,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
 
           // Danger Zone Section
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              'Danger Zone',
-              style: TextStyle(
+              l10n.dangerZone,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.red,
@@ -660,10 +650,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ListTile(
             leading: const Icon(Icons.restart_alt, color: Colors.red),
-            title: const Text('Reset Account'),
-            subtitle: const Text(
-              'Delete all accounts, categories, merchants, and tags but keep your user account',
-            ),
+            title: Text(l10n.resetAccount),
+            subtitle: Text(l10n.resetAccountSubtitle),
             trailing: _isResettingAccount
                 ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
                 : null,
@@ -673,10 +661,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ListTile(
             leading: const Icon(Icons.delete_forever, color: Colors.red),
-            title: const Text('Delete Account'),
-            subtitle: const Text(
-              'Permanently remove all your data. This cannot be undone.',
-            ),
+            title: Text(l10n.deleteAccount),
+            subtitle: Text(l10n.deleteAccountSubtitle),
             trailing: _isDeletingAccount
                 ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
                 : null,
@@ -692,7 +678,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ElevatedButton.icon(
               onPressed: () => _handleLogout(context),
               icon: const Icon(Icons.logout),
-              label: const Text('Sign Out'),
+              label: Text(l10n.signOut),
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.error,
                 foregroundColor: colorScheme.onError,

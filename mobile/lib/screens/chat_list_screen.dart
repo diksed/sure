@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import 'chat_conversation_screen.dart';
@@ -71,21 +72,22 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
 
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Chats'),
+        title: Text(AppLocalizations.of(context)!.deleteChats),
         content: Text(
-          'Delete ${_selectedChatIds.length} chat(s)? This cannot be undone.',
+          AppLocalizations.of(context)!.confirmDeleteChats(_selectedChatIds.length),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -114,7 +116,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          success ? 'Chats deleted' : 'Failed to delete chats',
+          success ? l10n.chatsDeleted : l10n.failedToDeleteChats,
         ),
         backgroundColor: success ? Colors.green : Colors.red,
       ),
@@ -134,18 +136,18 @@ class _ChatListScreenState extends State<ChatListScreen> {
     if (mounted) _loadChats();
   }
 
-  String _formatDateTime(DateTime dateTime) {
+  String _formatDateTime(DateTime dateTime, AppLocalizations l10n) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
 
     if (difference.inMinutes < 1) {
-      return 'Just now';
+      return l10n.justNow;
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return l10n.minutesAgo(difference.inMinutes);
     } else if (difference.inDays < 1) {
-      return '${difference.inHours}h ago';
+      return l10n.hoursAgo(difference.inHours);
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return l10n.daysAgo(difference.inDays);
     } else {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
     }
@@ -157,7 +159,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chats'),
+        title: const Text('Sohbetler'),
         centerTitle: false,
         actions: [
           if (_isSelectionMode) ...[
@@ -216,7 +218,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Failed to load chats',
+                      'Sohbetler yüklenemedi',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
@@ -229,7 +231,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     ElevatedButton.icon(
                       onPressed: _handleRefresh,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Try Again'),
+                      label: const Text('Tekrar Dene'),
                     ),
                   ],
                 ),
@@ -251,12 +253,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No chats yet',
+                      'Henüz sohbet yok',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Start a new conversation with the AI assistant.',
+                      'Yapay zeka asistanıyla yeni bir sohbet başlatın.',
                       style: TextStyle(color: colorScheme.onSurfaceVariant),
                       textAlign: TextAlign.center,
                     ),
@@ -292,16 +294,16 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     return await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Delete Chat'),
-                        content: Text('Are you sure you want to delete "${chat.title}"?'),
+                        title: const Text('Sohbeti Sil'),
+                        content: Text('"${chat.title}" sohbetini silmek istediğinizden emin misiniz?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
+                            child: const Text('İptal'),
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                            child: const Text('Sil', style: TextStyle(color: Colors.red)),
                           ),
                         ],
                       ),
@@ -385,7 +387,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openNewChat,
-        tooltip: 'New Chat',
+        tooltip: 'Yeni Sohbet',
         child: const Icon(Icons.add),
       ),
     );

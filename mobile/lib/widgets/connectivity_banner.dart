@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../services/connectivity_service.dart';
 import '../providers/transactions_provider.dart';
@@ -19,7 +20,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please sign in to sync transactions'),
+          content: Text(AppLocalizations.of(context)!.pleaseSignInToSync),
           backgroundColor: Colors.orange,
         ),
       );
@@ -37,7 +38,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Transactions synced successfully'),
+          content: Text(AppLocalizations.of(context)!.transactionsSynced),
           backgroundColor: Colors.green,
         ),
       );
@@ -45,7 +46,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to sync transactions. Please try again.'),
+          content: Text(AppLocalizations.of(context)!.failedToSync),
           backgroundColor: Colors.red,
         ),
       );
@@ -70,6 +71,8 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
           return const SizedBox.shrink();
         }
 
+        final l10n = AppLocalizations.of(context)!;
+
         return Material(
           color: isOffline ? Colors.orange.shade100 : Colors.blue.shade100,
           elevation: 2,
@@ -87,8 +90,8 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
                 Expanded(
                   child: Text(
                     isOffline
-                        ? 'You are offline. Changes will sync when online.'
-                        : '$pendingCount transaction${pendingCount == 1 ? '' : 's'} pending sync',
+                        ? l10n.youAreOffline
+                        : l10n.pendingSync(pendingCount),
                     style: TextStyle(
                       color: isOffline ? Colors.orange.shade900 : Colors.blue.shade900,
                       fontSize: 14,
@@ -114,7 +117,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
                                   if (!context.mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text('Unable to authenticate. Please try again.'),
+                                      content: Text(AppLocalizations.of(context)!.unableToAuthenticate),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -145,7 +148,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
                                   valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
                                 ),
                               )
-                            : const Text('Sync Now'),
+                            : Text(l10n.syncNow),
                       );
                     },
                   ),

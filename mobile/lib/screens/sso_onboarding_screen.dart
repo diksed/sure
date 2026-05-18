@@ -71,7 +71,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                 .cancelSsoOnboarding();
           },
         ),
-        title: const Text('Link Your Account'),
+        title: const Text('Hesabınızı Bağlayın'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -90,8 +90,8 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                   const SizedBox(height: 16),
                   Text(
                     authProvider.ssoEmail != null
-                        ? 'Signed in as ${authProvider.ssoEmail}'
-                        : 'Google account verified',
+                        ? '${authProvider.ssoEmail} olarak giriş yapıldı'
+                        : 'Google hesabı doğrulandı',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: colorScheme.onSurfaceVariant,
@@ -140,7 +140,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                         children: [
                           Expanded(
                             child: _TabButton(
-                              label: 'Link Existing',
+                              label: 'Mevcut Hesabı Bağla',
                               isSelected: _showLinkForm,
                               onTap: () =>
                                   setState(() => _showLinkForm = true),
@@ -149,8 +149,8 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                           Expanded(
                             child: _TabButton(
                               label: authProvider.ssoHasPendingInvitation
-                                  ? 'Accept Invitation'
-                                  : 'Create New',
+                                  ? 'Daveti Kabul Et'
+                                  : 'Yeni Oluştur',
                               isSelected: !_showLinkForm,
                               onTap: () =>
                                   setState(() => _showLinkForm = false),
@@ -195,7 +195,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Enter your existing account credentials to link with Google Sign-In.',
+                    'Google ile Giriş\'e bağlamak için mevcut hesap bilgilerinizi girin.',
                     style: TextStyle(color: colorScheme.onSurface),
                   ),
                 ),
@@ -209,12 +209,12 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
             autocorrect: false,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-              labelText: 'Email',
+              labelText: 'E-posta',
               prefixIcon: Icon(Icons.email_outlined),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Please enter your email';
-              if (!value.contains('@')) return 'Please enter a valid email';
+              if (value == null || value.isEmpty) return 'Lütfen e-posta adresinizi girin';
+              if (!value.contains('@')) return 'Lütfen geçerli bir e-posta adresi girin';
               return null;
             },
           ),
@@ -224,7 +224,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
             obscureText: _obscurePassword,
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: 'Şifre',
               prefixIcon: const Icon(Icons.lock_outlined),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -238,7 +238,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Please enter your password';
+              if (value == null || value.isEmpty) return 'Lütfen şifrenizi girin';
               return null;
             },
             onFieldSubmitted: (_) => _handleLinkAccount(),
@@ -252,7 +252,7 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Link Account'),
+                : const Text('Hesabı Bağla'),
           ),
         ],
       ),
@@ -282,8 +282,8 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                 Expanded(
                   child: Text(
                     hasPendingInvitation
-                        ? 'You have a pending invitation. Accept it to join an existing household.'
-                        : 'Create a new account using your Google identity.',
+                        ? 'Bekleyen bir davetiniz var. Mevcut bir haneye katılmak için kabul edin.'
+                        : 'Google kimliğinizi kullanarak yeni bir hesap oluşturun.',
                     style: TextStyle(color: colorScheme.onSurface),
                   ),
                 ),
@@ -295,11 +295,11 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
             controller: _firstNameController,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-              labelText: 'First Name',
+              labelText: 'Ad',
               prefixIcon: Icon(Icons.person_outlined),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Please enter your first name';
+              if (value == null || value.isEmpty) return 'Lütfen adınızı girin';
               return null;
             },
           ),
@@ -308,11 +308,11 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
             controller: _lastNameController,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-              labelText: 'Last Name',
+              labelText: 'Soyad',
               prefixIcon: Icon(Icons.person_outlined),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Please enter your last name';
+              if (value == null || value.isEmpty) return 'Lütfen soyadınızı girin';
               return null;
             },
             onFieldSubmitted: (_) => _handleCreateAccount(),
@@ -327,8 +327,8 @@ class _SsoOnboardingScreenState extends State<SsoOnboardingScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : Text(hasPendingInvitation
-                        ? 'Accept Invitation'
-                        : 'Create Account'),
+                        ? 'Daveti Kabul Et'
+                        : 'Hesap Oluştur'),
           ),
         ],
       ),

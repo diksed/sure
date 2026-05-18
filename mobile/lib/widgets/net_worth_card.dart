@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum AccountFilter { all, assets, liabilities }
 
@@ -25,6 +26,7 @@ class NetWorthCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -47,7 +49,7 @@ class NetWorthCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Net Worth',
+                      l10n.netWorth,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -61,7 +63,7 @@ class NetWorthCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'Outdated',
+                          l10n.outdated,
                           style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                 color: colorScheme.secondary,
                                 fontWeight: FontWeight.w600,
@@ -108,7 +110,7 @@ class NetWorthCard extends StatelessWidget {
                     },
                     onLongPress: () => _showCurrencyBreakdown(
                       context,
-                      'Assets',
+                      l10n.assets,
                       assetTotalsByCurrency,
                       Colors.green,
                     ),
@@ -137,7 +139,7 @@ class NetWorthCard extends StatelessWidget {
                     },
                     onLongPress: () => _showCurrencyBreakdown(
                       context,
-                      'Liabilities',
+                      l10n.liabilities,
                       liabilityTotalsByCurrency,
                       Colors.red,
                     ),
@@ -193,7 +195,7 @@ class NetWorthCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    title == 'Assets' ? Icons.trending_up : Icons.trending_down,
+                    title == AppLocalizations.of(context)!.assets ? Icons.trending_up : Icons.trending_down,
                     color: color,
                     size: 20,
                   ),

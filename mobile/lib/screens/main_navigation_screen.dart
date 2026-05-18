@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -72,43 +73,43 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     await _handleDestinationSelected(settingsIndex, authProvider, introLayout);
   }
 
-  List<NavigationDestination> _buildDestinations(bool introLayout) {
+  List<NavigationDestination> _buildDestinations(bool introLayout, AppLocalizations l10n) {
     final destinations = <NavigationDestination>[];
 
     if (!introLayout) {
       destinations.add(
-        const NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home),
-          label: 'Home',
+        NavigationDestination(
+          icon: const Icon(Icons.home_outlined),
+          selectedIcon: const Icon(Icons.home),
+          label: l10n.home,
         ),
       );
     }
 
     if (introLayout) {
       destinations.add(
-        const NavigationDestination(
-          icon: Icon(Icons.auto_awesome_outlined),
-          selectedIcon: Icon(Icons.auto_awesome),
-          label: 'Intro',
+        NavigationDestination(
+          icon: const Icon(Icons.auto_awesome_outlined),
+          selectedIcon: const Icon(Icons.auto_awesome),
+          label: l10n.introTab,
         ),
       );
     }
 
     destinations.add(
-      const NavigationDestination(
-        icon: Icon(Icons.chat_bubble_outline),
-        selectedIcon: Icon(Icons.chat_bubble),
-        label: 'Assistant',
+      NavigationDestination(
+        icon: const Icon(Icons.chat_bubble_outline),
+        selectedIcon: const Icon(Icons.chat_bubble),
+        label: l10n.assistant,
       ),
     );
 
     if (!introLayout) {
       destinations.add(
-        const NavigationDestination(
-          icon: Icon(Icons.more_horiz),
-          selectedIcon: Icon(Icons.more_horiz),
-          label: 'More',
+        NavigationDestination(
+          icon: const Icon(Icons.more_horiz),
+          selectedIcon: const Icon(Icons.more_horiz),
+          label: l10n.moreTab,
         ),
       );
     }
@@ -162,20 +163,23 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     final shouldEnable = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Turn on AI Chat?'),
-        content: const Text('AI Chat is currently disabled in your account settings. Would you like to turn it on now?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Not now'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Turn on AI'),
-          ),
-        ],
-      ),
+      builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(l10n.turnOnAiChat),
+          content: Text(l10n.aiChatDisabledPrompt),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.notNow),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.turnOnAi),
+            ),
+          ],
+        );
+      },
     );
 
     if (shouldEnable != true) {
@@ -187,7 +191,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     if (!enabled && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authProvider.errorMessage ?? 'Unable to enable AI right now.'),
+          content: Text(authProvider.errorMessage ?? AppLocalizations.of(context)!.unableToEnableAi),
           backgroundColor: Colors.red,
         ),
       );

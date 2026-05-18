@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../models/account.dart';
@@ -219,7 +220,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        'No transactions on this day',
+                        AppLocalizations.of(context)!.noTransactionsOnDay,
                         style: TextStyle(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -238,7 +239,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text(AppLocalizations.of(context)!.close),
             ),
           ],
         );
@@ -311,11 +312,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final accountsProvider = context.watch<AccountsProvider>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account Calendar'),
+        title: Text(l10n.accountCalendar),
       ),
       body: Column(
         children: [
@@ -335,23 +337,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Account Type',
+                  l10n.accountType,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 8),
                 SegmentedButton<String>(
-                  segments: const [
+                  segments: [
                     ButtonSegment<String>(
                       value: 'asset',
-                      label: Text('Assets'),
-                      icon: Icon(Icons.account_balance_wallet),
+                      label: Text(l10n.assets),
+                      icon: const Icon(Icons.account_balance_wallet),
                     ),
                     ButtonSegment<String>(
                       value: 'liability',
-                      label: Text('Liabilities'),
-                      icon: Icon(Icons.credit_card),
+                      label: Text(l10n.liabilities),
+                      icon: const Icon(Icons.credit_card),
                     ),
                   ],
                   selected: {_accountType},
@@ -389,7 +391,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             child: DropdownButtonFormField<Account>(
               value: _selectedAccount,
               decoration: InputDecoration(
-                labelText: 'Select Account',
+                labelText: l10n.selectAccount,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -463,7 +465,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Monthly Change',
+                  l10n.monthlyChange,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
@@ -505,7 +507,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SizedBox(
               height: 40,
               child: Row(
-                children: ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day) {
+                children: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'].map((day) {
                   return Expanded(
                     child: Center(
                       child: Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/custom_proxy_header.dart';
 import '../services/api_config.dart';
 import '../services/custom_proxy_headers_service.dart';
@@ -101,21 +102,21 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
         if (mounted) {
           setState(() {
             _successMessage =
-                'Connection successful!';
+                AppLocalizations.of(context)!.connectionSuccessful;
           });
         }
       } else {
         if (mounted) {
           setState(() {
             _errorMessage =
-                'Server responded with status ${sessionsResponse.statusCode}. Please check if this is a Sure backend server.';
+                AppLocalizations.of(context)!.serverRespondedWithStatus(sessionsResponse.statusCode);
           });
         }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = 'Connection failed: ${e.toString()}';
+          _errorMessage = AppLocalizations.of(context)!.connectionFailed(e.toString());
         });
       }
     } finally {
@@ -161,7 +162,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = 'Failed to save URL: ${e.toString()}';
+          _errorMessage = AppLocalizations.of(context)!.failedToSaveUrl(e.toString());
         });
       }
     } finally {
@@ -173,9 +174,9 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     }
   }
 
-  String? _validateUrl(String? value) {
+  String? _validateUrl(String? value, AppLocalizations l10n) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a backend URL';
+      return l10n.pleaseEnterBackendUrl;
     }
 
     final trimmedValue = value.trim();
@@ -183,17 +184,17 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     // Check if it starts with http:// or https://
     if (!trimmedValue.startsWith('http://') &&
         !trimmedValue.startsWith('https://')) {
-      return 'URL must start with http:// or https://';
+      return l10n.urlMustStartWithHttp;
     }
 
     // Basic URL validation
     try {
       final uri = Uri.parse(trimmedValue);
       if (!uri.hasScheme || uri.host.isEmpty) {
-        return 'Please enter a valid URL';
+        return l10n.pleaseEnterValidUrl;
       }
     } catch (e) {
-      return 'Please enter a valid URL';
+      return l10n.pleaseEnterValidUrl;
     }
 
     return null;
@@ -201,6 +202,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -221,7 +223,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Configuration',
+                  l10n.configuration,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: colorScheme.primary,
@@ -230,7 +232,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Update your Sure server URL',
+                  l10n.updateSureServerUrl,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -253,7 +255,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                           Icon(Icons.info_outline, color: colorScheme.primary),
                           const SizedBox(width: 12),
                           Text(
-                            'Example URLs',
+                            l10n.exampleUrls,
                             style: TextStyle(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.bold,
@@ -352,12 +354,12 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                   keyboardType: TextInputType.url,
                   autocorrect: false,
                   textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                    labelText: 'Sure server URL',
-                    prefixIcon: Icon(Icons.cloud_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.sureServerUrlLabel,
+                    prefixIcon: const Icon(Icons.cloud_outlined),
                     hintText: 'https://app.sure.am',
                   ),
-                  validator: _validateUrl,
+                  validator: (value) => _validateUrl(value, l10n),
                   onFieldSubmitted: (_) => _saveAndContinue(),
                 ),
                 const SizedBox(height: 24),
@@ -367,8 +369,8 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                   title: const Text('Custom proxy headers'),
                   subtitle: Text(
                     _customHeaders.isEmpty
-                        ? 'Optional headers for a reverse proxy or auth gateway'
-                        : '${_customHeaders.length} configured',
+                        ? l10n.customProxyHeadersSubtitle
+                        : l10n.countConfigured(_customHeaders.length),
                   ),
                   children: [
                     const SizedBox(height: 8),
@@ -388,7 +390,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                       ),
                     const SizedBox(height: 8),
                     Text(
-                      'Headers are sent by the app with API requests. External browser SSO pages may not receive them.',
+                      l10n.proxyHeadersNote,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -407,7 +409,7 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.cable),
-                  label: Text(_isTesting ? 'Testing...' : 'Test Connection'),
+                  label: Text(_isTesting ? l10n.testing : l10n.testConnection),
                 ),
 
                 const SizedBox(height: 12),
@@ -421,14 +423,14 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Continue'),
+                      : Text(l10n.continueButton),
                 ),
 
                 const SizedBox(height: 24),
 
                 // Info text
                 Text(
-                  'You can change this later in the settings.',
+                  l10n.changeInSettings,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),

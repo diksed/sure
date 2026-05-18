@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/account.dart';
 
 class AccountCard extends StatelessWidget {
@@ -153,7 +154,7 @@ class AccountCard extends StatelessWidget {
               Icon(Icons.receipt_long, color: Colors.white, size: 28),
               SizedBox(height: 4),
               Text(
-                'Transactions',
+                AppLocalizations.of(context)!.transactionsLabel,
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
             ],

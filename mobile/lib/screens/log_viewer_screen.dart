@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../services/log_service.dart';
 
@@ -74,9 +75,10 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Debug Logs'),
+        title: Text(l10n.debugLogs),
         actions: [
           PopupMenuButton<String>(
             initialValue: _selectedLevel,
@@ -86,11 +88,11 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
               });
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'ALL', child: Text('All Levels')),
-              const PopupMenuItem(value: 'ERROR', child: Text('Errors Only')),
-              const PopupMenuItem(value: 'WARNING', child: Text('Warnings Only')),
-              const PopupMenuItem(value: 'INFO', child: Text('Info Only')),
-              const PopupMenuItem(value: 'DEBUG', child: Text('Debug Only')),
+              PopupMenuItem(value: 'ALL', child: Text(l10n.allLevels)),
+              PopupMenuItem(value: 'ERROR', child: Text(l10n.errorsOnly)),
+              PopupMenuItem(value: 'WARNING', child: Text(l10n.warningsOnly)),
+              PopupMenuItem(value: 'INFO', child: Text(l10n.infoOnly)),
+              PopupMenuItem(value: 'DEBUG', child: Text(l10n.debugOnly)),
             ],
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,7 +112,7 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
                 _autoScroll = !_autoScroll;
               });
             },
-            tooltip: _autoScroll ? 'Disable Auto-scroll' : 'Enable Auto-scroll',
+            tooltip: _autoScroll ? l10n.disableAutoScroll : l10n.enableAutoScroll,
           ),
           IconButton(
             icon: const Icon(Icons.copy),
@@ -118,40 +120,43 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
               final logs = LogService.instance.exportLogs();
               Clipboard.setData(ClipboardData(text: logs));
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Logs copied to clipboard'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text(l10n.logsCopied),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
-            tooltip: 'Copy Logs',
+            tooltip: l10n.copyLogs,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Clear Logs'),
-                  content: const Text('Are you sure you want to clear all logs?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        LogService.instance.clear();
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(foregroundColor: Colors.red),
-                      child: const Text('Clear'),
-                    ),
-                  ],
-                ),
+                builder: (context) {
+                  final dialogL10n = AppLocalizations.of(context)!;
+                  return AlertDialog(
+                    title: Text(dialogL10n.clearLogs),
+                    content: Text(dialogL10n.confirmClearLogs),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(dialogL10n.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          LogService.instance.clear();
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(foregroundColor: Colors.red),
+                        child: Text(dialogL10n.clearButton),
+                      ),
+                    ],
+                  );
+                },
               );
             },
-            tooltip: 'Clear Logs',
+            tooltip: l10n.clearLogs,
           ),
         ],
       ),
@@ -164,15 +169,15 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
 
           if (logs.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.text_snippet_outlined, size: 64, color: Colors.grey),
-                  SizedBox(height: 16),
+                  const Icon(Icons.text_snippet_outlined, size: 64, color: Colors.grey),
+                  const SizedBox(height: 16),
                   Text(
-                    'No logs yet',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    l10n.noLogs,
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
