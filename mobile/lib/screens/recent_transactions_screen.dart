@@ -176,15 +176,21 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
     final account = _getAccount(transaction.accountId);
     final accountName = account?.name ?? 'Bilinmeyen Hesap';
 
-    // Parse amount with proper sign handling (same logic as transactions_list_screen.dart)
+    // Parse amount with proper sign handling
     String trimmedAmount = transaction.amount.trim();
-    trimmedAmount = trimmedAmount.replaceAll('\u2212', '-'); // Normalize minus sign
+    trimmedAmount = trimmedAmount.replaceAll('−', '-'); // Normalize minus sign
 
     // Detect if the amount has a negative sign
     bool hasNegativeSign = trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
-    // Remove all non-numeric characters except decimal point and minus sign
-    String numericString = trimmedAmount.replaceAll(RegExp(r'[^\d.\-]'), '');
+    // Handle Turkish number format (comma = decimal, dot = thousands separator)
+    String cleanAmount = trimmedAmount.replaceAll(RegExp(r'[^\d.,\-]'), '');
+    String numericString;
+    if (cleanAmount.contains(',')) {
+      numericString = cleanAmount.replaceAll('.', '').replaceAll(',', '.');
+    } else {
+      numericString = cleanAmount;
+    }
 
     // Parse the numeric value
     double amount = double.tryParse(numericString.replaceAll('-', '')) ?? 0.0;
@@ -285,7 +291,6 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
   }
 
   String _formatAmount(double amount) {
-    // Support up to 8 decimal places, but omit unnecessary trailing zeros
     final formatter = NumberFormat('#,##0.########');
     return formatter.format(amount);
   }

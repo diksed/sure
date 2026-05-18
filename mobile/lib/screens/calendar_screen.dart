@@ -123,15 +123,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
         // Parse amount with proper sign handling
         String trimmedAmount = transaction.amount.trim();
         trimmedAmount =
-            trimmedAmount.replaceAll('\u2212', '-'); // Normalize minus sign
+            trimmedAmount.replaceAll('−', '-'); // Normalize minus sign
 
         // Detect if the amount has a negative sign
         bool hasNegativeSign =
             trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
-        // Remove all non-numeric characters except decimal point and minus sign
-        String numericString =
-            trimmedAmount.replaceAll(RegExp(r'[^\d.\-]'), '');
+        // Handle Turkish number format (comma = decimal, dot = thousands separator)
+        String cleanAmount = trimmedAmount.replaceAll(RegExp(r'[^\d.,\-]'), '');
+        String numericString;
+        if (cleanAmount.contains(',')) {
+          numericString = cleanAmount.replaceAll('.', '').replaceAll(',', '.');
+        } else {
+          numericString = cleanAmount;
+        }
 
         // Parse the numeric value
         double amount =
@@ -265,7 +270,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _buildTransactionTile(Transaction transaction) {
     // Parse amount to determine if positive or negative
     String trimmedAmount = transaction.amount.trim();
-    trimmedAmount = trimmedAmount.replaceAll('\u2212', '-');
+    trimmedAmount = trimmedAmount.replaceAll('−', '-');
     bool isNegative =
         trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
@@ -659,7 +664,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   String _formatAmount(double amount) {
-    // Support up to 8 decimal places, but omit unnecessary trailing zeros
     final formatter = NumberFormat('#,##0.########');
     final sign = amount >= 0 ? '+' : '';
     return '$sign${formatter.format(amount)}';
@@ -667,7 +671,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   String _formatCurrency(double amount) {
     final currencySymbol = _selectedAccount?.currency ?? '';
-    // Support up to 8 decimal places for monthly total
     final formatter = NumberFormat('#,##0.########');
     final sign = amount >= 0 ? '+' : '';
     return '$sign$currencySymbol${formatter.format(amount.abs())}';

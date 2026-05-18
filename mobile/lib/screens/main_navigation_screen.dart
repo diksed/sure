@@ -8,6 +8,7 @@ import 'chat_list_screen.dart';
 import 'dashboard_screen.dart';
 import 'intro_screen.dart';
 import 'more_screen.dart';
+import 'recent_transactions_screen.dart';
 import 'settings_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -26,16 +27,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     if (!introLayout) {
       screens.add(DashboardScreen(key: _dashboardKey));
-    }
-
-    if (introLayout) {
-      screens.add(IntroScreen(onStartChat: onStartChat));
-    }
-
-    screens.add(const ChatListScreen());
-
-    if (!introLayout) {
+      screens.add(const RecentTransactionsScreen());
       screens.add(const MoreScreen());
+    } else {
+      screens.add(IntroScreen(onStartChat: onStartChat));
+      screens.add(const ChatListScreen());
     }
 
     screens.add(const SettingsScreen());
@@ -48,12 +44,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     AuthProvider authProvider,
     bool introLayout,
   ) async {
-    const chatIndex = 1;
-
-    if (index == chatIndex && !authProvider.aiEnabled) {
-      final enabled = await _showEnableAiPrompt();
-      if (!enabled) {
-        return;
+    if (introLayout) {
+      const chatIndex = 1;
+      if (index == chatIndex && !authProvider.aiEnabled) {
+        final enabled = await _showEnableAiPrompt();
+        if (!enabled) {
+          return;
+        }
       }
     }
 
@@ -86,9 +83,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           label: l10n.home,
         ),
       );
-    }
-
-    if (introLayout) {
+      destinations.add(
+        NavigationDestination(
+          icon: const Icon(Icons.receipt_long_outlined),
+          selectedIcon: const Icon(Icons.receipt_long),
+          label: l10n.recentTransactions,
+        ),
+      );
+      destinations.add(
+        NavigationDestination(
+          icon: const Icon(Icons.more_horiz),
+          selectedIcon: const Icon(Icons.more_horiz),
+          label: l10n.moreTab,
+        ),
+      );
+    } else {
       destinations.add(
         NavigationDestination(
           icon: const Icon(Icons.auto_awesome_outlined),
@@ -96,22 +105,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           label: l10n.introTab,
         ),
       );
-    }
-
-    destinations.add(
-      NavigationDestination(
-        icon: const Icon(Icons.chat_bubble_outline),
-        selectedIcon: const Icon(Icons.chat_bubble),
-        label: l10n.assistant,
-      ),
-    );
-
-    if (!introLayout) {
       destinations.add(
         NavigationDestination(
-          icon: const Icon(Icons.more_horiz),
-          selectedIcon: const Icon(Icons.more_horiz),
-          label: l10n.moreTab,
+          icon: const Icon(Icons.chat_bubble_outline),
+          selectedIcon: const Icon(Icons.chat_bubble),
+          label: l10n.assistant,
         ),
       );
     }
