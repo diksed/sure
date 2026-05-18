@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/account.dart';
 
 class AccountCard extends StatelessWidget {
@@ -41,7 +41,7 @@ class AccountCard extends StatelessWidget {
 
   Color _getAccountColor(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     if (account.isAsset) {
       return Colors.green;
     } else if (account.isLiability) {
@@ -88,8 +88,8 @@ class AccountCard extends StatelessWidget {
                     Text(
                       account.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                            fontWeight: FontWeight.w600,
+                          ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -97,8 +97,8 @@ class AccountCard extends StatelessWidget {
                     Text(
                       account.displayAccountType,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                     ),
                   ],
                 ),
@@ -111,16 +111,16 @@ class AccountCard extends StatelessWidget {
                   Text(
                     account.balance,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: account.isLiability ? Colors.red : null,
-                    ),
+                          fontWeight: FontWeight.bold,
+                          color: account.isLiability ? Colors.red : null,
+                        ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     account.currency,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ],
               ),
@@ -148,14 +148,14 @@ class AccountCard extends StatelessWidget {
             color: Colors.blue,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.receipt_long, color: Colors.white, size: 28),
-              SizedBox(height: 4),
+              const Icon(Icons.receipt_long, color: Colors.white, size: 28),
+              const SizedBox(height: 4),
               Text(
                 AppLocalizations.of(context)!.transactionsLabel,
-                style: TextStyle(color: Colors.white, fontSize: 12),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
             ],
           ),

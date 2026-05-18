@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import 'chat_conversation_screen.dart';
@@ -78,7 +78,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.deleteChats),
         content: Text(
-          AppLocalizations.of(context)!.confirmDeleteChats(_selectedChatIds.length),
+          AppLocalizations.of(context)!
+              .confirmDeleteChats(_selectedChatIds.length),
         ),
         actions: [
           TextButton(
@@ -87,7 +88,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red)),
+            child: Text(AppLocalizations.of(context)!.deleteButton,
+                style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -165,7 +167,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
           if (_isSelectionMode) ...[
             IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: _selectedChatIds.isNotEmpty ? _deleteSelectedChats : null,
+              onPressed:
+                  _selectedChatIds.isNotEmpty ? _deleteSelectedChats : null,
             ),
             IconButton(
               icon: const Icon(Icons.select_all),
@@ -295,7 +298,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Sohbeti Sil'),
-                        content: Text('"${chat.title}" sohbetini silmek istediğinizden emin misiniz?'),
+                        content: Text(
+                            '"${chat.title}" sohbetini silmek istediğinizden emin misiniz?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
@@ -303,15 +307,18 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Sil', style: TextStyle(color: Colors.red)),
+                            child: const Text('Sil',
+                                style: TextStyle(color: Colors.red)),
                           ),
                         ],
                       ),
                     );
                   },
                   onDismissed: (direction) async {
-                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                    final accessToken = await authProvider.getValidAccessToken();
+                    final authProvider =
+                        Provider.of<AuthProvider>(context, listen: false);
+                    final accessToken =
+                        await authProvider.getValidAccessToken();
                     if (accessToken != null) {
                       await chatProvider.deleteChat(
                         accessToken: accessToken,
@@ -338,11 +345,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: chat.lastMessageAt != null
-                        ? Text(_formatDateTime(chat.lastMessageAt!))
+                        ? Text(_formatDateTime(
+                            chat.lastMessageAt!, AppLocalizations.of(context)!))
                         : null,
                     trailing: chat.messageCount != null && !_isSelectionMode
                         ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: colorScheme.secondaryContainer,
                               borderRadius: BorderRadius.circular(12),
@@ -365,7 +374,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChatConversationScreen(chatId: chat.id),
+                          builder: (context) =>
+                              ChatConversationScreen(chatId: chat.id),
                         ),
                       );
                       _loadChats();

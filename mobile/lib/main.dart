@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import 'providers/auth_provider.dart';
 import 'providers/accounts_provider.dart';
 import 'providers/categories_provider.dart';
@@ -18,7 +19,6 @@ import 'services/connectivity_service.dart';
 import 'services/log_service.dart';
 import 'services/preferences_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,101 +71,101 @@ class SureApp extends StatelessWidget {
         ),
       ],
       child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) => MaterialApp(
-        title: 'Sure Finances',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Geist',
-          fontFamilyFallback: const [
-            'Inter',
-            'Arial',
-            'sans-serif',
-          ],
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF6366F1),
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            elevation: 0,
-          ),
-          cardTheme: CardThemeData(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            filled: true,
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-        ),
-        darkTheme: ThemeData(
-          fontFamily: 'Geist',
-          fontFamilyFallback: const [
-            'Inter',
-            'Arial',
-            'sans-serif',
-          ],
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF6366F1),
-            brightness: Brightness.dark,
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            elevation: 0,
-          ),
-          cardTheme: CardThemeData(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            filled: true,
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-        ),
-        themeMode: themeProvider.themeMode,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('tr'),
-          Locale('en'),
-        ],
-        routes: {
-          '/config': (context) => const BackendConfigScreen(),
-          '/login': (context) => const LoginScreen(),
-          '/home': (context) => const MainNavigationScreen(),
-        },
-        home: const AppWrapper(),
-      )),
+          builder: (context, themeProvider, _) => MaterialApp(
+                title: 'Sure Finances',
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  fontFamily: 'Geist',
+                  fontFamilyFallback: const [
+                    'Inter',
+                    'Arial',
+                    'sans-serif',
+                  ],
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color(0xFF6366F1),
+                    brightness: Brightness.light,
+                  ),
+                  useMaterial3: true,
+                  appBarTheme: const AppBarTheme(
+                    centerTitle: true,
+                    elevation: 0,
+                  ),
+                  cardTheme: CardThemeData(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  inputDecorationTheme: InputDecorationTheme(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    filled: true,
+                  ),
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                darkTheme: ThemeData(
+                  fontFamily: 'Geist',
+                  fontFamilyFallback: const [
+                    'Inter',
+                    'Arial',
+                    'sans-serif',
+                  ],
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color(0xFF6366F1),
+                    brightness: Brightness.dark,
+                  ),
+                  useMaterial3: true,
+                  appBarTheme: const AppBarTheme(
+                    centerTitle: true,
+                    elevation: 0,
+                  ),
+                  cardTheme: CardThemeData(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  inputDecorationTheme: InputDecorationTheme(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    filled: true,
+                  ),
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                themeMode: themeProvider.themeMode,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('tr'),
+                  Locale('en'),
+                ],
+                routes: {
+                  '/config': (context) => const BackendConfigScreen(),
+                  '/login': (context) => const LoginScreen(),
+                  '/home': (context) => const MainNavigationScreen(),
+                },
+                home: const AppWrapper(),
+              )),
     );
   }
 }
@@ -234,14 +234,16 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
     _appLinks.getInitialLink().then((uri) {
       if (uri != null) _handleDeepLink(uri);
     }).catchError((e, stackTrace) {
-      LogService.instance.error('DeepLinks', 'Initial link error: $e\n$stackTrace');
+      LogService.instance
+          .error('DeepLinks', 'Initial link error: $e\n$stackTrace');
     });
 
     // Listen for deep links while app is running
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) => _handleDeepLink(uri),
       onError: (e, stackTrace) {
-        LogService.instance.error('DeepLinks', 'Link stream error: $e\n$stackTrace');
+        LogService.instance
+            .error('DeepLinks', 'Link stream error: $e\n$stackTrace');
       },
     );
   }

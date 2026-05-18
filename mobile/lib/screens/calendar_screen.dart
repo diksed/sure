@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/account.dart';
 import '../models/transaction.dart';
 import '../providers/accounts_provider.dart';
@@ -51,7 +51,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       // Select first account of the selected type
       final filteredAccounts = _getFilteredAccounts(accountsProvider.accounts);
       setState(() {
-        _selectedAccount = filteredAccounts.isNotEmpty ? filteredAccounts.first : null;
+        _selectedAccount =
+            filteredAccounts.isNotEmpty ? filteredAccounts.first : null;
       });
       if (_selectedAccount != null) {
         await _loadTransactionsForAccount();
@@ -87,17 +88,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
       );
 
       final transactions = transactionsProvider.transactions;
-      _log.info('CalendarScreen', 'Loaded ${transactions.length} transactions for account ${_selectedAccount!.name}');
+      _log.info('CalendarScreen',
+          'Loaded ${transactions.length} transactions for account ${_selectedAccount!.name}');
 
       if (transactions.isNotEmpty) {
-        _log.debug('CalendarScreen', 'Sample transaction - name: ${transactions.first.name}, amount: ${transactions.first.amount}, nature: ${transactions.first.nature}');
+        _log.debug('CalendarScreen',
+            'Sample transaction - name: ${transactions.first.name}, amount: ${transactions.first.amount}, nature: ${transactions.first.nature}');
       }
 
       // Store transactions for date filtering
       _transactions = List.from(transactions);
 
       _calculateDailyChanges(transactions);
-      _log.info('CalendarScreen', 'Calculated ${_dailyChanges.length} days with changes');
+      _log.info('CalendarScreen',
+          'Calculated ${_dailyChanges.length} days with changes');
     }
 
     setState(() {
@@ -108,7 +112,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void _calculateDailyChanges(List<Transaction> transactions) {
     final changes = <String, double>{};
 
-    _log.debug('CalendarScreen', 'Starting to calculate daily changes for ${transactions.length} transactions');
+    _log.debug('CalendarScreen',
+        'Starting to calculate daily changes for ${transactions.length} transactions');
 
     for (var transaction in transactions) {
       try {
@@ -117,16 +122,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
         // Parse amount with proper sign handling
         String trimmedAmount = transaction.amount.trim();
-        trimmedAmount = trimmedAmount.replaceAll('\u2212', '-'); // Normalize minus sign
+        trimmedAmount =
+            trimmedAmount.replaceAll('\u2212', '-'); // Normalize minus sign
 
         // Detect if the amount has a negative sign
-        bool hasNegativeSign = trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
+        bool hasNegativeSign =
+            trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
         // Remove all non-numeric characters except decimal point and minus sign
-        String numericString = trimmedAmount.replaceAll(RegExp(r'[^\d.\-]'), '');
+        String numericString =
+            trimmedAmount.replaceAll(RegExp(r'[^\d.\-]'), '');
 
         // Parse the numeric value
-        double amount = double.tryParse(numericString.replaceAll('-', '')) ?? 0.0;
+        double amount =
+            double.tryParse(numericString.replaceAll('-', '')) ?? 0.0;
 
         // Apply the sign from the string
         if (hasNegativeSign) {
@@ -135,20 +144,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
         // For asset accounts, flip the sign to match accounting conventions
         // For liability accounts, also flip the sign
-        if (_selectedAccount?.isAsset == true || _selectedAccount?.isLiability == true) {
+        if (_selectedAccount?.isAsset == true ||
+            _selectedAccount?.isLiability == true) {
           amount = -amount;
         }
 
-        _log.debug('CalendarScreen', 'Processing transaction ${transaction.name} - date: $dateKey, raw amount: ${transaction.amount}, parsed: $amount, isAsset: ${_selectedAccount?.isAsset}, isLiability: ${_selectedAccount?.isLiability}');
+        _log.debug('CalendarScreen',
+            'Processing transaction ${transaction.name} - date: $dateKey, raw amount: ${transaction.amount}, parsed: $amount, isAsset: ${_selectedAccount?.isAsset}, isLiability: ${_selectedAccount?.isLiability}');
 
         changes[dateKey] = (changes[dateKey] ?? 0.0) + amount;
-        _log.debug('CalendarScreen', 'Date $dateKey now has total: ${changes[dateKey]}');
+        _log.debug('CalendarScreen',
+            'Date $dateKey now has total: ${changes[dateKey]}');
       } catch (e) {
-        _log.error('CalendarScreen', 'Failed to parse transaction date: ${transaction.date}, error: $e');
+        _log.error('CalendarScreen',
+            'Failed to parse transaction date: ${transaction.date}, error: $e');
       }
     }
 
-    _log.info('CalendarScreen', 'Final changes map has ${changes.length} entries');
+    _log.info(
+        'CalendarScreen', 'Final changes map has ${changes.length} entries');
     changes.forEach((date, amount) {
       _log.debug('CalendarScreen', '$date -> $amount');
     });
@@ -192,7 +206,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return _transactions.where((transaction) {
       try {
         final transactionDate = DateTime.parse(transaction.date);
-        final transactionDateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
+        final transactionDateKey =
+            DateFormat('yyyy-MM-dd').format(transactionDate);
         return transactionDateKey == dateKey;
       } catch (e) {
         return false;
@@ -251,10 +266,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     // Parse amount to determine if positive or negative
     String trimmedAmount = transaction.amount.trim();
     trimmedAmount = trimmedAmount.replaceAll('\u2212', '-');
-    bool isNegative = trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
+    bool isNegative =
+        trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
     // For asset accounts, flip the sign interpretation
-    if (_selectedAccount?.isAsset == true || _selectedAccount?.isLiability == true) {
+    if (_selectedAccount?.isAsset == true ||
+        _selectedAccount?.isLiability == true) {
       isNegative = !isNegative;
     }
 
@@ -339,8 +356,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(
                   l10n.accountType,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 SegmentedButton<String>(
@@ -361,11 +378,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     setState(() {
                       _accountType = newSelection.first;
                       // Switch to first account of new type
-                      final filteredAccounts = _getFilteredAccounts(accountsProvider.accounts);
-                      _selectedAccount = filteredAccounts.isNotEmpty ? filteredAccounts.first : null;
+                      final filteredAccounts =
+                          _getFilteredAccounts(accountsProvider.accounts);
+                      _selectedAccount = filteredAccounts.isNotEmpty
+                          ? filteredAccounts.first
+                          : null;
                       _dailyChanges = {};
                       _transactions = [];
-                      _selectedDate = null; // Clear selection when changing account type
+                      _selectedDate =
+                          null; // Clear selection when changing account type
                     });
                     if (_selectedAccount != null) {
                       _loadTransactionsForAccount();
@@ -400,7 +421,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   vertical: 12,
                 ),
               ),
-              items: _getFilteredAccounts(accountsProvider.accounts).map((account) {
+              items: _getFilteredAccounts(accountsProvider.accounts)
+                  .map((account) {
                 return DropdownMenuItem(
                   value: account,
                   child: Text('${account.name} (${account.currency})'),
@@ -471,11 +493,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(
                   _formatCurrency(_getTotalForMonth()),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: _getTotalForMonth() >= 0
-                        ? Colors.green
-                        : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: _getTotalForMonth() >= 0
+                            ? Colors.green
+                            : Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -493,8 +515,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildCalendar(ColorScheme colorScheme) {
-    final firstDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month, 1);
-    final lastDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
+    final firstDayOfMonth =
+        DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final lastDayOfMonth =
+        DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
     final daysInMonth = lastDayOfMonth.day;
     final startWeekday = firstDayOfMonth.weekday % 7; // 0 = Sunday
 
@@ -524,18 +548,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
 
             // Calendar grid
-            ...List.generate((daysInMonth + startWeekday + 6) ~/ 7, (weekIndex) {
+            ...List.generate((daysInMonth + startWeekday + 6) ~/ 7,
+                (weekIndex) {
               return SizedBox(
                 height: 70,
                 child: Row(
                   children: List.generate(7, (dayIndex) {
-                    final dayNumber = weekIndex * 7 + dayIndex - startWeekday + 1;
+                    final dayNumber =
+                        weekIndex * 7 + dayIndex - startWeekday + 1;
 
                     if (dayNumber < 1 || dayNumber > daysInMonth) {
                       return const Expanded(child: SizedBox.shrink());
                     }
 
-                    final date = DateTime(_currentMonth.year, _currentMonth.month, dayNumber);
+                    final date = DateTime(
+                        _currentMonth.year, _currentMonth.month, dayNumber);
                     final dateKey = DateFormat('yyyy-MM-dd').format(date);
                     final change = _dailyChanges[dateKey] ?? 0.0;
                     final hasChange = _dailyChanges.containsKey(dateKey);
@@ -559,7 +586,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDayCell(DateTime date, int day, double change, bool hasChange, ColorScheme colorScheme) {
+  Widget _buildDayCell(DateTime date, int day, double change, bool hasChange,
+      ColorScheme colorScheme) {
     Color? backgroundColor;
     Color? textColor;
 
@@ -587,7 +615,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           color: backgroundColor ?? colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected ? Theme.of(context).primaryColor : colorScheme.outlineVariant,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : colorScheme.outlineVariant,
             width: isSelected ? 3 : 1,
           ),
         ),

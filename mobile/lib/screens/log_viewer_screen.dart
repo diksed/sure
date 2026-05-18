@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../services/log_service.dart';
 
 class LogViewerScreen extends StatefulWidget {
@@ -112,7 +112,8 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
                 _autoScroll = !_autoScroll;
               });
             },
-            tooltip: _autoScroll ? l10n.disableAutoScroll : l10n.enableAutoScroll,
+            tooltip:
+                _autoScroll ? l10n.disableAutoScroll : l10n.enableAutoScroll,
           ),
           IconButton(
             icon: const Icon(Icons.copy),
@@ -148,7 +149,8 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
                           LogService.instance.clear();
                           Navigator.pop(context);
                         },
-                        style: TextButton.styleFrom(foregroundColor: Colors.red),
+                        style:
+                            TextButton.styleFrom(foregroundColor: Colors.red),
                         child: Text(dialogL10n.clearButton),
                       ),
                     ],
@@ -164,16 +166,20 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
         builder: (context, logService, child) {
           final logs = _selectedLevel == 'ALL'
               ? logService.logs
-              : logService.logs.where((log) => log.level == _selectedLevel).toList();
+              : logService.logs
+                  .where((log) => log.level == _selectedLevel)
+                  .toList();
 
-          WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => _scrollToBottom());
 
           if (logs.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.text_snippet_outlined, size: 64, color: Colors.grey),
+                  const Icon(Icons.text_snippet_outlined,
+                      size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
                   Text(
                     l10n.noLogs,

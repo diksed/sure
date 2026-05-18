@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 
 import '../models/custom_proxy_header.dart';
 
@@ -14,7 +14,8 @@ class CustomProxyHeadersEditor extends StatefulWidget {
   });
 
   @override
-  State<CustomProxyHeadersEditor> createState() => _CustomProxyHeadersEditorState();
+  State<CustomProxyHeadersEditor> createState() =>
+      _CustomProxyHeadersEditorState();
 }
 
 class _CustomProxyHeadersEditorState extends State<CustomProxyHeadersEditor> {
@@ -31,7 +32,8 @@ class _CustomProxyHeadersEditorState extends State<CustomProxyHeadersEditor> {
   void _notifyChanged() {
     widget.onChanged(
       _drafts
-          .map((draft) => CustomProxyHeader(name: draft.name.text, value: draft.value.text))
+          .map((draft) =>
+              CustomProxyHeader(name: draft.name.text, value: draft.value.text))
           .where((header) => header.isComplete)
           .toList(),
     );
@@ -101,21 +103,23 @@ class _HeaderRow extends StatelessWidget {
             children: [
               TextFormField(
                 controller: draft.name,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.headerName,
                   hintText: 'X-Auth-Token',
                 ),
-                validator: (value) => CustomProxyHeader.validateName(value ?? ''),
+                validator: (value) =>
+                    CustomProxyHeader.validateName(value ?? ''),
                 onChanged: (_) => onChanged(),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: draft.value,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.headerValue,
                 ),
                 obscureText: true,
-                validator: (value) => CustomProxyHeader.validateValue(value ?? ''),
+                validator: (value) =>
+                    CustomProxyHeader.validateValue(value ?? ''),
                 onChanged: (_) => onChanged(),
               ),
             ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/offline_transaction.dart';
 
 class SyncStatusBadge extends StatelessWidget {

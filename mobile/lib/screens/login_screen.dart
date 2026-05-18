@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_config.dart';
 import 'backend_config_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback? onGoToSettings;
@@ -48,9 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _signUpTapRecognizer = TapGestureRecognizer()..onTap = _openSignUpPage;
     _emailFocus.addListener(() => _clearPlaceholderOnFocus(
-          _emailFocus, _emailController, _emailPlaceholder));
+        _emailFocus, _emailController, _emailPlaceholder));
     _passwordFocus.addListener(() => _clearPlaceholderOnFocus(
-          _passwordFocus, _passwordController, _passwordPlaceholder));
+        _passwordFocus, _passwordController, _passwordPlaceholder));
   }
 
   void _clearPlaceholderOnFocus(
@@ -80,7 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (!launched && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.unableToOpenSignUpPage)),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.unableToOpenSignUpPage)),
       );
     }
   }
@@ -492,20 +494,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text(
                               l10n.sureServerUrlColon,
-                              style:
-                                  Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               ApiConfig.baseUrl,
-                              style:
-                                  Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.primary,
-                                        fontFamily: 'monospace',
-                                      ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontFamily: 'monospace',
+                                  ),
                               textAlign: TextAlign.center,
                             ),
                           ],

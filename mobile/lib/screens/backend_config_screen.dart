@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/custom_proxy_header.dart';
 import '../services/api_config.dart';
 import '../services/custom_proxy_headers_service.dart';
@@ -51,7 +51,8 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     } catch (e, stack) {
       // Swallow storage failures so the screen still becomes interactive with
       // sensible defaults; the user can re-enter and re-save.
-      debugPrint('BackendConfigScreen: failed to load saved config: $e\n$stack');
+      debugPrint(
+          'BackendConfigScreen: failed to load saved config: $e\n$stack');
     } finally {
       if (mounted) {
         setState(() {
@@ -76,9 +77,9 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     try {
       // Normalize base URL by removing trailing slashes
       final normalizedUrl = _urlController.text.trim().replaceAll(
-        RegExp(r'/+$'),
-        '',
-      );
+            RegExp(r'/+$'),
+            '',
+          );
 
       // Apply the unsaved edits only for the duration of this probe so the
       // test reflects what the user is about to save. Restored in `finally`.
@@ -86,16 +87,15 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
 
       // Check /sessions/new page to verify it's a Sure backend
       final sessionsUrl = Uri.parse('$normalizedUrl/sessions/new');
-      final sessionsResponse = await http
-          .get(sessionsUrl, headers: ApiConfig.htmlHeaders())
-          .timeout(
-            const Duration(seconds: 10),
-            onTimeout: () {
-              throw Exception(
-                'Connection timeout. Please check the URL and try again.',
-              );
-            },
+      final sessionsResponse =
+          await http.get(sessionsUrl, headers: ApiConfig.htmlHeaders()).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception(
+            'Connection timeout. Please check the URL and try again.',
           );
+        },
+      );
 
       if (sessionsResponse.statusCode >= 200 &&
           sessionsResponse.statusCode < 400) {
@@ -108,15 +108,16 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
       } else {
         if (mounted) {
           setState(() {
-            _errorMessage =
-                AppLocalizations.of(context)!.serverRespondedWithStatus(sessionsResponse.statusCode);
+            _errorMessage = AppLocalizations.of(context)!
+                .serverRespondedWithStatus(sessionsResponse.statusCode);
           });
         }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = AppLocalizations.of(context)!.connectionFailed(e.toString());
+          _errorMessage =
+              AppLocalizations.of(context)!.connectionFailed(e.toString());
         });
       }
     } finally {
@@ -140,9 +141,9 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     try {
       // Normalize base URL by removing trailing slashes
       final normalizedUrl = _urlController.text.trim().replaceAll(
-        RegExp(r'/+$'),
-        '',
-      );
+            RegExp(r'/+$'),
+            '',
+          );
 
       // Save URL to SharedPreferences
       final prefs = await SharedPreferences.getInstance();
@@ -162,7 +163,8 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = AppLocalizations.of(context)!.failedToSaveUrl(e.toString());
+          _errorMessage =
+              AppLocalizations.of(context)!.failedToSaveUrl(e.toString());
         });
       }
     } finally {
@@ -225,17 +227,17 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                 Text(
                   l10n.configuration,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.primary,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.primary,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   l10n.updateSureServerUrl,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),
@@ -432,8 +434,8 @@ class _BackendConfigScreenState extends State<BackendConfigScreen> {
                 Text(
                   l10n.changeInSettings,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                   textAlign: TextAlign.center,
                 ),
               ],

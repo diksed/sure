@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/chat.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
@@ -71,7 +71,9 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
   void _onChatChanged() {
     if (!mounted) return;
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    if (chatProvider.isWaitingForResponse || chatProvider.isSendingMessage || chatProvider.isPolling) {
+    if (chatProvider.isWaitingForResponse ||
+        chatProvider.isSendingMessage ||
+        chatProvider.isPolling) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _scrollToBottom();
       });
@@ -91,7 +93,8 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
   Future<void> _sendSuggestedQuestion(String question) async {
     if (!mounted) return;
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    if (chatProvider.isSendingMessage || chatProvider.isWaitingForResponse) return;
+    if (chatProvider.isSendingMessage || chatProvider.isWaitingForResponse)
+      return;
     _messageController.text = question;
     await _sendMessage();
   }
@@ -137,65 +140,66 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
     setState(() => _isSendInFlight = true);
 
     try {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final chatProvider = Provider.of<ChatProvider>(context, listen: false);
 
-    final accessToken = await authProvider.getValidAccessToken();
-    if (accessToken == null) {
-      await authProvider.logout();
-      return;
-    }
-
-    _messageController.clear();
-
-    if (_chatId == null) {
-      // First message in a new chat — create the chat with it.
-      final chat = await chatProvider.createChat(
-        accessToken: accessToken,
-        title: Chat.generateTitle(content),
-        initialMessage: content,
-      );
-      if (!mounted) return;
-      if (chat == null) {
-        // Restore the message so the user doesn't lose it.
-        _messageController.text = content;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(chatProvider.errorMessage ?? AppLocalizations.of(context)!.failedToStartConversation),
-            backgroundColor: Colors.red,
-          ),
-        );
+      final accessToken = await authProvider.getValidAccessToken();
+      if (accessToken == null) {
+        await authProvider.logout();
         return;
       }
-      setState(() => _chatId = chat.id);
-    } else {
-      final shouldUpdateTitle =
-          chatProvider.currentChat?.hasDefaultTitle == true;
 
-      final delivered = await chatProvider.sendMessage(
-        accessToken: accessToken,
-        chatId: _chatId!,
-        content: content,
-      );
+      _messageController.clear();
 
-      if (delivered && shouldUpdateTitle) {
-        await chatProvider.updateChatTitle(
+      if (_chatId == null) {
+        // First message in a new chat — create the chat with it.
+        final chat = await chatProvider.createChat(
+          accessToken: accessToken,
+          title: Chat.generateTitle(content),
+          initialMessage: content,
+        );
+        if (!mounted) return;
+        if (chat == null) {
+          // Restore the message so the user doesn't lose it.
+          _messageController.text = content;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(chatProvider.errorMessage ??
+                  AppLocalizations.of(context)!.failedToStartConversation),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+        setState(() => _chatId = chat.id);
+      } else {
+        final shouldUpdateTitle =
+            chatProvider.currentChat?.hasDefaultTitle == true;
+
+        final delivered = await chatProvider.sendMessage(
           accessToken: accessToken,
           chatId: _chatId!,
-          title: Chat.generateTitle(content),
+          content: content,
         );
-      }
-    }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+        if (delivered && shouldUpdateTitle) {
+          await chatProvider.updateChatTitle(
+            accessToken: accessToken,
+            chatId: _chatId!,
+            title: Chat.generateTitle(content),
+          );
+        }
       }
-    });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
     } finally {
       if (mounted) setState(() => _isSendInFlight = false);
     }
@@ -266,7 +270,8 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
       appBar: AppBar(
         title: Consumer<ChatProvider>(
           builder: (context, chatProvider, _) {
-            final title = chatProvider.currentChat?.title ?? l10n.newConversation;
+            final title =
+                chatProvider.currentChat?.title ?? l10n.newConversation;
             return GestureDetector(
               onTap: _chatId != null ? _editTitle : null,
               child: Row(
@@ -402,7 +407,10 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
                     actions: <Type, Action<Intent>>{
                       _SendMessageIntent: CallbackAction<_SendMessageIntent>(
                         onInvoke: (_) {
-                          if (!_isSendInFlight && !chatProvider.isSendingMessage && !chatProvider.isWaitingForResponse && !chatProvider.isPolling) _sendMessage();
+                          if (!_isSendInFlight &&
+                              !chatProvider.isSendingMessage &&
+                              !chatProvider.isWaitingForResponse &&
+                              !chatProvider.isPolling) _sendMessage();
                           return null;
                         },
                       ),
@@ -430,7 +438,10 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
                         const SizedBox(width: 8),
                         IconButton(
                           icon: const Icon(Icons.send),
-                          onPressed: (_isSendInFlight || chatProvider.isSendingMessage || chatProvider.isWaitingForResponse || chatProvider.isPolling)
+                          onPressed: (_isSendInFlight ||
+                                  chatProvider.isSendingMessage ||
+                                  chatProvider.isWaitingForResponse ||
+                                  chatProvider.isPolling)
                               ? null
                               : _sendMessage,
                           color: colorScheme.primary,
@@ -504,60 +515,61 @@ class _MessageBubble extends StatelessWidget {
               children: [
                 SelectionArea(
                   child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: isUser
-                        ? colorScheme.primary
-                        : colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (isUser)
-                        Text(
-                          message.content,
-                          style: TextStyle(
-                            color: colorScheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: isUser
+                          ? colorScheme.primary
+                          : colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (isUser)
+                          Text(
+                            message.content,
+                            style: TextStyle(
+                              color: colorScheme.onPrimary,
+                            ),
+                          )
+                        else
+                          MarkdownBody(
+                            data: message.content,
+                            selectable: false,
+                            softLineBreak: true,
+                            styleSheet: _markdownStyle(context),
+                            sizedImageBuilder: (config) {
+                              // Block remote images to prevent unsolicited network requests.
+                              if (config.uri.scheme == 'http' ||
+                                  config.uri.scheme == 'https') {
+                                return const SizedBox.shrink();
+                              }
+                              return Image.asset(config.uri.toString());
+                            },
                           ),
-                        )
-                      else
-                        MarkdownBody(
-                          data: message.content,
-                          selectable: false,
-                          softLineBreak: true,
-                          styleSheet: _markdownStyle(context),
-                          sizedImageBuilder: (config) {
-                            // Block remote images to prevent unsolicited network requests.
-                            if (config.uri.scheme == 'http' || config.uri.scheme == 'https') {
-                              return const SizedBox.shrink();
-                            }
-                            return Image.asset(config.uri.toString());
-                          },
-                        ),
-                      if (message.toolCalls != null &&
-                          message.toolCalls!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Wrap(
-                            spacing: 4,
-                            runSpacing: 4,
-                            children: message.toolCalls!.map((toolCall) {
-                              return Chip(
-                                label: Text(
-                                  toolCall.functionName,
-                                  style: const TextStyle(fontSize: 11),
-                                ),
-                                padding: EdgeInsets.zero,
-                                visualDensity: VisualDensity.compact,
-                              );
-                            }).toList(),
+                        if (message.toolCalls != null &&
+                            message.toolCalls!.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Wrap(
+                              spacing: 4,
+                              runSpacing: 4,
+                              children: message.toolCalls!.map((toolCall) {
+                                return Chip(
+                                  label: Text(
+                                    toolCall.functionName,
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                  visualDensity: VisualDensity.compact,
+                                );
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -602,7 +614,9 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final name = (firstName ?? '').trim();
-    final greeting = name.isNotEmpty ? AppLocalizations.of(context)!.greetingWithName(name) : AppLocalizations.of(context)!.greeting;
+    final greeting = name.isNotEmpty
+        ? AppLocalizations.of(context)!.greetingWithName(name)
+        : AppLocalizations.of(context)!.greeting;
 
     return ListView(
       padding: const EdgeInsets.all(24),
@@ -625,7 +639,8 @@ class _EmptyState extends StatelessWidget {
               label: Text(q.text, textAlign: TextAlign.left),
               style: OutlinedButton.styleFrom(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

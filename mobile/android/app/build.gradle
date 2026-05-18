@@ -88,6 +88,9 @@ android {
         release {
             if (hasKeystore) {
                 signingConfig signingConfigs.release
+            } else {
+                // Fallback to debug signing so local release APKs can still be installed.
+                signingConfig signingConfigs.debug
             }
             minifyEnabled false
             shrinkResources false

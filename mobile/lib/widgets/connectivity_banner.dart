@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../services/connectivity_service.dart';
 import '../providers/transactions_provider.dart';
 import '../providers/auth_provider.dart';
@@ -15,11 +15,12 @@ class ConnectivityBanner extends StatefulWidget {
 class _ConnectivityBannerState extends State<ConnectivityBanner> {
   bool _isSyncing = false;
 
-  Future<void> _handleSync(BuildContext context, String? accessToken, TransactionsProvider transactionsProvider) async {
+  Future<void> _handleSync(BuildContext context, String? accessToken,
+      TransactionsProvider transactionsProvider) async {
     if (accessToken == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(AppLocalizations.of(context)!.pleaseSignInToSync),
           backgroundColor: Colors.orange,
         ),
@@ -37,7 +38,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(AppLocalizations.of(context)!.transactionsSynced),
           backgroundColor: Colors.green,
         ),
@@ -45,7 +46,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(AppLocalizations.of(context)!.failedToSync),
           backgroundColor: Colors.red,
         ),
@@ -83,7 +84,8 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
               children: [
                 Icon(
                   isOffline ? Icons.cloud_off : Icons.sync,
-                  color: isOffline ? Colors.orange.shade900 : Colors.blue.shade900,
+                  color:
+                      isOffline ? Colors.orange.shade900 : Colors.blue.shade900,
                   size: 20,
                 ),
                 const SizedBox(width: 12),
@@ -93,7 +95,9 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
                         ? l10n.youAreOffline
                         : l10n.pendingSync(pendingCount),
                     style: TextStyle(
-                      color: isOffline ? Colors.orange.shade900 : Colors.blue.shade900,
+                      color: isOffline
+                          ? Colors.orange.shade900
+                          : Colors.blue.shade900,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -112,12 +116,15 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
 
                                 String? accessToken;
                                 try {
-                                  accessToken = await authProvider.getValidAccessToken();
+                                  accessToken =
+                                      await authProvider.getValidAccessToken();
                                 } catch (e) {
                                   if (!context.mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(AppLocalizations.of(context)!.unableToAuthenticate),
+                                    SnackBar(
+                                      content: Text(
+                                          AppLocalizations.of(context)!
+                                              .unableToAuthenticate),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -145,7 +152,8 @@ class _ConnectivityBannerState extends State<ConnectivityBanner> {
                                 height: 16,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade900),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.blue.shade900),
                                 ),
                               )
                             : Text(l10n.syncNow),

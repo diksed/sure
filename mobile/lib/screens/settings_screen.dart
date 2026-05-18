@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
 import '../providers/categories_provider.dart';
@@ -68,7 +68,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (!mounted) return;
         if (!success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)!.biometricAuthFailed)),
+            SnackBar(
+                content:
+                    Text(AppLocalizations.of(context)!.biometricAuthFailed)),
           );
           return;
         }
@@ -162,7 +164,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.failedToClearData(e.toString())),
+              content: Text(AppLocalizations.of(context)!
+                  .failedToClearData(e.toString())),
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 3),
             ),
@@ -238,7 +241,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['error'] ?? AppLocalizations.of(context)!.failedToResetAccount),
+            content: Text(result['error'] ??
+                AppLocalizations.of(context)!.failedToResetAccount),
             backgroundColor: Colors.red,
           ),
         );
@@ -281,7 +285,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return;
       }
 
-      final result = await UserService().deleteAccount(accessToken: accessToken);
+      final result =
+          await UserService().deleteAccount(accessToken: accessToken);
 
       if (!context.mounted) return;
 
@@ -290,7 +295,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['error'] ?? AppLocalizations.of(context)!.failedToDeleteAccount),
+            content: Text(result['error'] ??
+                AppLocalizations.of(context)!.failedToDeleteAccount),
             backgroundColor: Colors.red,
           ),
         );
@@ -327,7 +333,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _showCustomHeadersDialog() async {
     final formKey = GlobalKey<FormState>();
-    final latestHeaders = await CustomProxyHeadersService.instance.loadHeaders();
+    final latestHeaders =
+        await CustomProxyHeadersService.instance.loadHeaders();
     if (!mounted) return;
 
     setState(() => _customHeaders = latestHeaders);
@@ -385,13 +392,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (!mounted) return;
       setState(() => _customHeaders = draftHeaders);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.customProxyHeadersSaved)),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.customProxyHeadersSaved)),
       );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.failedToSaveHeaders(e.toString())),
+          content: Text(
+              AppLocalizations.of(context)!.failedToSaveHeaders(e.toString())),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -422,7 +432,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           radius: 30,
                           backgroundColor: colorScheme.primary,
                           child: Text(
-                            authProvider.user?.displayName[0].toUpperCase() ?? 'U',
+                            authProvider.user?.displayName[0].toUpperCase() ??
+                                'U',
                             style: TextStyle(
                               fontSize: 24,
                               color: colorScheme.onPrimary,
@@ -437,9 +448,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             children: [
                               Text(
                                 authProvider.user?.displayName ?? 'Kullanıcı',
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -496,7 +510,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LogViewerScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const LogViewerScreen()),
                 );
               },
             ),
@@ -554,7 +569,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ],
                   selected: {themeProvider.themeMode},
-                  onSelectionChanged: (modes) => themeProvider.setThemeMode(modes.first),
+                  onSelectionChanged: (modes) =>
+                      themeProvider.setThemeMode(modes.first),
                   showSelectedIcon: false,
                 ),
               );
@@ -611,7 +627,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           if (_biometricSupported) ...[
             const Divider(),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text(
@@ -623,7 +638,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
-
             SwitchListTile(
               secondary: const Icon(Icons.fingerprint),
               title: Text(l10n.biometricLock),
@@ -653,10 +667,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.resetAccount),
             subtitle: Text(l10n.resetAccountSubtitle),
             trailing: _isResettingAccount
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2))
                 : null,
             enabled: !_isResettingAccount && !_isDeletingAccount,
-            onTap: _isResettingAccount || _isDeletingAccount ? null : () => _handleResetAccount(context),
+            onTap: _isResettingAccount || _isDeletingAccount
+                ? null
+                : () => _handleResetAccount(context),
           ),
 
           ListTile(
@@ -664,10 +683,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(l10n.deleteAccount),
             subtitle: Text(l10n.deleteAccountSubtitle),
             trailing: _isDeletingAccount
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2))
                 : null,
             enabled: !_isDeletingAccount && !_isResettingAccount,
-            onTap: _isDeletingAccount || _isResettingAccount ? null : () => _handleDeleteAccount(context),
+            onTap: _isDeletingAccount || _isResettingAccount
+                ? null
+                : () => _handleDeleteAccount(context),
           ),
 
           const Divider(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../services/biometric_service.dart';
 
 class BiometricLockScreen extends StatefulWidget {
@@ -39,7 +39,8 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
       widget.onUnlocked();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.authFailedTryAgain)),
+        SnackBar(
+            content: Text(AppLocalizations.of(context)!.authFailedTryAgain)),
       );
     }
   }
@@ -77,7 +78,8 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
               FilledButton.icon(
                 onPressed: _isAuthenticating ? null : _authenticate,
                 icon: const Icon(Icons.fingerprint),
-                label: Text(_isAuthenticating ? l10n.authenticating : l10n.unlock),
+                label:
+                    Text(_isAuthenticating ? l10n.authenticating : l10n.unlock),
                 style: FilledButton.styleFrom(
                   minimumSize: const Size(200, 50),
                   shape: RoundedRectangleBorder(

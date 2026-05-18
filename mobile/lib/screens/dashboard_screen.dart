@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/account.dart';
 import '../providers/auth_provider.dart';
 import '../providers/accounts_provider.dart';
@@ -46,7 +46,8 @@ class DashboardScreenState extends State<DashboardScreen> {
     // Listen for sync completion to show success indicator
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+      _transactionsProvider =
+          Provider.of<TransactionsProvider>(context, listen: false);
       _previousPendingCount = _transactionsProvider?.pendingCount ?? 0;
       _transactionsProvider?.addListener(_onTransactionsChanged);
     });
@@ -68,7 +69,8 @@ class DashboardScreenState extends State<DashboardScreen> {
     final currentPendingCount = transactionsProvider.pendingCount;
 
     // Show sync success when pending count decreased (local transactions uploaded)
-    if (_previousPendingCount > 0 && currentPendingCount < _previousPendingCount) {
+    if (_previousPendingCount > 0 &&
+        currentPendingCount < _previousPendingCount) {
       _showSyncSuccessIndicator();
     }
 
@@ -93,8 +95,9 @@ class DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _loadAccounts() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final accountsProvider = Provider.of<AccountsProvider>(context, listen: false);
-    
+    final accountsProvider =
+        Provider.of<AccountsProvider>(context, listen: false);
+
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken == null) {
       // Token is invalid, redirect to login
@@ -103,7 +106,7 @@ class DashboardScreenState extends State<DashboardScreen> {
     }
 
     await accountsProvider.fetchAccounts(accessToken: accessToken);
-    
+
     // Check if unauthorized
     if (accountsProvider.errorMessage == 'unauthorized') {
       await authProvider.logout();
@@ -129,7 +132,8 @@ class DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _performManualSync() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+    final transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: false);
 
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken == null) {
@@ -176,7 +180,8 @@ class DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   const Icon(Icons.error, color: Colors.white),
                   const SizedBox(width: 12),
-                  Expanded(child: Text(AppLocalizations.of(context)!.syncFailed)),
+                  Expanded(
+                      child: Text(AppLocalizations.of(context)!.syncFailed)),
                 ],
               ),
               backgroundColor: Colors.red,
@@ -220,7 +225,8 @@ class DashboardScreenState extends State<DashboardScreen> {
       (Match m) => '${m[1]},',
     );
 
-    final finalAmount = parts.length > 1 ? '$integerPart.${parts[1]}' : integerPart;
+    final finalAmount =
+        parts.length > 1 ? '$integerPart.${parts[1]}' : integerPart;
     return '$symbol$finalAmount $currency';
   }
 
@@ -251,7 +257,9 @@ class DashboardScreenState extends State<DashboardScreen> {
 
     // Filter by currency if any selected
     if (_selectedCurrencies.isNotEmpty) {
-      accounts = accounts.where((a) => _selectedCurrencies.contains(a.currency)).toList();
+      accounts = accounts
+          .where((a) => _selectedCurrencies.contains(a.currency))
+          .toList();
     }
 
     return accounts;
@@ -365,7 +373,8 @@ class DashboardScreenState extends State<DashboardScreen> {
               opacity: _showSyncSuccess ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 300),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 color: Colors.green.withValues(alpha: 0.1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -384,135 +393,141 @@ class DashboardScreenState extends State<DashboardScreen> {
             child: Consumer2<AuthProvider, AccountsProvider>(
               builder: (context, authProvider, accountsProvider, _) {
                 // Show loading state during initialization or when loading
-                if (accountsProvider.isInitializing || accountsProvider.isLoading) {
+                if (accountsProvider.isInitializing ||
+                    accountsProvider.isLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
 
-          // Show error state
-          if (accountsProvider.errorMessage != null && 
-              accountsProvider.errorMessage != 'unauthorized') {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: colorScheme.error,
+                // Show error state
+                if (accountsProvider.errorMessage != null &&
+                    accountsProvider.errorMessage != 'unauthorized') {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: colorScheme.error,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.failedToLoadAccounts,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            accountsProvider.errorMessage!,
+                            style:
+                                TextStyle(color: colorScheme.onSurfaceVariant),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            onPressed: _handleRefresh,
+                            icon: const Icon(Icons.refresh),
+                            label: Text(l10n.tryAgain),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.failedToLoadAccounts,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      accountsProvider.errorMessage!,
-                      style: TextStyle(color: colorScheme.onSurfaceVariant),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: _handleRefresh,
-                      icon: const Icon(Icons.refresh),
-                      label: Text(l10n.tryAgain),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+                  );
+                }
 
-          // Show empty state
-          if (accountsProvider.accounts.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.account_balance_wallet_outlined,
-                      size: 64,
-                      color: colorScheme.onSurfaceVariant,
+                // Show empty state
+                if (accountsProvider.accounts.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.account_balance_wallet_outlined,
+                            size: 64,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.noAccountsYet,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.addAccountsInWebApp,
+                            style:
+                                TextStyle(color: colorScheme.onSurfaceVariant),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            onPressed: _handleRefresh,
+                            icon: const Icon(Icons.refresh),
+                            label: Text(l10n.refresh),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.noAccountsYet,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.addAccountsInWebApp,
-                      style: TextStyle(color: colorScheme.onSurfaceVariant),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: _handleRefresh,
-                      icon: const Icon(Icons.refresh),
-                      label: Text(l10n.refresh),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+                  );
+                }
 
-          // Show accounts list
-          return RefreshIndicator(
-            onRefresh: _handleRefresh,
-            child: CustomScrollView(
-              slivers: [
-                // Net Worth Card with Asset/Liability filter
-                SliverToBoxAdapter(
-                  child: NetWorthCard(
-                    assetTotalsByCurrency: accountsProvider.assetTotalsByCurrency,
-                    liabilityTotalsByCurrency: accountsProvider.liabilityTotalsByCurrency,
-                    currentFilter: _accountFilter,
-                    onFilterChanged: (filter) {
-                      setState(() {
-                        _accountFilter = filter;
-                      });
-                    },
-                    formatAmount: _formatAmount,
-                    netWorthFormatted: accountsProvider.netWorthFormatted,
-                    isStale: accountsProvider.isBalanceSheetStale,
+                // Show accounts list
+                return RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: CustomScrollView(
+                    slivers: [
+                      // Net Worth Card with Asset/Liability filter
+                      SliverToBoxAdapter(
+                        child: NetWorthCard(
+                          assetTotalsByCurrency:
+                              accountsProvider.assetTotalsByCurrency,
+                          liabilityTotalsByCurrency:
+                              accountsProvider.liabilityTotalsByCurrency,
+                          currentFilter: _accountFilter,
+                          onFilterChanged: (filter) {
+                            setState(() {
+                              _accountFilter = filter;
+                            });
+                          },
+                          formatAmount: _formatAmount,
+                          netWorthFormatted: accountsProvider.netWorthFormatted,
+                          isStale: accountsProvider.isBalanceSheetStale,
+                        ),
+                      ),
+
+                      // Currency filter
+                      SliverToBoxAdapter(
+                        child: CurrencyFilter(
+                          availableCurrencies:
+                              _getAllCurrencies(accountsProvider),
+                          selectedCurrencies: _selectedCurrencies,
+                          onSelectionChanged: (currencies) {
+                            setState(() {
+                              _selectedCurrencies = currencies;
+                            });
+                          },
+                        ),
+                      ),
+
+                      // Spacing
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 8),
+                      ),
+
+                      // Filtered accounts section
+                      ..._buildFilteredAccountsSection(accountsProvider),
+
+                      // Bottom padding
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 24),
+                      ),
+                    ],
                   ),
-                ),
-
-                // Currency filter
-                SliverToBoxAdapter(
-                  child: CurrencyFilter(
-                    availableCurrencies: _getAllCurrencies(accountsProvider),
-                    selectedCurrencies: _selectedCurrencies,
-                    onSelectionChanged: (currencies) {
-                      setState(() {
-                        _selectedCurrencies = currencies;
-                      });
-                    },
-                  ),
-                ),
-
-                // Spacing
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 8),
-                ),
-
-                // Filtered accounts section
-                ..._buildFilteredAccountsSection(accountsProvider),
-
-                // Bottom padding
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 24),
-                ),
-              ],
-            ),
-          );
+                );
               },
             ),
           ),
@@ -521,7 +536,8 @@ class DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  List<Widget> _buildFilteredAccountsSection(AccountsProvider accountsProvider) {
+  List<Widget> _buildFilteredAccountsSection(
+      AccountsProvider accountsProvider) {
     final filteredAccounts = _getFilteredAccounts(accountsProvider);
 
     if (filteredAccounts.isEmpty) {

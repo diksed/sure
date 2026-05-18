@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 
 import '../providers/auth_provider.dart';
 import 'chat_list_screen.dart';
@@ -68,12 +68,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     }
   }
 
-  Future<void> _handleSelectSettings(AuthProvider authProvider, bool introLayout) async {
+  Future<void> _handleSelectSettings(
+      AuthProvider authProvider, bool introLayout) async {
     final settingsIndex = introLayout ? 2 : 3;
     await _handleDestinationSelected(settingsIndex, authProvider, introLayout);
   }
 
-  List<NavigationDestination> _buildDestinations(bool introLayout, AppLocalizations l10n) {
+  List<NavigationDestination> _buildDestinations(
+      bool introLayout, AppLocalizations l10n) {
     final destinations = <NavigationDestination>[];
 
     if (!introLayout) {
@@ -117,7 +119,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return destinations;
   }
 
-  PreferredSizeWidget _buildTopBar(AuthProvider authProvider, bool introLayout) {
+  PreferredSizeWidget _buildTopBar(
+      AuthProvider authProvider, bool introLayout) {
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: 60,
@@ -191,7 +194,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     if (!enabled && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authProvider.errorMessage ?? AppLocalizations.of(context)!.unableToEnableAi),
+          content: Text(authProvider.errorMessage ??
+              AppLocalizations.of(context)!.unableToEnableAi),
           backgroundColor: Colors.red,
         ),
       );
@@ -224,9 +228,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         const chatIndex = 1;
         final screens = _buildScreens(
           introLayout,
-          () => _handleDestinationSelected(chatIndex, authProvider, introLayout),
+          () =>
+              _handleDestinationSelected(chatIndex, authProvider, introLayout),
         );
-        final destinations = _buildDestinations(introLayout);
+        final destinations =
+            _buildDestinations(introLayout, AppLocalizations.of(context)!);
         final bottomNavIndex = _resolveBottomSelectedIndex(destinations);
 
         if (_currentIndex >= screens.length) {

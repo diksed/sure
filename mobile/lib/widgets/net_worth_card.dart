@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 
 enum AccountFilter { all, assets, liabilities }
 
@@ -57,17 +57,20 @@ class NetWorthCard extends StatelessWidget {
                     if (isStale) ...[
                       const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 1),
                         decoration: BoxDecoration(
-                          color: colorScheme.secondaryContainer.withValues(alpha: 0.5),
+                          color: colorScheme.secondaryContainer
+                              .withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           l10n.outdated,
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: colorScheme.secondary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.secondary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                       ),
                     ],
@@ -78,7 +81,9 @@ class NetWorthCard extends StatelessWidget {
                   netWorthFormatted ?? '--',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isStale ? colorScheme.secondary : colorScheme.onSurface,
+                        color: isStale
+                            ? colorScheme.secondary
+                            : colorScheme.onSurface,
                       ),
                 ),
               ],
@@ -195,7 +200,9 @@ class NetWorthCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    title == AppLocalizations.of(context)!.assets ? Icons.trending_up : Icons.trending_down,
+                    title == AppLocalizations.of(context)!.assets
+                        ? Icons.trending_up
+                        : Icons.trending_down,
                     color: color,
                     size: 20,
                   ),
@@ -227,16 +234,18 @@ class NetWorthCard extends StatelessWidget {
                       children: [
                         Text(
                           entry.key,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: colorScheme.onSurfaceVariant,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                         ),
                         Text(
                           formatAmount(entry.key, entry.value),
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ],
                     );
@@ -305,11 +314,13 @@ class _FilterButton extends StatelessWidget {
                 : sortedEntries.length == 1
                     ? Center(
                         child: Text(
-                          formatAmount(sortedEntries.first.key, sortedEntries.first.value),
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
+                          formatAmount(sortedEntries.first.key,
+                              sortedEntries.first.value),
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onSurface,
+                                  ),
                         ),
                       )
                     : NotificationListener<ScrollNotification>(
@@ -326,7 +337,10 @@ class _FilterButton extends StatelessWidget {
                               return Center(
                                 child: Text(
                                   formatAmount(entry.key, entry.value),
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: colorScheme.onSurface,
                                       ),

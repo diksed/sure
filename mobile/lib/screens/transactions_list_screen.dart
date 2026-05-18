@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/account.dart';
 import '../models/transaction.dart';
 import '../models/offline_transaction.dart';
@@ -49,13 +49,15 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       trimmedAmount = trimmedAmount.replaceAll('\u2212', '-');
 
       // Detect if the amount has a negative sign (leading or trailing)
-      bool hasNegativeSign = trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
+      bool hasNegativeSign =
+          trimmedAmount.startsWith('-') || trimmedAmount.endsWith('-');
 
       // Remove all non-numeric characters except decimal point and minus sign
       String numericString = trimmedAmount.replaceAll(RegExp(r'[^\d.\-]'), '');
 
       // Parse the numeric value
-      double numericValue = double.tryParse(numericString.replaceAll('-', '')) ?? 0.0;
+      double numericValue =
+          double.tryParse(numericString.replaceAll('-', '')) ?? 0.0;
 
       // Apply the sign from the string
       if (hasNegativeSign) {
@@ -71,10 +73,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       bool isPositive = numericValue >= 0;
 
       // Get the display amount by removing the sign and currency symbols
-      String displayAmount = trimmedAmount
-          .replaceAll('-', '')
-          .replaceAll('\u2212', '')
-          .trim();
+      String displayAmount =
+          trimmedAmount.replaceAll('-', '').replaceAll('\u2212', '').trim();
 
       return {
         'isPositive': isPositive,
@@ -85,7 +85,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       };
     } catch (e) {
       // Fallback if parsing fails - log and return neutral state
-      LogService.instance.error('TransactionsListScreen', 'Failed to parse amount "$amount": $e');
+      LogService.instance.error(
+          'TransactionsListScreen', 'Failed to parse amount "$amount": $e');
       return {
         'isPositive': true,
         'displayAmount': amount,
@@ -98,7 +99,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
 
   Future<void> _loadCategories() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+    final categoriesProvider =
+        Provider.of<CategoriesProvider>(context, listen: false);
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken != null) {
       await categoriesProvider.fetchCategories(accessToken: accessToken);
@@ -114,16 +116,19 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     return fallbackName;
   }
 
-  List<OfflineTransaction> _getFilteredTransactions(List<OfflineTransaction> transactions) {
+  List<OfflineTransaction> _getFilteredTransactions(
+      List<OfflineTransaction> transactions) {
     if (_selectedCategoryIds.isEmpty) return transactions;
-    return transactions.where((t) =>
-      t.categoryId != null && _selectedCategoryIds.contains(t.categoryId)
-    ).toList();
+    return transactions
+        .where((t) =>
+            t.categoryId != null && _selectedCategoryIds.contains(t.categoryId))
+        .toList();
   }
 
   Future<void> _loadTransactions() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+    final transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: false);
 
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken == null) {
@@ -170,7 +175,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.deleteTransactions),
-        content: Text(AppLocalizations.of(context)!.confirmDeleteTransactions(_selectedTransactions.length)),
+        content: Text(AppLocalizations.of(context)!
+            .confirmDeleteTransactions(_selectedTransactions.length)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -179,7 +185,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(AppLocalizations.of(context)!.delete),
+            child: Text(AppLocalizations.of(context)!.deleteButton),
           ),
         ],
       ),
@@ -188,7 +194,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     if (confirmed != true || !mounted) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+    final transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: false);
 
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken != null) {
@@ -201,7 +208,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.deletedTransactions(_selectedTransactions.length)),
+              content: Text(AppLocalizations.of(context)!
+                  .deletedTransactions(_selectedTransactions.length)),
               backgroundColor: Colors.green,
             ),
           );
@@ -212,7 +220,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.failedToDeleteTransactions),
+              content: Text(
+                  AppLocalizations.of(context)!.failedToDeleteTransactions),
               backgroundColor: Colors.red,
             ),
           );
@@ -222,7 +231,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
   }
 
   Future<void> _undoTransaction(OfflineTransaction transaction) async {
-    final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+    final transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: false);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     final confirmed = await showDialog<bool>(
@@ -277,13 +287,15 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     // Capture providers before async gap
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+    final transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: false);
 
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.deleteTransaction),
-        content: Text(AppLocalizations.of(context)!.confirmDeleteTransaction(transaction.name)),
+        content: Text(AppLocalizations.of(context)!
+            .confirmDeleteTransaction(transaction.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -292,7 +304,7 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(AppLocalizations.of(context)!.delete),
+            child: Text(AppLocalizations.of(context)!.deleteButton),
           ),
         ],
       ),
@@ -321,7 +333,9 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
     if (mounted) {
       scaffoldMessenger.showSnackBar(
         SnackBar(
-          content: Text(success ? AppLocalizations.of(context)!.transactionDeleted : AppLocalizations.of(context)!.failedToDeleteTransaction),
+          content: Text(success
+              ? AppLocalizations.of(context)!.transactionDeleted
+              : AppLocalizations.of(context)!.failedToDeleteTransaction),
           backgroundColor: success ? Colors.green : Colors.red,
         ),
       );
@@ -355,7 +369,9 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
           if (_isSelectionMode)
             IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: _selectedTransactions.isEmpty ? null : _deleteSelectedTransactions,
+              onPressed: _selectedTransactions.isEmpty
+                  ? null
+                  : _deleteSelectedTransactions,
             ),
           IconButton(
             icon: Icon(_isSelectionMode ? Icons.close : Icons.checklist),
@@ -379,7 +395,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                          const Icon(Icons.error_outline,
+                              size: 48, color: Colors.red),
                           const SizedBox(height: 16),
                           Text(
                             transactionsProvider.error!,
@@ -414,7 +431,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                           Icon(
                             Icons.receipt_long_outlined,
                             size: 64,
-                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                            color: colorScheme.onSurfaceVariant
+                                .withValues(alpha: 0.5),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -429,7 +447,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                             l10n.tapPlusToAdd,
                             style: TextStyle(
                               fontSize: 14,
-                              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                              color: colorScheme.onSurfaceVariant
+                                  .withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -449,7 +468,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
               children: [
                 Consumer<CategoriesProvider>(
                   builder: (context, categoriesProvider, _) {
-                    if (categoriesProvider.isLoading || categoriesProvider.categories.isEmpty) {
+                    if (categoriesProvider.isLoading ||
+                        categoriesProvider.categories.isEmpty) {
                       return const SizedBox.shrink();
                     }
                     return Padding(
@@ -468,206 +488,290 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                 ),
                 Expanded(
                   child: transactions.isEmpty
-                    ? ListView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            child: Center(
-                              child: Text(
-                                'Bu kategoriye uyan işlem yok',
-                                style: TextStyle(color: colorScheme.onSurfaceVariant),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                final transaction = transactions[index];
-                final isSelected = transaction.id != null &&
-                    _selectedTransactions.contains(transaction.id);
-                final isPending = transaction.syncStatus == SyncStatus.pending;
-                final isPendingDelete = transaction.syncStatus == SyncStatus.pendingDelete;
-                final isFailed = transaction.syncStatus == SyncStatus.failed;
-                final hasPendingStatus = isPending || isPendingDelete;
-
-                // Compute display info once to avoid duplicate parsing
-                final displayInfo = _getAmountDisplayInfo(
-                  transaction.amount,
-                  widget.account.isAsset,
-                );
-
-                return Dismissible(
-                  key: Key(transaction.id ?? 'transaction_$index'),
-                  direction: _isSelectionMode
-                      ? DismissDirection.none
-                      : DismissDirection.endToStart,
-                  background: Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  confirmDismiss: (direction) => _confirmAndDeleteTransaction(transaction),
-                  child: Opacity(
-                    opacity: hasPendingStatus ? 0.5 : 1.0,
-                    child: Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: InkWell(
-                        onTap: _isSelectionMode && transaction.id != null
-                            ? () => _toggleTransactionSelection(transaction.id!)
-                            : null,
-                        borderRadius: BorderRadius.circular(12),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                            if (_isSelectionMode)
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: Checkbox(
-                                  value: isSelected,
-                                  onChanged: transaction.id != null
-                                      ? (value) => _toggleTransactionSelection(transaction.id!)
-                                      : null,
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: Center(
+                                child: Text(
+                                  'Bu kategoriye uyan işlem yok',
+                                  style: TextStyle(
+                                      color: colorScheme.onSurfaceVariant),
                                 ),
                               ),
-                            Container(
-                              width: 48,
-                              height: 48,
-                              decoration: BoxDecoration(
-                                color: (displayInfo['color'] as Color).withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                displayInfo['icon'] as IconData,
-                                color: displayInfo['color'] as Color,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          transaction.name,
-                                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      if (transaction.categoryName != null) ...[
-                                        const SizedBox(width: 8),
-                                        Flexible(
-                                          flex: 0,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                            decoration: BoxDecoration(
-                                              color: colorScheme.primaryContainer.withValues(alpha: 0.5),
-                                              borderRadius: BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: colorScheme.primary.withValues(alpha: 0.3),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              _getCategoryDisplayName(transaction.categoryId, transaction.categoryName) ?? '',
-                                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                                    color: colorScheme.onPrimaryContainer,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    transaction.date,
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (hasPendingStatus || isFailed)
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 8),
-                                        child: SyncStatusBadge(
-                                          syncStatus: transaction.syncStatus,
-                                          compact: true,
-                                        ),
-                                      ),
-                                    Text(
-                                      '${displayInfo['prefix']}${displayInfo['displayAmount']}',
-                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: displayInfo['color'] as Color,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                if (hasPendingStatus) ...[
-                                  const SizedBox(height: 4),
-                                  InkWell(
-                                    onTap: () => _undoTransaction(transaction),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue.withValues(alpha: 0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                          color: Colors.blue.withValues(alpha: 0.3),
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Geri Al',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                const SizedBox(height: 4),
-                                Text(
-                                  transaction.currency,
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                      ),
-                                ),
-                              ],
                             ),
                           ],
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: transactions.length,
+                          itemBuilder: (context, index) {
+                            final transaction = transactions[index];
+                            final isSelected = transaction.id != null &&
+                                _selectedTransactions.contains(transaction.id);
+                            final isPending =
+                                transaction.syncStatus == SyncStatus.pending;
+                            final isPendingDelete = transaction.syncStatus ==
+                                SyncStatus.pendingDelete;
+                            final isFailed =
+                                transaction.syncStatus == SyncStatus.failed;
+                            final hasPendingStatus =
+                                isPending || isPendingDelete;
+
+                            // Compute display info once to avoid duplicate parsing
+                            final displayInfo = _getAmountDisplayInfo(
+                              transaction.amount,
+                              widget.account.isAsset,
+                            );
+
+                            return Dismissible(
+                              key: Key(transaction.id ?? 'transaction_$index'),
+                              direction: _isSelectionMode
+                                  ? DismissDirection.none
+                                  : DismissDirection.endToStart,
+                              background: Container(
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(Icons.delete,
+                                    color: Colors.white),
+                              ),
+                              confirmDismiss: (direction) =>
+                                  _confirmAndDeleteTransaction(transaction),
+                              child: Opacity(
+                                opacity: hasPendingStatus ? 0.5 : 1.0,
+                                child: Card(
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  child: InkWell(
+                                    onTap: _isSelectionMode &&
+                                            transaction.id != null
+                                        ? () => _toggleTransactionSelection(
+                                            transaction.id!)
+                                        : null,
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          if (_isSelectionMode)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 12),
+                                              child: Checkbox(
+                                                value: isSelected,
+                                                onChanged: transaction.id !=
+                                                        null
+                                                    ? (value) =>
+                                                        _toggleTransactionSelection(
+                                                            transaction.id!)
+                                                    : null,
+                                              ),
+                                            ),
+                                          Container(
+                                            width: 48,
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                              color: (displayInfo['color']
+                                                      as Color)
+                                                  .withValues(alpha: 0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Icon(
+                                              displayInfo['icon'] as IconData,
+                                              color:
+                                                  displayInfo['color'] as Color,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Text(
+                                                        transaction.name,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleMedium
+                                                            ?.copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    if (transaction
+                                                            .categoryName !=
+                                                        null) ...[
+                                                      const SizedBox(width: 8),
+                                                      Flexible(
+                                                        flex: 0,
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 2),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: colorScheme
+                                                                .primaryContainer
+                                                                .withValues(
+                                                                    alpha: 0.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            border: Border.all(
+                                                              color: colorScheme
+                                                                  .primary
+                                                                  .withValues(
+                                                                      alpha:
+                                                                          0.3),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            _getCategoryDisplayName(
+                                                                    transaction
+                                                                        .categoryId,
+                                                                    transaction
+                                                                        .categoryName) ??
+                                                                '',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .labelSmall
+                                                                ?.copyWith(
+                                                                  color: colorScheme
+                                                                      .onPrimaryContainer,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  transaction.date,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                        color: colorScheme
+                                                            .onSurfaceVariant,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  if (hasPendingStatus ||
+                                                      isFailed)
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 8),
+                                                      child: SyncStatusBadge(
+                                                        syncStatus: transaction
+                                                            .syncStatus,
+                                                        compact: true,
+                                                      ),
+                                                    ),
+                                                  Text(
+                                                    '${displayInfo['prefix']}${displayInfo['displayAmount']}',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: displayInfo[
+                                                              'color'] as Color,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (hasPendingStatus) ...[
+                                                const SizedBox(height: 4),
+                                                InkWell(
+                                                  onTap: () => _undoTransaction(
+                                                      transaction),
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 2),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.blue
+                                                          .withValues(
+                                                              alpha: 0.1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      border: Border.all(
+                                                        color: Colors.blue
+                                                            .withValues(
+                                                                alpha: 0.3),
+                                                        width: 1,
+                                                      ),
+                                                    ),
+                                                    child: const Text(
+                                                      'Geri Al',
+                                                      style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                transaction.currency,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.copyWith(
+                                                      color: colorScheme
+                                                          .onSurfaceVariant,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
                 ),
               ],
             ),

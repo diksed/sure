@@ -8,7 +8,8 @@ class ApiConfig {
   // For local development, use: http://10.0.2.2:3000 (Android emulator)
   // For iOS simulator, use: http://localhost:3000
   // For production, use your actual server URL
-  static const String _defaultBaseUrl = 'https://demo.sure.am';
+  static const String _defaultBaseUrl =
+      'https://sure-production-9d94.up.railway.app';
   static const String _backendUrlKey = 'backend_url';
   static String _baseUrl = _defaultBaseUrl;
 
@@ -93,7 +94,8 @@ class ApiConfig {
 
       if (savedUrl != null && savedUrl.isNotEmpty) {
         _baseUrl = savedUrl;
-        _customProxyHeaders = await CustomProxyHeadersService.instance.loadHeaders();
+        _customProxyHeaders =
+            await CustomProxyHeadersService.instance.loadHeaders();
         return true;
       }
 
@@ -101,7 +103,8 @@ class ApiConfig {
       // go straight to login while still letting users override it later.
       _baseUrl = _defaultBaseUrl;
       await prefs.setString(_backendUrlKey, _defaultBaseUrl);
-      _customProxyHeaders = await CustomProxyHeadersService.instance.loadHeaders();
+      _customProxyHeaders =
+          await CustomProxyHeadersService.instance.loadHeaders();
       return true;
     } catch (e) {
       // If initialization fails, keep the default URL

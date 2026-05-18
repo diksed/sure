@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sure_mobile/l10n/app_localizations.dart';
 import '../models/account.dart';
 import '../models/category.dart' as models;
 import '../providers/auth_provider.dart';
@@ -47,7 +47,8 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
   Future<void> _fetchCategories() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+    final categoriesProvider =
+        Provider.of<CategoriesProvider>(context, listen: false);
     final accessToken = await authProvider.getValidAccessToken();
     if (accessToken != null) {
       categoriesProvider.fetchCategories(accessToken: accessToken);
@@ -90,11 +91,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final transactionsProvider = Provider.of<TransactionsProvider>(context, listen: false);
+      final transactionsProvider =
+          Provider.of<TransactionsProvider>(context, listen: false);
       final accessToken = await authProvider.getValidAccessToken();
 
       if (accessToken == null) {
-        _log.warning('TransactionForm', 'Access token is null, session expired');
+        _log.warning(
+            'TransactionForm', 'Access token is null, session expired');
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -111,7 +114,8 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
       final parsedDate = DateFormat('yyyy/MM/dd').parse(_dateController.text);
       final apiDate = DateFormat('yyyy-MM-dd').format(parsedDate);
 
-      _log.info('TransactionForm', 'Calling TransactionsProvider.createTransaction (offline-first)');
+      _log.info('TransactionForm',
+          'Calling TransactionsProvider.createTransaction (offline-first)');
 
       // Use TransactionsProvider for offline-first transaction creation
       final success = await transactionsProvider.createTransaction(
@@ -129,19 +133,19 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
       if (mounted) {
         if (success) {
-          _log.info('TransactionForm', 'Transaction created successfully (saved locally)');
-          
+          _log.info('TransactionForm',
+              'Transaction created successfully (saved locally)');
+
           // Check current connectivity status to show appropriate message
-          final connectivityService = Provider.of<ConnectivityService>(context, listen: false);
+          final connectivityService =
+              Provider.of<ConnectivityService>(context, listen: false);
           final isOnline = connectivityService.isOnline;
-          
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                isOnline
-                    ? AppLocalizations.of(context)!.transactionCreatedSuccessfully
-                    : AppLocalizations.of(context)!.transactionSavedOffline
-              ),
+              content: Text(isOnline
+                  ? AppLocalizations.of(context)!.transactionCreatedSuccessfully
+                  : AppLocalizations.of(context)!.transactionSavedOffline),
               backgroundColor: Colors.green,
             ),
           );
@@ -150,14 +154,16 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
           _log.error('TransactionForm', 'Failed to create transaction');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.failedToCreateTransaction),
+              content:
+                  Text(AppLocalizations.of(context)!.failedToCreateTransaction),
               backgroundColor: Colors.red,
             ),
           );
         }
       }
     } catch (e) {
-      _log.error('TransactionForm', 'Exception during transaction creation: $e');
+      _log.error(
+          'TransactionForm', 'Exception during transaction creation: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -208,15 +214,16 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
               ),
               // Title
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       l10n.newTransaction,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -254,20 +261,28 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         widget.account.name,
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
                                         '${widget.account.balance} ${widget.account.currency}',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -281,9 +296,10 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                         // Transaction type selection
                         Text(
                           'Tür',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                         const SizedBox(height: 8),
                         SegmentedButton<String>(
@@ -311,7 +327,8 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                         // Amount field
                         TextFormField(
                           controller: _amountController,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
                           decoration: InputDecoration(
                             labelText: l10n.amountLabel,
                             prefixIcon: const Icon(Icons.attach_money),
@@ -341,7 +358,9 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                               _showMoreFields = !_showMoreFields;
                             });
                           },
-                          icon: Icon(_showMoreFields ? Icons.expand_less : Icons.expand_more),
+                          icon: Icon(_showMoreFields
+                              ? Icons.expand_less
+                              : Icons.expand_more),
                           label: Text(_showMoreFields ? l10n.less : l10n.more),
                         ),
 
