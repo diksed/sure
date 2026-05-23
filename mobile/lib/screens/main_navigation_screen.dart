@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:sure_mobile/l10n/app_localizations.dart';
 
 import '../providers/auth_provider.dart';
+import 'calendar_screen.dart';
 import 'chat_list_screen.dart';
 import 'dashboard_screen.dart';
 import 'intro_screen.dart';
-import 'more_screen.dart';
 import 'recent_transactions_screen.dart';
 import 'settings_screen.dart';
 
@@ -28,7 +28,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     if (!introLayout) {
       screens.add(DashboardScreen(key: _dashboardKey));
       screens.add(const RecentTransactionsScreen());
-      screens.add(const MoreScreen());
+      screens.add(const CalendarScreen());
     } else {
       screens.add(IntroScreen(onStartChat: onStartChat));
       screens.add(const ChatListScreen());
@@ -92,9 +92,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       );
       destinations.add(
         NavigationDestination(
-          icon: const Icon(Icons.more_horiz),
-          selectedIcon: const Icon(Icons.more_horiz),
-          label: l10n.moreTab,
+          icon: const Icon(Icons.calendar_month_outlined),
+          selectedIcon: const Icon(Icons.calendar_month),
+          label: l10n.accountCalendar,
         ),
       );
     } else {

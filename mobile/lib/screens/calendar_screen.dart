@@ -192,18 +192,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _onDayCellTap(DateTime date) {
-    if (_selectedDate != null &&
-        _selectedDate!.year == date.year &&
-        _selectedDate!.month == date.month &&
-        _selectedDate!.day == date.day) {
-      // Second tap on same date - show transactions dialog
-      _showTransactionsDialog(date);
-    } else {
-      // First tap - select the date
-      setState(() {
-        _selectedDate = date;
-      });
-    }
+    setState(() {
+      _selectedDate = date;
+    });
+    _showTransactionsDialog(date);
   }
 
   List<Transaction> _getTransactionsForDate(DateTime date) {
@@ -233,21 +225,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
             formattedDate,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: transactions.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        AppLocalizations.of(context)!.noTransactionsOnDay,
-                        style: TextStyle(
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  )
-                : ListView.builder(
+          content: transactions.isEmpty
+              ? Text(
+                  AppLocalizations.of(context)!.noTransactionsOnDay,
+                  style: TextStyle(color: colorScheme.onSurfaceVariant),
+                )
+              : SizedBox(
+                  width: double.maxFinite,
+                  child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: transactions.length,
                     itemBuilder: (context, index) {
@@ -255,7 +240,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       return _buildTransactionTile(transaction);
                     },
                   ),
-          ),
+                ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -338,183 +323,150 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final accountsProvider = context.watch<AccountsProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.accountCalendar),
-      ),
-      body: Column(
-        children: [
-          // Account type selector
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: colorScheme.surface,
-              border: Border(
-                bottom: BorderSide(
-                  color: colorScheme.outlineVariant,
-                  width: 1,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Account type selector
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              decoration: BoxDecoration(
+                color: colorScheme.surface,
+                border: Border(
+                  bottom: BorderSide(color: colorScheme.outlineVariant),
                 ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.accountType,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.accountType,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  SegmentedButton<String>(
+                    segments: [
+                      ButtonSegment<String>(
+                        value: 'asset',
+                        label: Text(l10n.assets),
+                        icon: const Icon(Icons.account_balance_wallet),
                       ),
-                ),
-                const SizedBox(height: 8),
-                SegmentedButton<String>(
-                  segments: [
-                    ButtonSegment<String>(
-                      value: 'asset',
-                      label: Text(l10n.assets),
-                      icon: const Icon(Icons.account_balance_wallet),
-                    ),
-                    ButtonSegment<String>(
-                      value: 'liability',
-                      label: Text(l10n.liabilities),
-                      icon: const Icon(Icons.credit_card),
-                    ),
-                  ],
-                  selected: {_accountType},
-                  onSelectionChanged: (Set<String> newSelection) {
-                    setState(() {
-                      _accountType = newSelection.first;
-                      // Switch to first account of new type
-                      final filteredAccounts =
-                          _getFilteredAccounts(accountsProvider.accounts);
-                      _selectedAccount = filteredAccounts.isNotEmpty
-                          ? filteredAccounts.first
-                          : null;
-                      _dailyChanges = {};
-                      _transactions = [];
-                      _selectedDate =
-                          null; // Clear selection when changing account type
-                    });
-                    if (_selectedAccount != null) {
-                      _loadTransactionsForAccount();
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // Account selector
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: colorScheme.surface,
-              border: Border(
-                bottom: BorderSide(
-                  color: colorScheme.outlineVariant,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: DropdownButtonFormField<Account>(
-              value: _selectedAccount,
-              decoration: InputDecoration(
-                labelText: l10n.selectAccount,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-              items: _getFilteredAccounts(accountsProvider.accounts)
-                  .map((account) {
-                return DropdownMenuItem(
-                  value: account,
-                  child: Text('${account.name} (${account.currency})'),
-                );
-              }).toList(),
-              onChanged: (Account? newAccount) {
-                setState(() {
-                  _selectedAccount = newAccount;
-                  _dailyChanges = {};
-                  _transactions = [];
-                  _selectedDate = null; // Clear selection when changing account
-                });
-                _loadTransactionsForAccount();
-              },
-            ),
-          ),
-
-          // Month selector
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              border: Border(
-                bottom: BorderSide(
-                  color: colorScheme.outlineVariant,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  onPressed: _previousMonth,
-                ),
-                Text(
-                  DateFormat('yyyy-MM').format(_currentMonth),
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  onPressed: _nextMonth,
-                ),
-              ],
-            ),
-          ),
-
-          // Monthly total
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              border: Border(
-                bottom: BorderSide(
-                  color: colorScheme.outlineVariant,
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.monthlyChange,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Text(
-                  _formatCurrency(_getTotalForMonth()),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: _getTotalForMonth() >= 0
-                            ? Colors.green
-                            : Colors.red,
-                        fontWeight: FontWeight.bold,
+                      ButtonSegment<String>(
+                        value: 'liability',
+                        label: Text(l10n.liabilities),
+                        icon: const Icon(Icons.credit_card),
                       ),
-                ),
-              ],
+                    ],
+                    selected: {_accountType},
+                    onSelectionChanged: (Set<String> newSelection) {
+                      setState(() {
+                        _accountType = newSelection.first;
+                        final filteredAccounts =
+                            _getFilteredAccounts(accountsProvider.accounts);
+                        _selectedAccount = filteredAccounts.isNotEmpty
+                            ? filteredAccounts.first
+                            : null;
+                        _dailyChanges = {};
+                        _transactions = [];
+                        _selectedDate = null;
+                      });
+                      if (_selectedAccount != null) {
+                        _loadTransactionsForAccount();
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // Calendar
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _buildCalendar(colorScheme),
-          ),
-        ],
+            // Account selector
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              decoration: BoxDecoration(
+                color: colorScheme.surface,
+                border: Border(
+                  bottom: BorderSide(color: colorScheme.outlineVariant),
+                ),
+              ),
+              child: DropdownButtonFormField<Account>(
+                value: _selectedAccount,
+                decoration: InputDecoration(
+                  labelText: l10n.selectAccount,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
+                items: _getFilteredAccounts(accountsProvider.accounts)
+                    .map((account) {
+                  return DropdownMenuItem(
+                    value: account,
+                    child: Text('${account.name} (${account.currency})'),
+                  );
+                }).toList(),
+                onChanged: (Account? newAccount) {
+                  setState(() {
+                    _selectedAccount = newAccount;
+                    _dailyChanges = {};
+                    _transactions = [];
+                    _selectedDate = null;
+                  });
+                  _loadTransactionsForAccount();
+                },
+              ),
+            ),
+
+            // Month selector + monthly total
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest,
+                border: Border(
+                  bottom: BorderSide(color: colorScheme.outlineVariant),
+                ),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: _previousMonth,
+                  ),
+                  Text(
+                    DateFormat('yyyy-MM').format(_currentMonth),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: _nextMonth,
+                  ),
+                  const Spacer(),
+                  Text(
+                    _formatCurrency(_getTotalForMonth()),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: _getTotalForMonth() >= 0
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Calendar or loading
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.all(48),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else
+              _buildCalendar(colorScheme),
+          ],
+        ),
       ),
     );
   }
@@ -527,11 +479,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final daysInMonth = lastDayOfMonth.day;
     final startWeekday = firstDayOfMonth.weekday % 7; // 0 = Sunday
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
             // Weekday headers
             SizedBox(
               height: 40,
@@ -587,8 +538,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             }),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildDayCell(DateTime date, int day, double change, bool hasChange,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sure_mobile/l10n/app_localizations.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
+import 'chat_list_screen.dart';
 import '../providers/categories_provider.dart';
 import '../providers/theme_provider.dart';
 import '../services/offline_storage_service.dart';
@@ -172,16 +172,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           );
         }
       }
-    }
-  }
-
-  Future<void> _launchContactUrl(BuildContext context) async {
-    final uri = Uri.parse('https://discord.com/invite/36ZGBsxYEK');
-    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!launched && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.unableToOpenLink)),
-      );
     }
   }
 
@@ -489,15 +479,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           ListTile(
             leading: const Icon(Icons.chat_bubble_outline),
-            title: Text(l10n.contactUs),
-            subtitle: Text(
-              'https://discord.com/invite/36ZGBsxYEK',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-            onTap: () => _launchContactUrl(context),
+            title: Text(l10n.assistant),
+            subtitle: Text(l10n.startNewConversation),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () async {
+              final authProvider =
+                  Provider.of<AuthProvider>(context, listen: false);
+              if (!authProvider.aiEnabled) {
+                final shouldEnable = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(l10n.turnOnAiChat),
+                    content: Text(l10n.aiChatDisabledPrompt),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(l10n.notNow),
+                      ),
+                      FilledButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(l10n.turnOnAi),
+                      ),
+                    ],
+                  ),
+                );
+                if (shouldEnable != true || !context.mounted) return;
+                final enabled = await authProvider.enableAi();
+                if (!enabled) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(authProvider.errorMessage ??
+                            l10n.unableToEnableAi),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                  return;
+                }
+              }
+              if (context.mounted) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChatListScreen(),
+                  ),
+                );
+              }
+            },
           ),
 
           Semantics(
