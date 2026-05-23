@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sure_mobile/l10n/app_localizations.dart';
+import 'package:sure_mobile/services/preferences_service.dart';
 
 enum AccountFilter { all, assets, liabilities }
 
@@ -120,6 +121,7 @@ class NetWorthCard extends StatelessWidget {
                       Colors.green,
                     ),
                     formatAmount: formatAmount,
+                    persistenceKey: 'assets',
                   ),
                 ),
 
@@ -149,6 +151,7 @@ class NetWorthCard extends StatelessWidget {
                       Colors.red,
                     ),
                     formatAmount: formatAmount,
+                    persistenceKey: 'liabilities',
                   ),
                 ),
               ],
@@ -260,13 +263,14 @@ class NetWorthCard extends StatelessWidget {
   }
 }
 
-class _FilterButton extends StatelessWidget {
+class _FilterButton extends StatefulWidget {
   final Map<String, double> totals;
   final Color color;
   final bool isSelected;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
   final String Function(String currency, double amount) formatAmount;
+  final String persistenceKey;
 
   const _FilterButton({
     required this.totals,
@@ -275,29 +279,65 @@ class _FilterButton extends StatelessWidget {
     required this.onTap,
     required this.onLongPress,
     required this.formatAmount,
+    required this.persistenceKey,
   });
+
+  @override
+  State<_FilterButton> createState() => _FilterButtonState();
+}
+
+class _FilterButtonState extends State<_FilterButton> {
+  late final FixedExtentScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = FixedExtentScrollController();
+    _restoreScrollPosition();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _restoreScrollPosition() async {
+    final savedCurrency = await PreferencesService.instance
+        .getNetWorthCurrency(widget.persistenceKey);
+    if (!mounted || savedCurrency == null) return;
+
+    final sortedEntries = widget.totals.entries.toList()
+      ..sort((a, b) => b.value.abs().compareTo(a.value.abs()));
+    final idx = sortedEntries.indexWhere((e) => e.key == savedCurrency);
+    if (idx > 0) {
+      _scrollController.jumpToItem(idx);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final sortedEntries = totals.entries.toList()
+    final sortedEntries = widget.totals.entries.toList()
       ..sort((a, b) => b.value.abs().compareTo(a.value.abs()));
 
     return Container(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: color.withValues(alpha: 0.6),
+            color: widget.color.withValues(alpha: 0.6),
             width: 3,
           ),
         ),
       ),
       child: Material(
-        color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
+        color: widget.isSelected
+            ? widget.color.withValues(alpha: 0.1)
+            : Colors.transparent,
         child: GestureDetector(
-          onTap: onTap,
-          onLongPress: sortedEntries.isNotEmpty ? onLongPress : null,
+          onTap: widget.onTap,
+          onLongPress: sortedEntries.isNotEmpty ? widget.onLongPress : null,
           behavior: HitTestBehavior.opaque,
           child: SizedBox(
             height: 48,
@@ -314,7 +354,7 @@ class _FilterButton extends StatelessWidget {
                 : sortedEntries.length == 1
                     ? Center(
                         child: Text(
-                          formatAmount(sortedEntries.first.key,
+                          widget.formatAmount(sortedEntries.first.key,
                               sortedEntries.first.value),
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -326,17 +366,24 @@ class _FilterButton extends StatelessWidget {
                     : NotificationListener<ScrollNotification>(
                         onNotification: (_) => true,
                         child: ListWheelScrollView.useDelegate(
+                          controller: _scrollController,
                           itemExtent: 32,
                           diameterRatio: 1.5,
                           perspective: 0.003,
                           physics: const FixedExtentScrollPhysics(),
+                          onSelectedItemChanged: (index) {
+                            PreferencesService.instance.setNetWorthCurrency(
+                              widget.persistenceKey,
+                              sortedEntries[index].key,
+                            );
+                          },
                           childDelegate: ListWheelChildBuilderDelegate(
                             childCount: sortedEntries.length,
                             builder: (context, index) {
                               final entry = sortedEntries[index];
                               return Center(
                                 child: Text(
-                                  formatAmount(entry.key, entry.value),
+                                  widget.formatAmount(entry.key, entry.value),
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium

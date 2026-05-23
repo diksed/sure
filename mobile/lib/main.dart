@@ -72,7 +72,7 @@ class SureApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
           builder: (context, themeProvider, _) => MaterialApp(
-                title: 'Sure Finances',
+                title: 'DikseD Bank',
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   fontFamily: 'Geist',

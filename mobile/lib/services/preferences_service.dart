@@ -61,4 +61,14 @@ class PreferencesService {
     final prefs = await _preferences;
     await prefs.setString(_themeModeKey, mode);
   }
+
+  Future<String?> getNetWorthCurrency(String key) async {
+    final prefs = await _preferences;
+    return prefs.getString('net_worth_currency_$key');
+  }
+
+  Future<void> setNetWorthCurrency(String key, String currency) async {
+    final prefs = await _preferences;
+    await prefs.setString('net_worth_currency_$key', currency);
+  }
 }

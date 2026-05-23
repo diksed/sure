@@ -31,9 +31,37 @@ class Account {
 
   double get balanceAsDouble {
     try {
-      // Remove commas and any other non-numeric characters except dots and minus signs
-      final cleanedBalance = balance.replaceAll(RegExp(r'[^\d.-]'), '');
-      return double.parse(cleanedBalance);
+      String s = balance.trim().replaceAll('−', '-');
+      final isNegative = s.startsWith('-') || s.endsWith('-');
+
+      // Strip currency symbols, letters, spaces — keep only digits, dots, commas
+      final cleaned = s.replaceAll(RegExp(r'[^\d.,]'), '');
+      if (cleaned.isEmpty) return 0.0;
+
+      final lastDot = cleaned.lastIndexOf('.');
+      final lastComma = cleaned.lastIndexOf(',');
+
+      String numericString;
+      if (lastDot != -1 && lastComma != -1) {
+        if (lastComma > lastDot) {
+          // Turkish/European: "10.826,60" → comma=decimal, dot=thousands
+          numericString = cleaned.replaceAll('.', '').replaceAll(',', '.');
+        } else {
+          // US format: "1,302.00" → dot=decimal, comma=thousands
+          numericString = cleaned.replaceAll(',', '');
+        }
+      } else if (lastComma != -1) {
+        final afterComma = cleaned.substring(lastComma + 1);
+        // 3 digits after comma → thousands separator ("1,302"), else decimal ("1302,60")
+        numericString = afterComma.length == 3
+            ? cleaned.replaceAll(',', '')
+            : cleaned.replaceAll(',', '.');
+      } else {
+        numericString = cleaned;
+      }
+
+      final value = double.parse(numericString);
+      return isNegative ? -value : value;
     } catch (e) {
       return 0.0;
     }
