@@ -152,6 +152,57 @@ class TransactionsService {
     }
   }
 
+  Future<Map<String, dynamic>> updateTransaction({
+    required String accessToken,
+    required String transactionId,
+    String? notes,
+    String? categoryId,
+  }) async {
+    final url = Uri.parse('${ApiConfig.baseUrl}/api/v1/transactions/$transactionId');
+
+    final transactionBody = <String, dynamic>{};
+    if (notes != null) transactionBody['notes'] = notes;
+    if (categoryId != null) transactionBody['category_id'] = categoryId;
+
+    final body = {'transaction': transactionBody};
+
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          ...ApiConfig.getAuthHeaders(accessToken),
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return {
+          'success': true,
+          'transaction': Transaction.fromJson(responseData),
+        };
+      } else if (response.statusCode == 401) {
+        return {'success': false, 'error': 'unauthorized'};
+      } else {
+        try {
+          final responseData = jsonDecode(response.body);
+          return {
+            'success': false,
+            'error': responseData['error'] ?? 'Failed to update transaction',
+          };
+        } catch (e) {
+          return {
+            'success': false,
+            'error': 'Failed to update transaction: ${response.body}',
+          };
+        }
+      }
+    } catch (e) {
+      return {'success': false, 'error': 'Network error: ${e.toString()}'};
+    }
+  }
+
   Future<Map<String, dynamic>> deleteTransaction({
     required String accessToken,
     required String transactionId,

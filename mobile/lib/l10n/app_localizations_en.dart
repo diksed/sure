@@ -794,4 +794,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestedQ4 => 'What are my biggest expenses lately?';
+
+  @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
+  String get accountLabel => 'Account';
+
+  @override
+  String get noteLabel => 'Note';
+
+  @override
+  String get notePlaceholder => 'Add a note...';
+
+  @override
+  String get saveNote => 'Save Note';
+
+  @override
+  String get noteSaved => 'Note saved';
+
+  @override
+  String get failedToSaveNote => 'Failed to save note';
+
+  @override
+  String get noNote => 'No note';
 }

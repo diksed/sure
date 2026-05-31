@@ -240,5 +240,13 @@
   "suggestedQ1": "Anlık net değerim nedir?",
   "suggestedQ2": "Bu ay harcamalarım nasıl değişti?",
   "suggestedQ3": "Tasarruf oranımı nasıl artırabilirim?",
-  "suggestedQ4": "Son zamanlarda en büyük giderlerim neler?"
+  "suggestedQ4": "Son zamanlarda en büyük giderlerim neler?",
+  "transactionDetails": "İşlem Detayları",
+  "accountLabel": "Hesap",
+  "noteLabel": "Not",
+  "notePlaceholder": "Not ekle...",
+  "saveNote": "Notu Kaydet",
+  "noteSaved": "Not kaydedildi",
+  "failedToSaveNote": "Not kaydedilemedi",
+  "noNote": "Not yok"
 }

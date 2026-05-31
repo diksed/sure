@@ -14,6 +14,7 @@ import '../widgets/net_worth_card.dart';
 import '../widgets/currency_filter.dart';
 import 'transaction_form_screen.dart';
 import 'transactions_list_screen.dart';
+import '../utils/currency_formatter.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -214,20 +215,7 @@ class DashboardScreenState extends State<DashboardScreen> {
   }
 
   String _formatAmount(String currency, double amount) {
-    final symbol = _getCurrencySymbol(currency);
-    final isSmallAmount = amount.abs() < 1 && amount != 0;
-    final formattedAmount = amount.toStringAsFixed(isSmallAmount ? 4 : 0);
-
-    // Split into integer and decimal parts
-    final parts = formattedAmount.split('.');
-    final integerPart = parts[0].replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
-
-    final finalAmount =
-        parts.length > 1 ? '$integerPart.${parts[1]}' : integerPart;
-    return '$symbol$finalAmount $currency';
+    return CurrencyFormatter.formatWithSymbol(amount, currency);
   }
 
   Set<String> _getAllCurrencies(AccountsProvider accountsProvider) {
@@ -265,28 +253,6 @@ class DashboardScreenState extends State<DashboardScreen> {
     return accounts;
   }
 
-  String _getCurrencySymbol(String currency) {
-    switch (currency.toUpperCase()) {
-      case 'USD':
-        return '\$';
-      case 'TWD':
-        return '\$';
-      case 'BTC':
-        return '₿';
-      case 'ETH':
-        return 'Ξ';
-      case 'EUR':
-        return '€';
-      case 'GBP':
-        return '£';
-      case 'JPY':
-        return '¥';
-      case 'CNY':
-        return '¥';
-      default:
-        return ' ';
-    }
-  }
 
   Future<void> _handleAccountTap(Account account) async {
     final result = await showModalBottomSheet<bool>(

@@ -6,6 +6,8 @@ import '../models/account.dart';
 import '../providers/transactions_provider.dart';
 import '../providers/accounts_provider.dart';
 import '../providers/auth_provider.dart';
+import '../utils/currency_formatter.dart';
+import 'transaction_detail_bottom_sheet.dart';
 
 class RecentTransactionsScreen extends StatefulWidget {
   const RecentTransactionsScreen({super.key});
@@ -227,6 +229,12 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
     }
 
     return ListTile(
+      onTap: () => TransactionDetailBottomSheet.show(
+        context,
+        transaction: transaction,
+        accountName: accountName,
+        onTransactionUpdated: _refreshTransactions,
+      ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       leading: Container(
         padding: const EdgeInsets.all(8),
@@ -280,7 +288,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
         ],
       ),
       trailing: Text(
-        '$sign${transaction.currency} ${_formatAmount(amount.abs())}',
+        '$sign${transaction.currency} ${_formatAmount(amount.abs(), transaction.currency)}',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
@@ -290,8 +298,7 @@ class _RecentTransactionsScreenState extends State<RecentTransactionsScreen> {
     );
   }
 
-  String _formatAmount(double amount) {
-    final formatter = NumberFormat('#,##0.########');
-    return formatter.format(amount);
+  String _formatAmount(double amount, String currency) {
+    return CurrencyFormatter.format(amount, currency);
   }
 }

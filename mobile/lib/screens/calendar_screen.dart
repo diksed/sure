@@ -8,6 +8,7 @@ import '../providers/accounts_provider.dart';
 import '../providers/transactions_provider.dart';
 import '../providers/auth_provider.dart';
 import '../services/log_service.dart';
+import '../utils/currency_formatter.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -614,15 +615,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   String _formatAmount(double amount) {
-    final formatter = NumberFormat('#,##0.########');
+    final currency = _selectedAccount?.currency ?? 'USD';
     final sign = amount >= 0 ? '+' : '';
-    return '$sign${formatter.format(amount)}';
+    return '$sign${CurrencyFormatter.format(amount, currency)}';
   }
 
   String _formatCurrency(double amount) {
-    final currencySymbol = _selectedAccount?.currency ?? '';
-    final formatter = NumberFormat('#,##0.########');
+    final currency = _selectedAccount?.currency ?? 'USD';
+    final symbol = CurrencyFormatter.symbolForCurrency(currency);
     final sign = amount >= 0 ? '+' : '';
-    return '$sign$currencySymbol${formatter.format(amount.abs())}';
+    return '$sign$symbol${CurrencyFormatter.format(amount.abs(), currency)}';
   }
 }

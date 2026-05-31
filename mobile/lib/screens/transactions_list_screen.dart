@@ -8,6 +8,7 @@ import '../providers/auth_provider.dart';
 import '../providers/categories_provider.dart';
 import '../providers/transactions_provider.dart';
 import '../screens/transaction_form_screen.dart';
+import 'transaction_detail_bottom_sheet.dart';
 import '../widgets/category_filter.dart';
 import '../widgets/sync_status_badge.dart';
 import '../services/log_service.dart';
@@ -551,7 +552,14 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
                                             transaction.id != null
                                         ? () => _toggleTransactionSelection(
                                             transaction.id!)
-                                        : null,
+                                        : () =>
+                                            TransactionDetailBottomSheet.show(
+                                              context,
+                                              transaction: transaction,
+                                              accountName: widget.account.name,
+                                              onTransactionUpdated:
+                                                  _loadTransactions,
+                                            ),
                                     borderRadius: BorderRadius.circular(12),
                                     child: Padding(
                                       padding: const EdgeInsets.all(16),

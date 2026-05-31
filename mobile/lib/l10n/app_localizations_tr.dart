@@ -803,4 +803,28 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get suggestedQ4 => 'Son zamanlarda en büyük giderlerim neler?';
+
+  @override
+  String get transactionDetails => 'İşlem Detayları';
+
+  @override
+  String get accountLabel => 'Hesap';
+
+  @override
+  String get noteLabel => 'Not';
+
+  @override
+  String get notePlaceholder => 'Not ekle...';
+
+  @override
+  String get saveNote => 'Notu Kaydet';
+
+  @override
+  String get noteSaved => 'Not kaydedildi';
+
+  @override
+  String get failedToSaveNote => 'Not kaydedilemedi';
+
+  @override
+  String get noNote => 'Not yok';
 }

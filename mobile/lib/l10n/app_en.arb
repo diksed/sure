@@ -259,5 +259,13 @@
   "suggestedQ1": "What is my current net worth?",
   "suggestedQ2": "How has my spending changed this month?",
   "suggestedQ3": "How can I improve my savings rate?",
-  "suggestedQ4": "What are my biggest expenses lately?"
+  "suggestedQ4": "What are my biggest expenses lately?",
+  "transactionDetails": "Transaction Details",
+  "accountLabel": "Account",
+  "noteLabel": "Note",
+  "notePlaceholder": "Add a note...",
+  "saveNote": "Save Note",
+  "noteSaved": "Note saved",
+  "failedToSaveNote": "Failed to save note",
+  "noNote": "No note"
 }

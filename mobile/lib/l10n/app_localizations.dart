@@ -1543,6 +1543,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What are my biggest expenses lately?'**
   String get suggestedQ4;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get transactionDetails;
+
+  /// No description provided for @accountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountLabel;
+
+  /// No description provided for @noteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get noteLabel;
+
+  /// No description provided for @notePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note...'**
+  String get notePlaceholder;
+
+  /// No description provided for @saveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Note'**
+  String get saveNote;
+
+  /// No description provided for @noteSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Note saved'**
+  String get noteSaved;
+
+  /// No description provided for @failedToSaveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save note'**
+  String get failedToSaveNote;
+
+  /// No description provided for @noNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No note'**
+  String get noNote;
 }
 
 class _AppLocalizationsDelegate
