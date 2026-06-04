@@ -69,8 +69,9 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  if ENV["REDIS_URL"].present?
-    config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"] }
+  cache_redis_url = ENV["REDIS_CACHE_URL"] || ENV["REDIS_URL"]
+  if cache_redis_url.present?
+    config.cache_store = :redis_cache_store, { url: cache_redis_url }
   end
 
   config.action_mailer.perform_caching = false
