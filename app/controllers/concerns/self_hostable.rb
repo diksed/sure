@@ -35,9 +35,20 @@ module SelfHostable
     end
 
     def redis_connected?
-      Redis.new.ping
-      true
-    rescue Redis::CannotConnectError
-      false
+      cache_key = "self_hostable:redis_connected"
+      result = Rails.cache.read(cache_key)
+      return result unless result.nil?
+
+      connected = begin
+        Redis.new.ping
+        true
+      rescue Redis::CannotConnectError
+        false
+      rescue Redis::CommandError
+        true
+      end
+
+      Rails.cache.write(cache_key, connected, expires_in: 60.seconds)
+      connected
     end
 end
