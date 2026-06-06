@@ -6,6 +6,8 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require_relative "../lib/redis_rotator"
+
 module Sure
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -14,7 +16,7 @@ module Sure
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets tasks generators])
+    config.autoload_lib(ignore: %w[assets tasks generators redis_rotator.rb])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -51,5 +53,14 @@ module Sure
     # Handle OmniAuth/OIDC errors gracefully (must be before OmniAuth middleware)
     require_relative "../app/middleware/omniauth_error_handler"
     config.middleware.use OmniauthErrorHandler
+
+    # Catch Upstash "max requests limit exceeded" errors and rotate to next Redis URL
+    require_relative "../app/middleware/redis_rotation_middleware"
+    config.middleware.insert_before 0, RedisRotationMiddleware
   end
 end
+
+# Detect the first working Redis URL from REDIS_ROTATION_URLS and set ENV["REDIS_URL"].
+# Must run here (after gems load, before environments/*.rb and initializers) so that
+# Sidekiq, Action Cable, and the cache store all pick up the correct URL at boot.
+RedisRotator.setup!
