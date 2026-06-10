@@ -1,10 +1,20 @@
 module SelfHostable
   extend ActiveSupport::Concern
 
+  REDIS_CHECK_TTL = 60.seconds
+
   included do
     helper_method :self_hosted?, :self_hosted_first_login?
 
     prepend_before_action :verify_self_host_config
+  end
+
+  class << self
+    attr_accessor :redis_connected, :redis_checked_at
+
+    def mutex
+      @mutex ||= Mutex.new
+    end
   end
 
   private
@@ -34,21 +44,24 @@ module SelfHostable
       end
     end
 
+    # Cached in-process (not via Rails.cache/Redis) so this check doesn't
+    # itself burn Redis request quota on every single request.
     def redis_connected?
-      cache_key = "self_hostable:redis_connected"
-      result = Rails.cache.read(cache_key)
-      return result unless result.nil?
+      SelfHostable.mutex.synchronize do
+        checked_at = SelfHostable.redis_checked_at
+        if checked_at.nil? || checked_at < REDIS_CHECK_TTL.ago
+          SelfHostable.redis_connected = begin
+            Redis.new.ping
+            true
+          rescue Redis::CannotConnectError
+            false
+          rescue Redis::CommandError
+            true
+          end
+          SelfHostable.redis_checked_at = Time.current
+        end
 
-      connected = begin
-        Redis.new.ping
-        true
-      rescue Redis::CannotConnectError
-        false
-      rescue Redis::CommandError
-        true
+        SelfHostable.redis_connected
       end
-
-      Rails.cache.write(cache_key, connected, expires_in: 60.seconds)
-      connected
     end
 end

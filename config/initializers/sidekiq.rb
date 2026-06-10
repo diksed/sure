@@ -59,6 +59,18 @@ end
 Sidekiq.configure_server do |config|
   config.redis = redis_config
 
+  # Sidekiq polls Redis for scheduled/retry/dead jobs every 5s by default.
+  # Stretch that out to cut down on Upstash request usage.
+  config.average_scheduled_poll_interval = 30
+
+  # Sidekiq's heartbeat/poller/fetcher loops run outside the Rack request
+  # cycle, so RedisRotationMiddleware never sees their errors. This hook
+  # lets the Sidekiq process rotate to the next Redis URL too when the
+  # active one hits its Upstash request limit.
+  config.error_handlers << proc do |ex, _ctx|
+    RedisRotator.rotate! if RedisRotator.limit_exceeded?(ex)
+  end
+
   # Initialize auto-sync scheduler when Sidekiq server starts
   config.on(:startup) do
     AutoSyncScheduler.sync!
@@ -75,4 +87,7 @@ end
 Sidekiq::Cron.configure do |config|
   # 10 min "catch-up" window in case worker process is re-deploying when cron tick occurs
   config.reschedule_grace_period = 600
+
+  # Reduce cron polling frequency (default 30s) to cut down on Upstash request usage
+  config.cron_poll_interval = 120
 end

@@ -5,6 +5,11 @@ class Rack::Attack
   enabled = Rails.env.production? || Rails.env.staging?
   self.enabled = enabled
 
+  # Use an in-memory store for throttle counters instead of Rails.cache (Redis).
+  # This is a single-instance deployment, so counters don't need to be shared
+  # across processes, and this avoids burning Redis request quota on every request.
+  self.cache.store = ActiveSupport::Cache::MemoryStore.new
+
   # Throttle requests to the OAuth token endpoint
   throttle("oauth/token", limit: 10, period: 1.minute) do |request|
     request.ip if request.path == "/oauth/token"

@@ -95,7 +95,19 @@ module RedisRotator
     def reinitialize_sidekiq!
       return unless defined?(Sidekiq) && Sidekiq.respond_to?(:default_configuration)
 
-      Sidekiq.default_configuration.redis = { url: @current_url }
+      config = Sidekiq.default_configuration
+      config.redis = { url: @current_url }
+
+      # Sidekiq lazily builds Redis connection pools (Config#@redis and each
+      # Capsule#@redis) from @redis_config and memoizes them, so just updating
+      # `redis=` above has no effect on already-running heartbeat/poller/fetcher
+      # loops. Clear the memoized pools so they're rebuilt with the new URL.
+      targets = [ config ]
+      targets += config.capsules.values if config.respond_to?(:capsules)
+
+      targets.each do |target|
+        target.instance_variable_set(:@redis, nil) if target.instance_variable_defined?(:@redis)
+      end
     rescue => e
       log("Sidekiq reinit error: #{e.message}")
     end
