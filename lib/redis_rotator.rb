@@ -1,6 +1,8 @@
 # Rotates through a list of Redis URLs when Upstash request limits are exceeded.
 #
-# Configure via REDIS_ROTATION_URLS env var (comma-separated full Redis URLs).
+# REDIS_URL is always tried first, with REDIS_ROTATION_URLS (comma-separated
+# full Redis URLs) as ordered fallbacks - useful for keeping a quota-free
+# self-hosted/Railway Redis primary and Upstash keys as backup.
 # On startup, pings each URL in order and activates the first one that responds.
 # At runtime, when a "max requests limit exceeded" error is caught, rotates to
 # the next working URL and reinitializes Rails.cache and Sidekiq connections.
@@ -22,7 +24,11 @@ module RedisRotator
     def urls
       @urls ||= begin
         raw = ENV["REDIS_ROTATION_URLS"].to_s.strip
-        raw.empty? ? [ primary_url ] : raw.split(",").map(&:strip).reject(&:empty?)
+        rotation = raw.empty? ? [] : raw.split(",").map(&:strip).reject(&:empty?)
+
+        # REDIS_URL is tried first (e.g. a self-hosted/Railway Redis with no
+        # request quota); REDIS_ROTATION_URLS entries are fallbacks.
+        ([ primary_url ] + rotation).uniq
       end
     end
 
